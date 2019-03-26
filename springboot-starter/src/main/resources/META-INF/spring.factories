@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.wei.springboot.starter.config.FastjsonAutoConfig,\
+com.wei.springboot.starter.config.SpringMvcAutoConfig,\
+com.wei.springboot.starter.config.RedisAutoConfig,\
+com.wei.springboot.starter.cache.CacheAutoConfig,\
+com.wei.springboot.starter.swagger2.SwaggerAutoConfiguration
