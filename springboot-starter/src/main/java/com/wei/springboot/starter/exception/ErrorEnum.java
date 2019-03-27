@@ -21,14 +21,14 @@ public enum ErrorEnum {
     BadRequestException(400, "错误请求，参数不完整"),
 
     /**
-     * 用户已在其他设备登录  当前认证无效	   抛出 401
+     * 没有权限
      */
-    LogoutException(401, "设备登出"),
+    UnauthorizedException(401, "没有权限"),
 
     /**
-     * 账户 未登录  需要重新登录
+     * 账户禁用
      */
-    NoAuthException(403, "账户未登录，需要重新登录"),
+    ForbiddenException(403, "账户禁用，请联系管理员"),
 
     /**
      * 账户 未登录  需要重新登录
@@ -55,9 +55,9 @@ public enum ErrorEnum {
             case 400:
                 return BadRequestException;
             case 401:
-                return LogoutException;
+                return UnauthorizedException;
             case 403:
-                return NoAuthException;
+                return ForbiddenException;
             case 408:
                 return OvertimeException;
             case 500:

@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * 返回自定义错误信息 错误问题
  *
- * @author Johnson.Jia
+ * @author William
  */
 @Data
 public class ErrorMsgException extends BaseException {

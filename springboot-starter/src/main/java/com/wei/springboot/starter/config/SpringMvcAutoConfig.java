@@ -21,12 +21,14 @@ import java.util.List;
 public class SpringMvcAutoConfig implements WebMvcConfigurer {
 
     public static final String SUCCESS = "success.html";
+    public static final String SWAGGER = "swagger-ui.html";
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("redirect:/index");
         registry.addViewController("/index").setViewName(SUCCESS);
         registry.addViewController("/index.html").setViewName(SUCCESS);
+        registry.addViewController("/swagger").setViewName(SWAGGER);
     }
 
     @Override

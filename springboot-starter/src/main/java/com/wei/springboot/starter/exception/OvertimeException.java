@@ -13,5 +13,4 @@ public class OvertimeException extends BaseException {
 		return ErrorEnum.OvertimeException.getMsg();
 	}
 
-	
 }
