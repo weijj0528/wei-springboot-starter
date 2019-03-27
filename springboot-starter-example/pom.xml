@@ -71,7 +71,16 @@
             <plugin>
                 <groupId>com.wei</groupId>
                 <artifactId>springboot-starter-code-plugin</artifactId>
-                <version>1.0</version>
+                <version>2.0</version>
+                <configuration>
+                    <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
+                    <jdbcURL>jdbc:mysql://localhost:3306/wei_com</jdbcURL>
+                    <jdbcUserId>root</jdbcUserId>
+                    <jdbcPassword>Weijj0528!</jdbcPassword>
+                    <basePackage>com.wei.springbootstarterexample</basePackage>
+                    <xMapper>com.wei.springboot.starter.xmapper.XMapper</xMapper>
+                    <noXml>false</noXml>
+                </configuration>
             </plugin>
         </plugins>
     </build>
