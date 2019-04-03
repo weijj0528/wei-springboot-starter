@@ -1,10 +1,11 @@
 package com.wei.springboot.starter.lock;
 
+import cn.hutool.core.util.IdUtil;
 import com.wei.springboot.starter.config.SpringContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.types.Expiration;
 
 import java.util.concurrent.TimeUnit;
@@ -37,9 +38,15 @@ public class RedisLock implements Lock {
      * 锁芯 ~ ha
      */
     private final String lockKey;
+    /**
+     * 锁值
+     */
+    private final String lockValue;
 
     public RedisLock(String lockKey) {
         this.lockKey = LOCK + lockKey;
+        this.lockValue = IdUtil.simpleUUID();
+
     }
 
     private RedisConnection getRedisConnection() {
@@ -85,18 +92,19 @@ public class RedisLock implements Lock {
      * @throws InterruptedException the interrupted exception
      */
     public boolean tryLock(long time, long expirationTime, TimeUnit unit) throws InterruptedException {
-        long id = Thread.currentThread().getId();
         // 获取连接
         RedisConnection redisConnection = getRedisConnection();
         // 过期时间
         Expiration expiration = Expiration.from(expirationTime, unit);
-        // 不存在则设置
-        RedisStringCommands.SetOption setOption = RedisStringCommands.SetOption.ifAbsent();
+        byte[] expirationBytes = String.valueOf(expiration.getExpirationTimeInSeconds()).getBytes();
         Boolean set;
         // 自旋时间
         long targetTime = System.currentTimeMillis() + (time * 1000);
         do {
-            set = redisConnection.set(lockKey.getBytes(), String.valueOf(id).getBytes(), expiration, setOption);
+            String script = "if redis.call('set', KEYS[1], ARGV[1], ARGV[2], ARGV[3], ARGV[4]) then return 1 else return 0 end";
+            set = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN,
+                    1, lockKey.getBytes(), lockValue.getBytes(),
+                    "nx".getBytes(), "ex".getBytes(), expirationBytes);
             if (set) {
                 break;
             }
@@ -114,20 +122,16 @@ public class RedisLock implements Lock {
 
     @Override
     public void unlock() {
-        long id = Thread.currentThread().getId();
-        RedisConnection redisConnection = getRedisConnection();
-        byte[] bytes = redisConnection.get(lockKey.getBytes());
-        if (bytes != null && String.valueOf(id).equals(new String(bytes))) {
-            redisConnection.del(lockKey.getBytes());
-            redisConnection.close();
-        } else {
-            if (lockStartTime > 0) {
+        if (lockStartTime > 0) {
+            RedisConnection redisConnection = getRedisConnection();
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+            Boolean result = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN, 1, lockKey.getBytes(), lockValue.getBytes());
+            if (!result) {
                 log.warn("Lock expired:" + lockKey);
             }
-        }
-        if (lockStartTime > 0) {
             long time = System.currentTimeMillis() - lockStartTime;
             log.debug(lockKey + " locking " + time + "ms");
+            redisConnection.close();
         }
     }
 
