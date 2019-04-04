@@ -87,6 +87,12 @@
             <artifactId>hutool-all</artifactId>
             <version>4.5.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0.1-jre</version>
+        </dependency>
         <!--数据库-->
         <dependency>
             <groupId>mysql</groupId>

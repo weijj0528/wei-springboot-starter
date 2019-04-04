@@ -1,6 +1,5 @@
 package com.wei.springboot.starter.exception;
 
-import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 
 /**
@@ -13,46 +12,16 @@ public class ErrorMsgException extends BaseException {
 
     private static final long serialVersionUID = 1452976038790619628L;
 
-    /**
-     * 错误 信息
-     */
-    private String msg;
-    /**
-     * 错误 编码
-     */
-    private int code;
-
     public ErrorMsgException() {
+        super(ErrorEnum.ERROR_SERVER);
     }
-
-    public ErrorMsgException(String msg, int code) {
-        this.msg = msg;
-        this.code = code;
-    }
-
 
     public ErrorMsgException(String msg) {
-        this.code = ErrorEnum.ERROR_SERVER.getCode();
-        this.msg = msg;
-        if (StrUtil.isBlank(msg)) {
-            this.msg = ErrorEnum.ERROR_SERVER.getMsg();
-        }
+        super(ErrorEnum.ERROR_SERVER.getCode(), msg);
     }
 
-    public ErrorMsgException(ErrorEnum errorEnum) {
-        this.msg = errorEnum.getMsg();
-        this.code = errorEnum.getCode();
+    public ErrorMsgException(int code, String msg) {
+        super(code, msg);
     }
 
-
-    public ErrorMsgException(ErrorEnum errorEnum, String msg) {
-        this.msg = msg;
-        this.code = errorEnum.getCode();
-    }
-
-
-    @Override
-    public String causedBy() {
-        return ErrorEnum.ERROR_SERVER.getMsg();
-    }
 }

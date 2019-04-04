@@ -7,9 +7,7 @@ package com.wei.springboot.starter.exception;
 public class ForbiddenException extends BaseException {
     private static final long serialVersionUID = 8199514192443835496L;
 
-    @Override
-    public String causedBy() {
-        return ErrorEnum.ForbiddenException.getMsg();
+    public ForbiddenException() {
+        super(ErrorEnum.ForbiddenException);
     }
-
 }

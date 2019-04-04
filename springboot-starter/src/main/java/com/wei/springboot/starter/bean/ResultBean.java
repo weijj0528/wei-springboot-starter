@@ -2,8 +2,8 @@ package com.wei.springboot.starter.bean;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.wei.springboot.starter.exception.BaseException;
 import com.wei.springboot.starter.exception.ErrorEnum;
-import com.wei.springboot.starter.exception.ErrorMsgException;
 import com.wei.springboot.starter.utils.ObjUtils;
 import lombok.Data;
 
@@ -40,8 +40,8 @@ public class ResultBean implements Serializable, Cloneable {
         this.result = new JSONObject();
     }
 
-    public ResultBean(ErrorMsgException exception) {
-        this.msg = exception.getMsg();
+    public ResultBean(BaseException exception) {
+        this.msg = exception.getMessage();
         this.code = exception.getCode();
         this.result = new JSONObject();
     }
