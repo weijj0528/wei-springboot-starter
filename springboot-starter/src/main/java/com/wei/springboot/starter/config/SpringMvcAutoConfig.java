@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  * @description
  */
 @Configuration
-public class SpringMvcAutoConfig implements WebMvcConfigurer {
+public class SpringMvcAutoConfig extends WebMvcConfigurerAdapter {
 
     public static final String SUCCESS = "success.html";
     public static final String SWAGGER = "swagger-ui.html";

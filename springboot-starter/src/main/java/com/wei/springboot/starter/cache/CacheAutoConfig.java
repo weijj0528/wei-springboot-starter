@@ -1,16 +1,14 @@
 package com.wei.springboot.starter.cache;
 
-import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
+import com.google.common.collect.Lists;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.DefaultRedisCachePrefix;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @author Administrator
@@ -29,15 +27,12 @@ public class CacheAutoConfig {
     }
 
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory factory,
-                                     FastJsonRedisSerializer fastJsonRedisSerializer) {
-        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig();
-        configuration.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
-        configuration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer));
-        RedisCacheManager cacheManager = RedisCacheManager
-                .builder(factory)
-                .cacheDefaults(configuration)
-                .build();
+    public CacheManager cacheManager(RedisTemplate<String, ?> template) {
+        RedisCacheManager cacheManager = new RedisCacheManager(template);
+        cacheManager.setCacheNames(Lists.newArrayList(REDIS_CACHE));
+        cacheManager.setUsePrefix(true);
+        cacheManager.setCachePrefix(new DefaultRedisCachePrefix("CACHE:"));
+        cacheManager.setDefaultExpiration(10);
         return cacheManager;
     }
 

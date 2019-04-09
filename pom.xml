@@ -7,7 +7,7 @@
   <groupId>com.wei</groupId>
   <artifactId>wei-springboot-starter</artifactId>
   <packaging>pom</packaging>
-  <version>2.0</version>
+  <version>1.5.20</version>
 
   <name>wei-springboot-starter</name>
   <!-- FIXME change it to the project's website -->
