@@ -80,7 +80,7 @@
                 <version>2.0</version>
                 <configuration>
                     <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-                    <jdbcURL>jdbc:mysql://localhost:3306/wei_com</jdbcURL>
+                    <jdbcURL>jdbc:mysql://119.23.212.70:3306/wei_com</jdbcURL>
                     <jdbcUserId>root</jdbcUserId>
                     <jdbcPassword>Weijj0528!</jdbcPassword>
                     <!--项目基础包名-->

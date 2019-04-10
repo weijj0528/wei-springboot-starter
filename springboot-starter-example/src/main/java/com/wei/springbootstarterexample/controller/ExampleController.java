@@ -1,9 +1,11 @@
 package com.wei.springbootstarterexample.controller;
 
 import com.wei.springboot.starter.bean.ResultBean;
+import com.wei.springbootstarterexample.service.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/example")
 public class ExampleController {
 
+    @Autowired
+    private UserInfoService userInfoService;
 
     @ApiOperation(value = "Hello world")
     @GetMapping("/hello")
@@ -26,6 +30,7 @@ public class ExampleController {
         ResultBean resultBean = new ResultBean();
         resultBean.setCode(200);
         resultBean.setMsg("Hello world!");
+        userInfoService.testCache();
         return resultBean;
     }
 
