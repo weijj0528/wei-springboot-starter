@@ -9,6 +9,7 @@ import lombok.Data;
 @Table(name = "user_auth_phone")
 public class UserAuthPhone implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String phone;

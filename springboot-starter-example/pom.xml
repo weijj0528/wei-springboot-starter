@@ -90,7 +90,9 @@
                     <!--无XML模式，不生成XML文件-->
                     <noXml>true</noXml>
                     <!--生成模式，base/all base模式只生成Mybatis相关，all模式额外再生成Dto/Service/ServiceImpl-->
-                    <generatorModle>all</generatorModle>
+                    <generatorModle>base</generatorModle>
+                    <!---->
+                    <tableNames>user_auth_wx</tableNames>
                 </configuration>
             </plugin>
         </plugins>
