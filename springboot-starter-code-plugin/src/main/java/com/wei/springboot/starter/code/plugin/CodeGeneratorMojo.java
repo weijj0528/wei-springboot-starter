@@ -148,6 +148,8 @@ public class CodeGeneratorMojo extends AbstractMojo {
         configuration.setUpdateByExampleStatementEnabled(false);
         configuration.setSelectByExampleStatementEnabled(false);
         configuration.setCountByExampleStatementEnabled(false);
+        GeneratedKey generatedKey = new GeneratedKey("id", "Mysql", true, "post");
+        configuration.setGeneratedKey(generatedKey);
         return configuration;
     }
 
