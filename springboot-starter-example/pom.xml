@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.wei</groupId>
+        <groupId>com.github.weijj0528</groupId>
         <artifactId>wei-springboot-starter</artifactId>
         <version>2.0</version>
     </parent>
@@ -30,7 +30,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.wei</groupId>
+            <groupId>com.github.weijj0528</groupId>
             <artifactId>springboot-starter</artifactId>
             <version>2.0</version>
         </dependency>
@@ -90,9 +90,9 @@
                     <!--无XML模式，不生成XML文件-->
                     <noXml>true</noXml>
                     <!--生成模式，base/all base模式只生成Mybatis相关，all模式额外再生成Dto/Service/ServiceImpl-->
-                    <generatorModle>base</generatorModle>
+                    <generatorModle>all</generatorModle>
                     <!---->
-                    <tableNames>user_auth_wx</tableNames>
+                    <tableNames>com_id</tableNames>
                 </configuration>
             </plugin>
         </plugins>
