@@ -5,6 +5,7 @@ import com.wei.springbootstarterexample.SpringbootStarterExampleApplicationTests
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,6 +18,11 @@ public class RedisLockTest extends SpringbootStarterExampleApplicationTests {
     public class MyTask implements Runnable {
 
         private int stock = 0;
+        private CountDownLatch latch;
+
+        public MyTask(CountDownLatch latch) {
+            this.latch = latch;
+        }
 
         @Override
         public void run() {
@@ -25,10 +31,12 @@ public class RedisLockTest extends SpringbootStarterExampleApplicationTests {
                 String name = Thread.currentThread().getName();
                 boolean b = redisLock.tryLock(1, 1, TimeUnit.SECONDS);
                 if (!b) {
+                    latch.countDown();
                     return;
                 }
                 stock++;
                 System.err.println(name + " add --------------------now:" + stock);
+                latch.countDown();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
@@ -38,12 +46,16 @@ public class RedisLockTest extends SpringbootStarterExampleApplicationTests {
     }
 
     @Test
-    public void lockTest() throws IOException {
-        MyTask task = new MyTask();
+    public void lockTest() throws IOException, InterruptedException {
+
+        CountDownLatch latch = new CountDownLatch(100);
+
+        MyTask task = new MyTask(latch);
         for (int i = 0; i < 100; i++) {
             new Thread(task).start();
         }
-        System.in.read();
+        latch.await();
+        System.out.printf("LockTest finish!");
     }
 
 }

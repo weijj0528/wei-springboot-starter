@@ -4,7 +4,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.wei</groupId>
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
+  <groupId>com.github.weijj0528</groupId>
   <artifactId>wei-springboot-starter</artifactId>
   <packaging>pom</packaging>
   <version>1.5.20</version>
@@ -18,6 +24,28 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <tag>master</tag>
+    <url>git@github.com:weijj0528/wei-springboot-starter.git</url>
+    <connection>scm:git@github.com:weijj0528/wei-springboot-starter.git</connection>
+    <developerConnection>scm:git@github.com:weijj0528/wei-springboot-starter.git</developerConnection>
+  </scm>
+  <developers>
+    <developer>
+      <name>weijj0528</name>
+      <email>weijj0528@163.com</email>
+      <organization>Wei</organization>
+    </developer>
+  </developers>
 
   <dependencies>
     <dependency>
