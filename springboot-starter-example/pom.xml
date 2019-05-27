@@ -15,6 +15,9 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.encoding>utf-8</maven.compiler.encoding>
         <springboot.version>2.1.3.RELEASE</springboot.version>
     </properties>
 
@@ -32,7 +35,7 @@
         <dependency>
             <groupId>com.github.weijj0528</groupId>
             <artifactId>springboot-starter</artifactId>
-            <version>${parent.version}</version>
+            <version>2.1.3.1</version>
         </dependency>
 
         <dependency>
@@ -68,11 +71,51 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                    <exclude>**/*.txt</exclude>
+                </excludes>
+                <!-- true 打包時候變量替換 -->
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application-${profileActive}.properties</include>
+                    <include>application.properties</include>
+                </includes>
+                <!-- true 打包時候變量替換 -->
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>banner.txt</include>
+                </includes>
+                <!-- true 打包時候變量替換 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${springboot.version}</version>
+                <!--
+                    使用spring-boot-dependencies这个BOM代替spring-boot-starter-parent
+                    会导致spring-boot-maven-plugin的配置项丢失，使得打包后的jar中的MANIFEST.MF文件缺少Main-Class
+                    添加下列配置解决该问题
+                -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
@@ -104,5 +147,27 @@
             </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profileActive>dev</profileActive>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profileActive>test</profileActive>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profileActive>prod</profileActive>
+            </properties>
+        </profile>
+    </profiles>
 </project>

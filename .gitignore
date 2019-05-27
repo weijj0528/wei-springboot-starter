@@ -20,6 +20,11 @@
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
+#log
+logs/
+*.log
+*.gz
+
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries

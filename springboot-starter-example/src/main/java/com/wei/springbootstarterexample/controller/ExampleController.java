@@ -1,6 +1,7 @@
 package com.wei.springbootstarterexample.controller;
 
 import com.wei.springboot.starter.bean.ResultBean;
+import com.wei.springboot.starter.cache.RedisCacheable;
 import com.wei.springbootstarterexample.service.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,5 +35,11 @@ public class ExampleController {
         return resultBean;
     }
 
-
+    @ApiOperation(value = "Hello cache", notes = "测试缓存")
+    @RedisCacheable
+    @GetMapping("/cache")
+    public ResultBean cacheTest() {
+        System.out.println("Hello cache!");
+        return new ResultBean();
+    }
 }

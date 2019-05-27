@@ -1,0 +1,9 @@
+${AnsiColor.BRIGHT_GREEN}
+ _    _ _____ _____ _   _ _   _
+| |  | |  ___|_   _| | | | \ | |
+| |  | | |__   | | | | | |  \| |
+| |/\| |  __|  | | | | | | . ` |
+\  /\  / |___ _| |_| |_| | |\  |
+ \/  \/\____/ \___/ \___/\_| \_/
+${AnsiColor.BRIGHT_RED}
+SpringBoot:@artifactId@:@profileActive@(@version@)
