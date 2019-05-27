@@ -18,9 +18,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisAutoConfig {
 
     @Bean
-    public RedisTemplate<?, ?> redisTemplate(RedisConnectionFactory redisConnectionFactory,
-                                             FastJsonRedisSerializer fastJsonRedisSerializer) {
-        RedisTemplate<?, ?> template = new RedisTemplate<>();
+    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory,
+                                       FastJsonRedisSerializer fastJsonRedisSerializer) {
+        RedisTemplate template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         template.setKeySerializer(stringRedisSerializer);

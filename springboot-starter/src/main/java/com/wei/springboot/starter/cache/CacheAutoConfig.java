@@ -12,6 +12,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.time.Duration;
+
 /**
  * @author Administrator
  * @createTime 2019/3/17 15:59
@@ -30,10 +32,12 @@ public class CacheAutoConfig {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory,
-                                     FastJsonRedisSerializer fastJsonRedisSerializer) {
-        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig();
-        configuration.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
-        configuration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer));
+                                     FastJsonRedisSerializer<Object> fastJsonRedisSerializer) {
+        StringRedisSerializer keySerializer = new StringRedisSerializer();
+        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer))
+                .entryTtl(Duration.ofSeconds(180));
         RedisCacheManager cacheManager = RedisCacheManager
                 .builder(factory)
                 .cacheDefaults(configuration)
