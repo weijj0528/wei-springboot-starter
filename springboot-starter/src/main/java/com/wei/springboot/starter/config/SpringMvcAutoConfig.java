@@ -21,7 +21,7 @@ import java.util.List;
 public class SpringMvcAutoConfig implements WebMvcConfigurer {
 
     public static final String SUCCESS = "success.html";
-    public static final String SWAGGER = "swagger-ui.html";
+    public static final String SWAGGER = "doc.html";
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -29,11 +29,11 @@ public class SpringMvcAutoConfig implements WebMvcConfigurer {
         registry.addViewController("/index").setViewName(SUCCESS);
         registry.addViewController("/index.html").setViewName(SUCCESS);
         registry.addViewController("/swagger").setViewName(SWAGGER);
+        registry.addViewController("/doc").setViewName(SWAGGER);
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
