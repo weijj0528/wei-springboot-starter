@@ -15,6 +15,7 @@ import java.io.Serializable;
  * @author
  */
 @Data
+@Deprecated
 public class ResultBean implements Serializable, Cloneable {
     /**
      * @author
