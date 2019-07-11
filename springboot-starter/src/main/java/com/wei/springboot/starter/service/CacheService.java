@@ -1,5 +1,7 @@
 package com.wei.springboot.starter.service;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * The interface Cache service.
  *
@@ -18,6 +20,16 @@ public interface CacheService {
      * @param expirationTime ： 缓存过期时间（单位秒）
      */
     void set(String key, Object value, int expirationTime);
+
+    /**
+     * Set.
+     *
+     * @param key            the key
+     * @param value          the value
+     * @param expirationTime the expiration time
+     * @param timeUnit       the time unit
+     */
+    void set(String key, Object value, int expirationTime, TimeUnit timeUnit);
 
 
     /**

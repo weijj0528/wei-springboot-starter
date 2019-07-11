@@ -21,7 +21,12 @@ public class RedisCacheService implements CacheService {
 
     @Override
     public void set(String key, Object value, int expirationTime) {
-        redisTemplate.opsForValue().set(key, value, expirationTime, TimeUnit.SECONDS);
+        set(key, value, expirationTime, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void set(String key, Object value, int expirationTime, TimeUnit timeUnit) {
+        redisTemplate.opsForValue().set(key, value, expirationTime, timeUnit);
     }
 
     @Override
