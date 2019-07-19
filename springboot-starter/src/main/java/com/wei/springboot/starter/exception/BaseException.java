@@ -5,7 +5,7 @@ package com.wei.springboot.starter.exception;
  *
  * @author William
  */
-public abstract class BaseException extends Exception {
+public abstract class BaseException extends RuntimeException {
 
     /**
      * @author William
