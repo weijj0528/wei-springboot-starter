@@ -1,6 +1,8 @@
 package com.wei.springbootstarterexample.dto;
 
 import com.wei.springboot.starter.dto.BaseDto;
+import com.wei.springboot.starter.valid.Add;
+import com.wei.springboot.starter.valid.Update;
 import com.wei.springbootstarterexample.model.UserInfo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,6 +10,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * @author
  * @createTime 2019-04-10 16:53:42
@@ -18,7 +21,7 @@ public class UserInfoDto extends BaseDto<UserInfo> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
+    @NotNull(groups = Update.class, message = "ID不能为空")
     @ApiModelProperty("主键")
     private Long id;
 
@@ -26,7 +29,7 @@ public class UserInfoDto extends BaseDto<UserInfo> implements Serializable {
     @ApiModelProperty("编号")
     private String no;
 
-    @NotNull
+    @NotNull(groups = {Add.class, Update.class}, message = "名称不能为空")
     @ApiModelProperty("会员名")
     private String name;
 
