@@ -27,7 +27,6 @@ public class SpringMvcAutoConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("redirect:/index");
         registry.addViewController("/index").setViewName(SUCCESS);
-        registry.addViewController("/index.html").setViewName(SUCCESS);
         registry.addViewController("/swagger").setViewName(SWAGGER);
         registry.addViewController("/doc").setViewName(SWAGGER);
     }
