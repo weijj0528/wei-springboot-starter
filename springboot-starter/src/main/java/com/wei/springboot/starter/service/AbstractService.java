@@ -1,5 +1,7 @@
 package com.wei.springboot.starter.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.wei.springboot.starter.xmapper.XMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
@@ -131,6 +133,23 @@ public abstract class AbstractService<T> implements BaseService<T> {
     @Override
     public List<T> selectByExample(Example example) {
         return mapper.selectByExample(example);
+    }
+
+    /**
+     * Page by example page info.
+     * 分页查询
+     *
+     * @param pageNum  the page num
+     * @param pageSize the page size
+     * @param example  the example
+     * @return
+     */
+    @Override
+    public PageInfo<T> pageByExample(int pageNum, int pageSize, Example example) {
+        PageHelper.startPage(pageNum, pageSize);
+        // 开启分页查询后反回为 com.github.pagehelper.Page
+        List<T> list = selectByExample(example);
+        return new PageInfo<>(list);
     }
 
 

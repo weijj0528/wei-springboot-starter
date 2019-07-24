@@ -1,13 +1,17 @@
 package com.wei.springboot.starter.service;
 
 
+import com.github.pagehelper.PageInfo;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
 /**
+ * The interface Base service.
+ *
+ * @param <T> the type parameter
  * @author William
- * @Date 2019/3/1
+ * @Date 2019 /3/1
  * @Description 基础服务
  */
 public interface BaseService<T> {
@@ -91,5 +95,16 @@ public interface BaseService<T> {
      * @return the list
      */
     List<T> selectByExample(Example example);
+
+    /**
+     * Page by example page info.
+     * 分页查询
+     *
+     * @param pageNum  the page num
+     * @param pageSize the page size
+     * @param example  the example
+     * @return the page info
+     */
+    PageInfo<T> pageByExample(int pageNum, int pageSize, Example example);
 
 }
