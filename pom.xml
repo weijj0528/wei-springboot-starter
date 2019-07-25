@@ -128,6 +128,12 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>1.2.9</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>5.2.4</version>
+            </dependency>
             <!--swagger2-->
             <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
             <dependency>
