@@ -46,6 +46,8 @@ swagger.contact-email=William.Wei@g-town.com.cn
 - 锁封装（RedisLock）
 - 异常架构（全局异常处理）
 - 基础（bean,dto,service）
+- 日志打印，添加MDC日志链路追踪
+- 基于flyway的数据库版本控制
 ### springboot-starter-code-plugin使用
 ```xml
 <plugin>
