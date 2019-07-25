@@ -1,8 +1,8 @@
 package com.wei.springboot.starter.intercepter;
 
 import cn.hutool.core.util.IdUtil;
-import com.wei.springboot.starter.utils.RequestIdUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,16 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class PvLogInterceptor implements HandlerInterceptor {
 
+    private static final String KEY = "requestId";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 收到请求
         String requestId = IdUtil.simpleUUID();
-        RequestIdUtils.add(requestId);
+        MDC.put(KEY, requestId);
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
         String contentType = request.getHeader("Content-Type");
-        log.info("[PV-{}] {}({}){}", requestId, method, contentType, requestURI);
+        log.info("[PV] {}({}){}", method, contentType, requestURI);
         return true;
     }
 
@@ -39,6 +40,6 @@ public class PvLogInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         // 视图渲染后执行
         // 移除防止OOM
-        RequestIdUtils.remove();
+        MDC.remove(KEY);
     }
 }

@@ -2,7 +2,6 @@ package com.wei.springboot.starter.aop;
 
 import com.alibaba.fastjson.JSON;
 import com.wei.springboot.starter.bean.ResultBean;
-import com.wei.springboot.starter.utils.RequestIdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,7 +30,6 @@ public class PvLogAspectConfig {
             "@within(org.springframework.stereotype.Controller) ||" +
             "@within(org.springframework.web.bind.annotation.RestController))")
     public ResultBean around(ProceedingJoinPoint joinPoint) throws Throwable {
-        String requestId = RequestIdUtils.get();
         // 请求参数
         String params = null;
         Object[] args = joinPoint.getArgs();
@@ -52,10 +50,10 @@ public class PvLogAspectConfig {
             }
             params = JSON.toJSONString(paramsMap);
         }
-        log.info("[RQ-{}] {}", requestId, params);
+        log.info("[RQ] {}", params);
         ResultBean resultBean = (ResultBean) joinPoint.proceed();
         // 响应
-        log.info("[RP-{}] {}", requestId, JSON.toJSONString(resultBean));
+        log.info("[RP] {}", JSON.toJSONString(resultBean));
         return resultBean;
     }
 
