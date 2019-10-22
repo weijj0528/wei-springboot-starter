@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.wei</groupId>
     <artifactId>springboot-starter-example</artifactId>
-    <version>${version.no}</version>
+    <version>2.1.6</version>
 
     <name>springboot-starter-example</name>
     <description>Demo project for Spring Boot</description>

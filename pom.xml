@@ -12,8 +12,8 @@
 
     <groupId>com.github.weijj0528</groupId>
     <artifactId>wei-springboot-starter</artifactId>
+    <version>2.1.6</version>
     <packaging>pom</packaging>
-    <version>${version.no}</version>
 
     <name>wei-springboot-starter</name>
     <!-- FIXME change it to the project's website -->
