@@ -20,7 +20,7 @@ public class ErrorMsgException extends BaseException {
         super(ErrorEnum.ERROR_SERVER.getCode(), msg);
     }
 
-    public ErrorMsgException(int code, String msg) {
+    public ErrorMsgException(String code, String msg) {
         super(code, msg);
     }
 

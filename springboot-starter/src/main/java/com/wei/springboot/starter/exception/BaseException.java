@@ -8,36 +8,30 @@ package com.wei.springboot.starter.exception;
 public abstract class BaseException extends RuntimeException {
 
     /**
-     * @author William
-     */
-    private static final long serialVersionUID = -5420974096907472856L;
-
-    /**
      * 错误 编码
      */
-    private int code;
+    private String code;
 
     /**
      * 错误 信息
      */
     private String message;
 
-
-    public BaseException(ErrorEnum errorEnum) {
-        this(errorEnum.getCode(), errorEnum.getMsg());
-    }
-
-    public BaseException(int code, String message) {
+    public BaseException(String code, String message) {
         super(message);
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public BaseException(ErrorEnum errorEnum) {
+        this(errorEnum.getCode(), errorEnum.getMsg());
+    }
+
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
