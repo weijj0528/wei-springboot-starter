@@ -2,6 +2,7 @@ package com.wei.springboot.starter.bean;
 
 import lombok.Data;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,16 +14,31 @@ import java.util.List;
 @Data
 public class Page<T> {
 
-    private long pageNum;
+    private List<T> list = Collections.emptyList();
 
-    private long pageSize;
+    private long page = 1;
 
-    private long total;
+    private long size = 20;
 
-    private List<T> list;
+    private long total = 0;
 
-    private long offset() {
-        return pageNum > 0L ? (pageNum - 1L) * pageSize : 0L;
+    /**
+     * SQL 排序 ASC 数组
+     */
+    private String[] ascs;
+
+    /**
+     * SQL 排序 DESC 数组
+     */
+    private String[] descs;
+
+    /**
+     * 是否进行 count 查询
+     */
+    private boolean count = true;
+
+    public long offset() {
+        return page > 0L ? (page - 1L) * size : 0L;
     }
 
 }

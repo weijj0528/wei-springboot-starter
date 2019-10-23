@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.wei.springboot.starter.xmapper;
+package com.wei.springboot.starter.mybatis;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;

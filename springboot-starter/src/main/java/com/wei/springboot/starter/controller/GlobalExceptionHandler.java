@@ -1,7 +1,7 @@
 package com.wei.springboot.starter.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.wei.springboot.starter.bean.ResultBean;
+import com.wei.springboot.starter.bean.Result;
 import com.wei.springboot.starter.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,59 +31,59 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResultBean handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public Result handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error("参数解析失败 {}:{}", e.getStackTrace()[0].getClassName(), e.getStackTrace()[0].getMethodName(), e);
-        return ResultBean.failure(ErrorEnum.BadRequestException.getCode(), "参数解析失败");
+        return Result.failure(ErrorEnum.BadRequestException.getCode(), "参数解析失败");
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResultBean handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+    public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
         log.error("{} {}.{} 不支持当前请求方法 {}, 支持方法 {}",
                 request.getRequestURI(), e.getStackTrace()[0].getClassName(),
                 e.getStackTrace()[1].getMethodName(), e.getMethod(),
                 e.getSupportedMethods());
-        return ResultBean.failure(HttpStatus.METHOD_NOT_ALLOWED.value(), "不支持的请求方法");
+        return Result.failure(HttpStatus.METHOD_NOT_ALLOWED.toString(), "不支持的请求方法");
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResultBean handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e, HttpServletRequest request) {
+    public Result handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e, HttpServletRequest request) {
         log.error("{} 不支持当前媒体类型 {}, 支持类型 {}",
                 request.getRequestURI(), e.getContentType(), e.getSupportedMediaTypes());
-        return ResultBean.failure(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), "不支持的请求方式");
+        return Result.failure(HttpStatus.UNSUPPORTED_MEDIA_TYPE.toString(), "不支持的请求方式");
     }
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResultBean omsExceptionHandle(MethodArgumentNotValidException ex) {
+    public Result omsExceptionHandle(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         FieldError error = result.getFieldError();
         String field = error.getField();
         String message = error.getDefaultMessage();
         log.error("{} 参数校验失败 {}:{}", ex.getParameter().getMethod(), field, message);
-        return ResultBean.failure(ErrorEnum.BadRequestException.getCode(), message);
+        return Result.failure(ErrorEnum.BadRequestException.getCode(), message);
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     @ExceptionHandler(UnauthorizedException.class)
-    public ResultBean unauthorizedExceptionHandle() {
-        return ResultBean.failure(ErrorEnum.UnauthorizedException.getCode(), ErrorEnum.UnauthorizedException.getMsg());
+    public Result unauthorizedExceptionHandle() {
+        return Result.failure(ErrorEnum.UnauthorizedException.getCode(), ErrorEnum.UnauthorizedException.getMsg());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     @ExceptionHandler(ForbiddenException.class)
-    public ResultBean forbiddenExceptionHandle() {
-        return ResultBean.failure(ErrorEnum.ForbiddenException.getCode(), ErrorEnum.ForbiddenException.getMsg());
+    public Result forbiddenExceptionHandle() {
+        return Result.failure(ErrorEnum.ForbiddenException.getCode(), ErrorEnum.ForbiddenException.getMsg());
     }
 
     @ResponseBody
     @ExceptionHandler()
-    public ResultBean exceptionHandle(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+    public Result exceptionHandle(HttpServletRequest request, HttpServletResponse response, Exception ex) {
         if (!(ex instanceof BaseException)) {
             String method = request.getMethod();
             String contentType = request.getHeader("Content-Type");
@@ -93,11 +93,11 @@ public class GlobalExceptionHandler {
             ex = new ErrorMsgException("System error!");
         }
         BaseException e = (BaseException) ex;
-        ResultBean resultBean = new ResultBean(e);
+        Result Result = new Result(e);
         if (!(e instanceof ErrorMsgException)) {
-            response.setStatus(e.getCode());
+            response.setStatus(Integer.parseInt(e.getCode()));
         }
-        return resultBean;
+        return Result;
     }
 
 }

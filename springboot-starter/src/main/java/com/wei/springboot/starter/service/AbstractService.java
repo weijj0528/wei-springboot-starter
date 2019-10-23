@@ -2,7 +2,7 @@ package com.wei.springboot.starter.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.wei.springboot.starter.xmapper.XMapper;
+import com.wei.springboot.starter.mybatis.XMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 

@@ -18,22 +18,22 @@ public enum ErrorEnum {
     /**
      * 错误请求，参数不完整
      */
-    BadRequestException("40000", "错误请求，参数不完整"),
+    BadRequestException("400", "错误请求，参数不完整"),
 
     /**
      * 没有权限
      */
-    UnauthorizedException("40100", "没有权限"),
+    UnauthorizedException("401", "没有权限"),
 
     /**
      * 账户禁用
      */
-    ForbiddenException("40300", "账户禁用，请联系管理员"),
+    ForbiddenException("403", "账户禁用，请联系管理员"),
 
     /**
      * 账户 未登录  需要重新登录
      */
-    OvertimeException("40800", "请求超时"),
+    OvertimeException("408", "请求超时"),
 
     /**
      * 系统错误 请稍候重新尝试
