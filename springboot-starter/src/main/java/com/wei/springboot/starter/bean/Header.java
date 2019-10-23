@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Administrator
  */
 @Data
-public class HeaderBean implements Serializable, Cloneable {
+public class Header implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
