@@ -1,7 +1,7 @@
 package com.wei.springboot.starter.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.wei.springboot.starter.bean.Page;
 import com.wei.springboot.starter.mybatis.XMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
@@ -23,63 +23,6 @@ public abstract class AbstractService<T> implements BaseService<T> {
      */
     @Autowired
     protected XMapper<T> mapper;
-
-
-    /**
-     * Insert selective int.
-     *
-     * @param record the record
-     * @return the int
-     */
-    @Override
-    public int insertSelective(T record) {
-        return mapper.insertSelective(record);
-    }
-
-    /**
-     * Delete by primary key int.
-     *
-     * @param pk the pk
-     * @return the int
-     */
-    @Override
-    public int deleteByPrimaryKey(Object pk) {
-        return mapper.deleteByPrimaryKey(pk);
-    }
-
-    /**
-     * Delete by example int.
-     *
-     * @param example the example
-     * @return the int
-     */
-    @Override
-    public int deleteByExample(Example example) {
-        return mapper.deleteByExample(example);
-    }
-
-    /**
-     * Update by primary key selective int.
-     *
-     * @param record the record
-     * @return the int
-     */
-    @Override
-    public int updateByPrimaryKeySelective(T record) {
-        return mapper.updateByPrimaryKeySelective(record);
-    }
-
-    /**
-     * Update by example selective int.
-     *
-     * @param example the example
-     * @param record  the record
-     * @return the int
-     */
-    @Override
-    public int updateByExampleSelective(Example example, T record) {
-        return mapper.updateByExampleSelective(record, example);
-    }
 
     /**
      * Select by primary key t.
@@ -104,16 +47,6 @@ public abstract class AbstractService<T> implements BaseService<T> {
     }
 
     /**
-     * Select all list.
-     *
-     * @return the list
-     */
-    @Override
-    public List<T> selectAll() {
-        return mapper.selectAll();
-    }
-
-    /**
      * Select count by example int.
      *
      * @param example the example
@@ -135,22 +68,15 @@ public abstract class AbstractService<T> implements BaseService<T> {
         return mapper.selectByExample(example);
     }
 
-    /**
-     * Page by example page info.
-     * 分页查询
-     *
-     * @param pageNum  the page num
-     * @param pageSize the page size
-     * @param example  the example
-     * @return
-     */
     @Override
-    public PageInfo<T> pageByExample(int pageNum, int pageSize, Example example) {
-        PageHelper.startPage(pageNum, pageSize);
-        // 开启分页查询后反回为 com.github.pagehelper.Page
-        List<T> list = selectByExample(example);
-        return new PageInfo<>(list);
+    public Page<T> selectPageByExample(Example example, Page<T> page) {
+        PageHelper.startPage(page.getPage(), page.getSize());
+        com.github.pagehelper.Page<T> tPage = (com.github.pagehelper.Page<T>) mapper.selectByExample(example);
+        page.setList(tPage);
+        page.setTotal(tPage.getTotal());
+        page.setPage(tPage.getPageNum());
+        page.setSize(tPage.getPageSize());
+        return page;
     }
-
 
 }

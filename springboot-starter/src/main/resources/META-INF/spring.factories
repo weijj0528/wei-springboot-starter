@@ -1,6 +1,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.wei.springboot.starter.config.SpringContext,\
 com.wei.springboot.starter.config.SpringMvcAutoConfig,\
+com.wei.springboot.starter.config.MyBatisConfig,\
 com.wei.springboot.starter.aop.PvLogAspectConfig,\
 com.wei.springboot.starter.controller.GlobalExceptionHandler,\
 com.wei.springboot.starter.config.FastjsonAutoConfig,\
