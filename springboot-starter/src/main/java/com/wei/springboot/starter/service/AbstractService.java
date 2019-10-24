@@ -47,6 +47,17 @@ public abstract class AbstractService<T> implements BaseService<T> {
     }
 
     /**
+     * Select one t.
+     *
+     * @param t the t
+     * @return the t
+     */
+    @Override
+    public T selectOne(T t) {
+        return mapper.selectOne(t);
+    }
+
+    /**
      * Select count by example int.
      *
      * @param example the example
@@ -55,6 +66,17 @@ public abstract class AbstractService<T> implements BaseService<T> {
     @Override
     public int selectCountByExample(Example example) {
         return mapper.selectCountByExample(example);
+    }
+
+    /**
+     * Select list.
+     *
+     * @param t the t
+     * @return
+     */
+    @Override
+    public List<T> select(T t) {
+        return mapper.select(t);
     }
 
     /**

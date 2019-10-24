@@ -33,12 +33,28 @@ public interface BaseService<T> {
     T selectOneByExample(Example example);
 
     /**
+     * Select one t.
+     *
+     * @param t the t
+     * @return the t
+     */
+    T selectOne(T t);
+
+    /**
      * Select count by example int.
      *
      * @param example the example
      * @return the int
      */
     int selectCountByExample(Example example);
+
+    /**
+     * Select list.
+     *
+     * @param t the t
+     * @return the list
+     */
+    List<T> select(T t);
 
     /**
      * Select by example list.
@@ -52,6 +68,7 @@ public interface BaseService<T> {
      * Select page by example page info.
      *
      * @param example the example
+     * @param page    the page
      * @return the page info
      */
     Page<T> selectPageByExample(Example example, Page<T> page);
