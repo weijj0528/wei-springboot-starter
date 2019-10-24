@@ -1,6 +1,6 @@
 package com.wei.springbootstarterexample.controller;
 
-import com.wei.springboot.starter.bean.ResultBean;
+import com.wei.springboot.starter.bean.Result;
 import com.wei.springboot.starter.cache.RedisCacheable;
 import com.wei.springbootstarterexample.service.UserInfoService;
 import io.swagger.annotations.Api;
@@ -27,19 +27,18 @@ public class ExampleController {
 
     @ApiOperation(value = "Hello world")
     @GetMapping("/hello")
-    public ResultBean hello() {
-        ResultBean resultBean = new ResultBean();
-        resultBean.setCode(200);
+    public Result hello() {
+        Result resultBean = new Result();
+        resultBean.setCode("20000");
         resultBean.setMsg("Hello world!");
-        userInfoService.testCache();
         return resultBean;
     }
 
     @ApiOperation(value = "Hello cache", notes = "测试缓存")
     @RedisCacheable
     @GetMapping("/cache")
-    public ResultBean cacheTest() {
+    public Result cacheTest() {
         System.out.println("Hello cache!");
-        return new ResultBean();
+        return new Result();
     }
 }

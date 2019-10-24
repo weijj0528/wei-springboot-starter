@@ -1,35 +1,61 @@
 package com.wei.springbootstarterexample.controller;
 
-import com.wei.springboot.starter.bean.ResultBean;
+import com.wei.springboot.starter.bean.Page;
+import com.wei.springboot.starter.bean.Result;
 import com.wei.springboot.starter.valid.Add;
-import com.wei.springboot.starter.valid.Update;
 import com.wei.springbootstarterexample.dto.UserInfoDto;
+import com.wei.springbootstarterexample.service.UserInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Administrator
  * @createTime 2019/7/20 15:09
- * @description 用户相关
+ * @description 用户相关接口
  */
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    private UserInfoService userInfoService;
+
     @ResponseBody
-    @PostMapping("/add")
-    public ResultBean add(@RequestBody @Validated(Add.class) UserInfoDto userInfoDto) {
-        return ResultBean.success();
+    @PostMapping
+    public Result save(@RequestBody @Validated(Add.class) UserInfoDto userInfoDto) {
+        userInfoService.save(userInfoDto);
+        return Result.success();
     }
 
     @ResponseBody
-    @PostMapping("/update")
-    public ResultBean update(@RequestBody @Validated(Update.class) UserInfoDto userInfoDto) {
-        return ResultBean.success();
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Long id) {
+        userInfoService.delete(id);
+        return Result.success();
+    }
+
+    @ResponseBody
+    @PutMapping("/{id}")
+    public Result update(@PathVariable Long id, @RequestBody @Validated(Add.class) UserInfoDto userInfoDto) {
+        userInfoDto.setId(id);
+        userInfoService.update(userInfoDto);
+        return Result.success();
+    }
+
+    @ResponseBody
+    @GetMapping("/{id}")
+    public Result details(@PathVariable Long id) {
+        UserInfoDto details = userInfoService.details(id);
+        return Result.success(details);
+    }
+
+    @ResponseBody
+    @GetMapping
+    public Result list(@RequestParam UserInfoDto userInfoDto, @RequestParam Page page) {
+        userInfoService.list(userInfoDto, page);
+        return Result.success(page);
     }
 
 }

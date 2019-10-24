@@ -17,6 +17,11 @@ import java.util.Date;
 public class ComIdServiceImpl extends AbstractService<ComId> implements ComIdService {
 
     @Override
+    public void updateByPrimaryKeySelective(ComId comId) {
+        mapper.updateByPrimaryKeySelective(comId);
+    }
+
+    @Override
     public ComId queryBySysNameAndBizType(String sysName, String bizKey) {
         Example example = new Example(ComId.class);
         Example.Criteria criteria = example.createCriteria();
@@ -33,7 +38,7 @@ public class ComIdServiceImpl extends AbstractService<ComId> implements ComIdSer
         comId.setNextStart(0L);
         comId.setStep(1000L);
         comId.setCtime(new Date());
-        insertSelective(comId);
+        mapper.insertSelective(comId);
         return comId;
     }
 }

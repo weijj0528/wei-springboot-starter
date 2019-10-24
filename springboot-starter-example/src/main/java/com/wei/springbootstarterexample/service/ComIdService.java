@@ -13,6 +13,8 @@ import com.wei.springbootstarterexample.model.ComId;
  */
 public interface ComIdService extends BaseService<ComId> {
 
+    void updateByPrimaryKeySelective(ComId comId);
+
     /**
      * Query by sys name and biz type com id.
      *
