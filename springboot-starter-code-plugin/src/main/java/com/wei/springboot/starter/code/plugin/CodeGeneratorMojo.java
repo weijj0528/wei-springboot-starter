@@ -219,6 +219,14 @@ public class CodeGeneratorMojo extends AbstractMojo {
         serviceImplProperties.put("mapperSuffix", "ServiceImpl");
         serviceImplProperties.put("fileName", "${tableClass.shortClassName}${mapperSuffix}.java");
         context.addPluginConfiguration(getPluginConfiguration(filePlugin, serviceImplProperties));
+        // Controller
+        Map<String, String> controllerProperties = new HashMap<>();
+        controllerProperties.put("targetProject", targetProject);
+        controllerProperties.put("targetPackage", basePackage + ".controller");
+        controllerProperties.put("templatePath", "templates/controller.ftl");
+        controllerProperties.put("mapperSuffix", "Controller");
+        controllerProperties.put("fileName", "${tableClass.shortClassName}${mapperSuffix}.java");
+        context.addPluginConfiguration(getPluginConfiguration(filePlugin, controllerProperties));
 
     }
 
