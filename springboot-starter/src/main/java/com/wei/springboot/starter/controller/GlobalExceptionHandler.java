@@ -93,7 +93,7 @@ public class GlobalExceptionHandler {
             ex = new ErrorMsgException("System error!");
         }
         BaseException e = (BaseException) ex;
-        Result Result = new Result(e);
+        Result Result = new Result(e.getCode(), e.getMessage(), null);
         if (!(e instanceof ErrorMsgException)) {
             response.setStatus(Integer.parseInt(e.getCode()));
         }
