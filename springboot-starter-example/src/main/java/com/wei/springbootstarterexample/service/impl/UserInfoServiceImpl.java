@@ -6,6 +6,7 @@ import com.wei.springbootstarterexample.dto.UserInfoDto;
 import com.wei.springbootstarterexample.model.UserInfo;
 import com.wei.springbootstarterexample.service.UserInfoService;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -76,7 +77,9 @@ public class UserInfoServiceImpl extends AbstractService<UserInfo> implements Us
      */
     @Override
     public List<UserInfoDto> list(UserInfoDto userInfoDto, Page page) {
-
+        Example example = new Example(UserInfo.class);
+        Example.Criteria criteria = example.createCriteria();
+        selectPageByExample(example, page);
         return page.getList();
     }
 }

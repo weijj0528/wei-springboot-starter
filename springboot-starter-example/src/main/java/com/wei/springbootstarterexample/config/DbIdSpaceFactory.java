@@ -2,8 +2,8 @@ package com.wei.springbootstarterexample.config;
 
 import com.wei.springboot.starter.sequence.incr.Space;
 import com.wei.springboot.starter.sequence.incr.SpaceFactory;
-import com.wei.springbootstarterexample.model.ComId;
-import com.wei.springbootstarterexample.service.ComIdService;
+import com.wei.springbootstarterexample.model.SysId;
+import com.wei.springbootstarterexample.service.SysIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,18 +14,18 @@ import org.springframework.context.annotation.Configuration;
 public class DbIdSpaceFactory extends SpaceFactory {
 
     @Autowired
-    ComIdService comIdService;
+    private SysIdService sysIdService;
 
     @Override
     public Space createSpace(String sysName, String bizKey) {
-        ComId comId = comIdService.queryBySysNameAndBizType(sysName, bizKey);
-        if (comId == null) {
-            comId = comIdService.addNewComId(sysName, bizKey);
+        SysId sysId = sysIdService.queryBySysNameAndBizType(sysName, bizKey);
+        if (sysId == null) {
+            sysId = sysIdService.addNewComId(sysName, bizKey);
         }
-        Long start = comId.getNextStart();
-        Long end = comId.getNextStart() + comId.getStep();
-        comId.setNextStart(end);
-        comIdService.updateByPrimaryKeySelective(comId);
+        Long start = sysId.getNextStart();
+        Long end = sysId.getNextStart() + sysId.getStep();
+        sysId.setNextStart(end);
+        sysIdService.updateByPrimaryKeySelective(sysId);
         Space space = new Space(start, end);
         return space;
     }

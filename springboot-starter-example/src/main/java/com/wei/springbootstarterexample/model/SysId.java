@@ -6,14 +6,20 @@ import javax.persistence.*;
 import lombok.Data;
 
 @Data
-@Table(name = "com_id")
-public class ComId implements Serializable {
+@Table(name = "sys_id")
+public class SysId implements Serializable {
     /**
      * ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 租户ID
+     */
+    @Column(name = "tenant_id")
+    private Long tenantId;
 
     /**
      * 系统名称
@@ -38,9 +44,23 @@ public class ComId implements Serializable {
      */
     private Long step;
 
-    private Boolean del;
+    @Column(name = "is_del")
+    private Boolean isDel;
 
+    /**
+     * 更新人
+     */
+    private String updater;
+
+    /**
+     * 最后更新时间
+     */
     private Date utime;
+
+    /**
+     * 创建人
+     */
+    private String creater;
 
     /**
      * 记录时间
@@ -51,6 +71,8 @@ public class ComId implements Serializable {
 
     public static final String ID = "id";
 
+    public static final String TENANT_ID = "tenantId";
+
     public static final String SYS_NAME = "sysName";
 
     public static final String BIZ_TYPE = "bizType";
@@ -59,9 +81,13 @@ public class ComId implements Serializable {
 
     public static final String STEP = "step";
 
-    public static final String DEL = "del";
+    public static final String IS_DEL = "isDel";
+
+    public static final String UPDATER = "updater";
 
     public static final String UTIME = "utime";
+
+    public static final String CREATER = "creater";
 
     public static final String CTIME = "ctime";
 }
