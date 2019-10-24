@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @description
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/${tableClass.variableName}")
 public class ${tableClass.shortClassName}${props['mapperSuffix']} {
 
     @Autowired
