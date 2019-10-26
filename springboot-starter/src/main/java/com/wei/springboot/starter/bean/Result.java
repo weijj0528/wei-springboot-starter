@@ -41,7 +41,7 @@ public class Result<T> implements Serializable, Cloneable {
     }
 
     public static <T> Result<T> success() {
-        return new Result<>();
+        return new Result<>(null);
     }
 
     public static <T> Result<T> success(T data) {
