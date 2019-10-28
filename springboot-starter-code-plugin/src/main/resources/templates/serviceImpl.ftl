@@ -20,11 +20,11 @@ import java.util.List;
 public class ${tableClass.shortClassName}${props['mapperSuffix']} extends AbstractService<${tableClass.shortClassName}> implements ${tableClass.shortClassName}Service {
 
     /**
-    * Save int.
-    *
-    * @param dto
-    * @return the int
-    */
+     * Save int.
+     *
+     * @param dto
+     * @return the int
+     */
     @Override
     public int save(${tableClass.shortClassName}Dto dto) {
         ${tableClass.shortClassName} ${tableClass.variableName} = dto.toModel();
@@ -32,22 +32,22 @@ public class ${tableClass.shortClassName}${props['mapperSuffix']} extends Abstra
     }
 
     /**
-    * Delete int.
-    *
-    * @param id
-    * @return the int
-    */
+     * Delete int.
+     *
+     * @param id
+     * @return the int
+     */
     @Override
     public int delete(Object id) {
         return mapper.deleteByPrimaryKey(id);
     }
 
     /**
-    * Update int.
-    *
-    * @param dto
-    * @return the int
-    */
+     * Update int.
+     *
+     * @param dto
+     * @return the int
+     */
     @Override
     public int update(${tableClass.shortClassName}Dto dto) {
         ${tableClass.shortClassName} ${tableClass.variableName} = dto.toModel();
@@ -55,10 +55,10 @@ public class ${tableClass.shortClassName}${props['mapperSuffix']} extends Abstra
     }
 
     /**
-    * Details ${tableClass.variableName} dto.
-    *
-    * @return the ${tableClass.variableName} dto
-    */
+     * Details ${tableClass.variableName} dto.
+     *
+     * @return the ${tableClass.variableName} dto
+     */
     @Override
     public ${tableClass.shortClassName}Dto details(Object id) {
         ${tableClass.shortClassName} ${tableClass.variableName} = mapper.selectByPrimaryKey(id);
@@ -68,14 +68,14 @@ public class ${tableClass.shortClassName}${props['mapperSuffix']} extends Abstra
     }
 
     /**
-    * List list.
-    *
-    * @param ${tableClass.variableName}Dto
-    * @param page
-    * @return the list
-    */
+     * List list.
+     *
+     * @param queryDto
+     * @param page
+     * @return the list
+     */
     @Override
-    public List<${tableClass.shortClassName}Dto> list(${tableClass.shortClassName}Dto ${tableClass.variableName}Dto, Page page) {
+    public List<${tableClass.shortClassName}Dto> list(${tableClass.shortClassName}Dto queryDto, Page page) {
         Example example = new Example(${tableClass.shortClassName}.class);
         Example.Criteria criteria = example.createCriteria();
         selectPageByExample(example, page);

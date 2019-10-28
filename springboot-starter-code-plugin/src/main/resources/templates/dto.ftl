@@ -1,6 +1,7 @@
 package ${package};
 
 import com.wei.springboot.starter.dto.BaseDto;
+import com.wei.springboot.starter.valid.Add;
 import ${tableClass.fullClassName};
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class ${tableClass.shortClassName}${props['mapperSuffix']} extends BaseDt
     private static final long serialVersionUID = 1L;
 
 <#list tableClass.allFields as field>
-    @NotNull
+    @NotNull(groups = Add.class, message = "${field.remarks}不能为空")
     @ApiModelProperty("${field.remarks}")
     private ${field.shortTypeName} ${field.fieldName};
 

@@ -150,6 +150,9 @@ public class CodeGeneratorMojo extends AbstractMojo {
         configuration.setCountByExampleStatementEnabled(false);
         GeneratedKey generatedKey = new GeneratedKey("id", "Mysql", true, "post");
         configuration.setGeneratedKey(generatedKey);
+        ColumnOverride is_del = new ColumnOverride("is_del");
+        is_del.setJavaProperty("del");
+        configuration.addColumnOverride(is_del);
         return configuration;
     }
 

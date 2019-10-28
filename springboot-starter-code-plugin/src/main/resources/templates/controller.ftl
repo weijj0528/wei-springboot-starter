@@ -55,8 +55,8 @@ public class ${tableClass.shortClassName}${props['mapperSuffix']} {
 
     @ResponseBody
     @GetMapping
-    public Result list(@RequestParam ${tableClass.shortClassName}Dto ${tableClass.variableName}Dto, @RequestParam Page page) {
-        ${tableClass.variableName}Service.list(${tableClass.variableName}Dto, page);
+    public Result list(@RequestParam ${tableClass.shortClassName}Dto queryDto, @RequestParam Page page) {
+        ${tableClass.variableName}Service.list(queryDto, page);
         return Result.success(page);
     }
 

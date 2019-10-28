@@ -16,44 +16,44 @@ import java.util.List;
 public interface ${tableClass.shortClassName}${props['mapperSuffix']} extends BaseService<${tableClass.shortClassName}> {
 
     /**
-    * Save int.
-    *
-    * @param dto the ${tableClass.variableName} dto
-    * @return the int
-    */
+     * Save int.
+     *
+     * @param dto the ${tableClass.variableName} dto
+     * @return the int
+     */
     int save(${tableClass.shortClassName}Dto dto);
 
     /**
-    * Delete int.
-    *
-    * @param id the id
-    * @return the int
-    */
+     * Delete int.
+     *
+     * @param id the id
+     * @return the int
+     */
     int delete(Object id);
 
     /**
-    * Update int.
-    *
-    * @param dto the ${tableClass.variableName} dto
-    * @return the int
-    */
+     * Update int.
+     *
+     * @param dto the ${tableClass.variableName} dto
+     * @return the int
+     */
     int update(${tableClass.shortClassName}Dto dto);
 
     /**
-    * Details
-    *
-    * @param id the id
-    * @return the
-    */
+     * Details
+     *
+     * @param id the id
+     * @return the
+     */
     ${tableClass.shortClassName}Dto details(Object id);
 
     /**
-    * List list.
-    *
-    * @return the list
-    * @param dto
-    * @param page
-    */
-    List<${tableClass.shortClassName}Dto> list(${tableClass.shortClassName}Dto dto, Page page);
+     * List list.
+     *
+     * @return the list
+     * @param queryDto
+     * @param page
+     */
+    List<${tableClass.shortClassName}Dto> list(${tableClass.shortClassName}Dto queryDto, Page page);
 
 }
