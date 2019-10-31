@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -33,6 +35,13 @@ public class PvLogAspectConfig {
         // 请求参数
         String params = null;
         Object[] args = joinPoint.getArgs();
+        // 文件上传请求不做处理
+        for (Object arg : args) {
+            if (arg instanceof MultipartFile ||
+                    arg instanceof MultipartHttpServletRequest) {
+                return (Result) joinPoint.proceed();
+            }
+        }
         if (args.length == 0) {
             params = "no params!";
         } else if (args.length == 1) {
