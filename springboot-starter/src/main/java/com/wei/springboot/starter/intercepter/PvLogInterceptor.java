@@ -24,10 +24,10 @@ public class PvLogInterceptor implements HandlerInterceptor {
         // 收到请求
         String requestId = IdUtil.simpleUUID();
         MDC.put(KEY, requestId);
-        String requestURI = request.getRequestURI();
+        String requestUri = request.getRequestURI();
         String method = request.getMethod();
         String contentType = request.getHeader("Content-Type");
-        log.info("[PV] {}({}){}", method, contentType, requestURI);
+        log.info("[PV:{}] {}({}){}", requestId, method, contentType, requestUri);
         return true;
     }
 

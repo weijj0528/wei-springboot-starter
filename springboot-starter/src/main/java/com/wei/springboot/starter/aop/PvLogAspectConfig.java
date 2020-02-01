@@ -7,6 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,10 +29,17 @@ import java.util.Map;
 @Configuration
 public class PvLogAspectConfig {
 
+    /**
+     * 返回 Result 的接口拦截
+     *
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("execution(public com.wei.springboot.starter.bean.Result *..*(..)) && (" +
             "@within(org.springframework.stereotype.Controller) ||" +
             "@within(org.springframework.web.bind.annotation.RestController))")
-    public Result around(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Result<Object> around(ProceedingJoinPoint joinPoint) throws Throwable {
         // 请求参数
         String params = null;
         Object[] args = joinPoint.getArgs();
@@ -39,7 +47,7 @@ public class PvLogAspectConfig {
         for (Object arg : args) {
             if (arg instanceof MultipartFile ||
                     arg instanceof MultipartHttpServletRequest) {
-                return (Result) joinPoint.proceed();
+                return (Result<Object>) joinPoint.proceed();
             }
         }
         if (args.length == 0) {
@@ -59,11 +67,12 @@ public class PvLogAspectConfig {
             }
             params = JSON.toJSONString(paramsMap);
         }
-        log.info("[RQ] {}", params);
-        Result Result = (Result) joinPoint.proceed();
+        String requestId = MDC.get("requestId");
+        log.info("[RQ:{}] {}", requestId, params);
+        Result<Object> result = (Result<Object>) joinPoint.proceed();
         // 响应
-        log.info("[RP] {}", JSON.toJSONString(Result));
-        return Result;
+        log.info("[RP:{}] {}", requestId, JSON.toJSONString(result));
+        return result;
     }
 
 }
