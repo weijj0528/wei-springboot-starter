@@ -27,7 +27,6 @@ public class CodeGeneratorMojo extends AbstractMojo {
 
     private static final String targetProject = "src\\main\\java";
     private static final String targetResources = "src\\main\\resources";
-    private static final String all = "all";
 
     @Parameter(property = "project", required = true, readonly = true)
     private MavenProject project;
@@ -37,6 +36,7 @@ public class CodeGeneratorMojo extends AbstractMojo {
      */
     @Parameter(defaultValue = "${project.basedir}/src/main/resources/generatorConfig.xml")
     private File configurationFile;
+
     @Parameter(defaultValue = "true")
     private boolean overwrite;
 
@@ -71,16 +71,10 @@ public class CodeGeneratorMojo extends AbstractMojo {
     private String basePackage;
 
     /**
-     * 是否需要xml
+     * 需要生成的类，Base-xml与model生成,Dto-Dto生成,Service-Service接口与实现生成,Controller-控制层生成
      */
-    @Parameter(property = "noXml", defaultValue = "true")
-    private boolean noXml;
-
-    /**
-     * 生成模式（all 生成所有，base只生成Mapper相关）
-     */
-    @Parameter(property = "generatorModle", defaultValue = "base")
-    private String generatorModle;
+    @Parameter(property = "generatorClass", defaultValue = "Model")
+    private List<String> generatorClass;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -97,18 +91,26 @@ public class CodeGeneratorMojo extends AbstractMojo {
                 context.setId("code-generator");
                 context.setTargetRuntime("MyBatis3");
                 addPluginConfigurationToContext(context);
-                // Service Dto相关生成配置
-                if (all.equals(generatorModle)) {
+                // Dto Service Controller是否生成
+                if (generatorClass.contains("Dto")) {
+                    addDtoPluginConfigurationToContext(context);
+                }
+                if (generatorClass.contains("Service")) {
                     addServicePluginConfigurationToContext(context);
+                }
+                if (generatorClass.contains("Controller")) {
+                    addControllerPluginConfigurationToContext(context);
                 }
                 context.setCommentGeneratorConfiguration(getCommentGeneratorConfiguration());
                 context.setJdbcConnectionConfiguration(getJdbcConnectionConfiguration());
                 context.setJavaTypeResolverConfiguration(getJavaTypeResolverConfiguration());
-                context.setJavaModelGeneratorConfiguration(getJavaModelGeneratorConfiguration());
-                if (!noXml) {
-                    context.setSqlMapGeneratorConfiguration(getSqlMapGeneratorConfiguration());
+                if (generatorClass.contains("Model")) {
+                    context.setJavaModelGeneratorConfiguration(getJavaModelGeneratorConfiguration());
                 }
                 context.setJavaClientGeneratorConfiguration(getJavaClientGeneratorConfiguration());
+                if (generatorClass.contains("Xml")) {
+                    context.setSqlMapGeneratorConfiguration(getSqlMapGeneratorConfiguration());
+                }
                 addTableConfiguration(context);
                 config.addContext(context);
             }
@@ -160,7 +162,7 @@ public class CodeGeneratorMojo extends AbstractMojo {
         JavaClientGeneratorConfiguration configuration = new JavaClientGeneratorConfiguration();
         configuration.setTargetPackage(basePackage + ".mapper");
         configuration.setTargetProject(targetProject);
-        if (noXml) {
+        if (!generatorClass.contains("Xml")) {
             configuration.setConfigurationType("ANNOTATEDMAPPER");
         } else {
             configuration.setConfigurationType("XMLMAPPER");
@@ -195,8 +197,8 @@ public class CodeGeneratorMojo extends AbstractMojo {
     }
 
 
-    private void addServicePluginConfigurationToContext(Context context) {
-        // Service Dto代码生成插件
+    private void addDtoPluginConfigurationToContext(Context context) {
+        // Dto代码生成插件
         String filePlugin = "tk.mybatis.mapper.generator.TemplateFilePlugin";
         // Dto
         Map<String, String> dtoProperties = new HashMap<>();
@@ -206,6 +208,11 @@ public class CodeGeneratorMojo extends AbstractMojo {
         dtoProperties.put("mapperSuffix", "Dto");
         dtoProperties.put("fileName", "${tableClass.shortClassName}${mapperSuffix}.java");
         context.addPluginConfiguration(getPluginConfiguration(filePlugin, dtoProperties));
+    }
+
+    private void addServicePluginConfigurationToContext(Context context) {
+        // Service Dto代码生成插件
+        String filePlugin = "tk.mybatis.mapper.generator.TemplateFilePlugin";
         // Service
         Map<String, String> serviceProperties = new HashMap<>();
         serviceProperties.put("targetProject", targetProject);
@@ -222,6 +229,11 @@ public class CodeGeneratorMojo extends AbstractMojo {
         serviceImplProperties.put("mapperSuffix", "ServiceImpl");
         serviceImplProperties.put("fileName", "${tableClass.shortClassName}${mapperSuffix}.java");
         context.addPluginConfiguration(getPluginConfiguration(filePlugin, serviceImplProperties));
+    }
+
+    private void addControllerPluginConfigurationToContext(Context context) {
+        // Service Dto代码生成插件
+        String filePlugin = "tk.mybatis.mapper.generator.TemplateFilePlugin";
         // Controller
         Map<String, String> controllerProperties = new HashMap<>();
         controllerProperties.put("targetProject", targetProject);
