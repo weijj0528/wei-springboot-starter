@@ -98,18 +98,20 @@
                 <version>2.1.6</version>
                 <configuration>
                     <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-                    <jdbcURL>jdbc:mysql://119.23.212.70:3306/wei_com</jdbcURL>
+                    <jdbcURL>jdbc:mysql://localhost:3306/wei_com</jdbcURL>
                     <jdbcUserId>root</jdbcUserId>
-                    <jdbcPassword>Weijj0528!</jdbcPassword>
+                    <jdbcPassword>******</jdbcPassword>
                     <!--项目基础包名-->
                     <basePackage>com.wei.springbootstarterexample</basePackage>
                     <!--通用Mapper继承类-->
                     <xMapper>com.wei.springboot.starter.mybatis.XMapper</xMapper>
-                    <!--无XML模式，不生成XML文件-->
-                    <noXml>true</noXml>
-                    <!--生成模式，base/all base模式只生成Mybatis相关，all模式额外再生成Dto/Service/ServiceImpl-->
-                    <generatorModle>all</generatorModle>
-                    <!---->
+                    <generatorClass>
+                        <param>Model</param>
+                        <param>Xml</param>
+                        <param>Dto</param>
+                        <param>Service</param>
+                        <param>Controller</param>
+                    </generatorClass>
                     <tableNames>sys_id</tableNames>
                 </configuration>
             </plugin>
