@@ -247,23 +247,22 @@
         <module>springboot-starter-code-plugin</module>
     </modules>
 
-    <distributionManagement>
-        <repository>
-            <id>rdc-releases</id>
-            <url>https://repo.rdc.aliyun.com/repository/35936-release-uRTHTa/</url>
-        </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://repo.rdc.aliyun.com/repository/35936-snapshot-wPlgaM/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <profiles>
         <profile>
             <id>dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <distributionManagement>
+                <repository>
+                    <id>rdc-releases</id>
+                    <url>https://repo.rdc.aliyun.com/repository/35936-release-uRTHTa/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>rdc-snapshots</id>
+                    <url>https://repo.rdc.aliyun.com/repository/35936-snapshot-wPlgaM/</url>
+                </snapshotRepository>
+            </distributionManagement>
         </profile>
         <profile>
             <id>release</id>
