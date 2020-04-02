@@ -249,10 +249,13 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>deploy-dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+        </profile>
+        <profile>
+            <id>deploy-ali</id>
             <distributionManagement>
                 <repository>
                     <id>rdc-releases</id>
@@ -265,7 +268,7 @@
             </distributionManagement>
         </profile>
         <profile>
-            <id>release</id>
+            <id>deploy-release</id>
             <build>
                 <plugins>
                     <plugin>
