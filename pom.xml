@@ -245,6 +245,7 @@
         <module>springboot-starter</module>
         <module>springboot-starter-example</module>
         <module>springboot-starter-code-plugin</module>
+        <module>wei-utils</module>
     </modules>
 
     <profiles>

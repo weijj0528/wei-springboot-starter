@@ -1,4 +1,4 @@
-package com.wei.springboot.starter.utils;
+package com.wei.util;
 
 import com.alibaba.fastjson.JSONArray;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  * 对像工具类
  * Created by Administrator on 2017/8/6.
  */
-public class ObjUtils {
+public class WeiObjUtils {
 
     /**
      * Tests if a Class represents an array or Collection.
