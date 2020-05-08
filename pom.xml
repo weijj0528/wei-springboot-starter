@@ -4,15 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
-
     <groupId>com.github.weijj0528</groupId>
     <artifactId>wei-springboot-starter</artifactId>
-    <version>2.1.6</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>wei-springboot-starter</name>
@@ -23,8 +17,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <version.no>2.1.6</version.no>
-        <springboot.version>2.1.6.RELEASE</springboot.version>
+        <wei.utils.version>2.2.7-SNAPSHOT</wei.utils.version>
+        <wei.starter.version>2.2.7-SNAPSHOT</wei.starter.version>
+        <wei.plugin.version>2.2.7-SNAPSHOT</wei.plugin.version>
+        <wei.example.version>2.2.7-SNAPSHOT</wei.example.version>
+        <springboot.version>2.2.7.RELEASE</springboot.version>
     </properties>
 
     <dependencyManagement>
@@ -250,16 +247,10 @@
 
     <profiles>
         <profile>
-            <id>deploy-dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>deploy-ali</id>
+            <id>deploy-rdc</id>
             <distributionManagement>
                 <repository>
-                    <id>rdc-releases</id>
+                    <id>rdc-release</id>
                     <url>https://repo.rdc.aliyun.com/repository/35936-release-uRTHTa/</url>
                 </repository>
                 <snapshotRepository>
@@ -269,7 +260,17 @@
             </distributionManagement>
         </profile>
         <profile>
-            <id>deploy-release</id>
+            <id>deploy-center</id>
+            <distributionManagement>
+                <repository>
+                    <id>sonatype</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>sonatype</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
             <build>
                 <plugins>
                     <plugin>
