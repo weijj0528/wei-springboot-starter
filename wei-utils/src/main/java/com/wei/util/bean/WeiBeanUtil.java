@@ -2,13 +2,10 @@ package com.wei.util.bean;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * The type Wei util.
@@ -24,14 +21,14 @@ public class WeiBeanUtil {
      * @return the t
      */
     public static <T> T toBean(Object source, Class<T> cls) {
-        Object target = null;
+        T target = null;
         try {
             target = cls.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
         BeanUtil.copyProperties(source, target);
-        return (T) target;
+        return target;
 
     }
 
@@ -45,14 +42,14 @@ public class WeiBeanUtil {
      * @return the t
      */
     public static <T> T toBean(Object source, Class<T> cls, String... ignoreProperties) {
-        Object target = null;
+        T target = null;
         try {
             target = cls.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
         BeanUtil.copyProperties(source, target, ignoreProperties);
-        return (T) target;
+        return target;
 
     }
 
@@ -64,7 +61,7 @@ public class WeiBeanUtil {
      * @param clazz   the clazz
      * @return the list
      */
-    public static <T> List<T> toList(Collection sources, Class<T> clazz) {
+    public static <T> List<T> toList(Collection<?> sources, Class<T> clazz) {
         if (CollectionUtil.isEmpty(sources)) {
             return Collections.emptyList();
         }
@@ -77,33 +74,43 @@ public class WeiBeanUtil {
     }
 
     /**
-     * Gets client ip.
+     * To list list.
      *
-     * @param request the request
-     * @return the client ip
+     * @param <T>     the type parameter
+     * @param sources the sources
+     * @param clazz   the clazz
+     * @return the list
      */
-    public static String getClientIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
+    public static <T> List<T> toList(Collection<?> sources, Class<T> clazz, String... ignoreProperties) {
+        if (CollectionUtil.isEmpty(sources)) {
+            return Collections.emptyList();
         }
-
-        if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
+        List<T> results = new ArrayList<>(sources.size());
+        for (Object source : sources) {
+            T t = toBean(source, clazz, ignoreProperties);
+            results.add(t);
         }
-
-        if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-
-        if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-
-        if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        return ip;
+        return results;
     }
 
+    /**
+     * <p>获取到对象中属性为null的属性名  </P>
+     *
+     * @param source 要拷贝的对象
+     * @return 属性为null的属性名列表
+     */
+    public static String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<>();
+        for (java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) {
+                emptyNames.add(pd.getName());
+            }
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
+    }
 }
