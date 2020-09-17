@@ -12,16 +12,11 @@
     <name>wei-springboot-starter</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.version>5.2.6.RELEASE</spring.version>
-        <wei.utils.version>2.2.7-SNAPSHOT</wei.utils.version>
-        <wei.starter.version>2.2.7-SNAPSHOT</wei.starter.version>
-        <wei.plugin.version>2.2.7-SNAPSHOT</wei.plugin.version>
-        <wei.example.version>2.2.7-SNAPSHOT</wei.example.version>
         <springboot.version>2.2.7.RELEASE</springboot.version>
     </properties>
 
@@ -279,17 +274,37 @@
 
     <profiles>
         <profile>
-            <id>deploy-rdc</id>
+            <id>deploy-snapshot</id>
             <distributionManagement>
-                <repository>
-                    <id>rdc-release</id>
-                    <url>https://repo.rdc.aliyun.com/repository/35936-release-uRTHTa/</url>
-                </repository>
                 <snapshotRepository>
                     <id>rdc-snapshots</id>
                     <url>https://repo.rdc.aliyun.com/repository/35936-snapshot-wPlgaM/</url>
                 </snapshotRepository>
             </distributionManagement>
+            <properties>
+                <wei.utils.version>2.2.7-SNAPSHOT</wei.utils.version>
+                <wei.starter.version>2.2.7-SNAPSHOT</wei.starter.version>
+                <wei.plugin.version>2.2.7-SNAPSHOT</wei.plugin.version>
+                <wei.example.version>2.2.7-SNAPSHOT</wei.example.version>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>deploy-release</id>
+            <distributionManagement>
+                <repository>
+                    <id>rdc-release</id>
+                    <url>https://repo.rdc.aliyun.com/repository/35936-release-uRTHTa/</url>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <wei.utils.version>2.2.7-RELEASE</wei.utils.version>
+                <wei.starter.version>2.2.7-RELEASE</wei.starter.version>
+                <wei.plugin.version>2.2.7-RELEASE</wei.plugin.version>
+                <wei.example.version>2.2.7-RELEASE</wei.example.version>
+            </properties>
         </profile>
         <profile>
             <id>deploy-center</id>
@@ -303,6 +318,12 @@
                     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
             </distributionManagement>
+            <properties>
+                <wei.utils.version>2.2.7-RELEASE</wei.utils.version>
+                <wei.starter.version>2.2.7-RELEASE</wei.starter.version>
+                <wei.plugin.version>2.2.7-RELEASE</wei.plugin.version>
+                <wei.example.version>2.2.7-RELEASE</wei.example.version>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
