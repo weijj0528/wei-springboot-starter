@@ -1,4 +1,4 @@
-package com.wei.springboot.starter.swagger2;
+package com.wei.starter.swagger2;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

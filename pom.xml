@@ -270,6 +270,7 @@
         <module>springboot-starter-example</module>
         <module>springboot-starter-code-plugin</module>
         <module>wei-utils</module>
+        <module>wei-starter-swagger2</module>
     </modules>
 
     <profiles>
@@ -282,6 +283,7 @@
                 </snapshotRepository>
             </distributionManagement>
             <properties>
+                <wei.starter.swagger.version>2.2.7-SNAPSHOT</wei.starter.swagger.version>
                 <wei.utils.version>2.2.7-SNAPSHOT</wei.utils.version>
                 <wei.starter.version>2.2.7-SNAPSHOT</wei.starter.version>
                 <wei.plugin.version>2.2.7-SNAPSHOT</wei.plugin.version>

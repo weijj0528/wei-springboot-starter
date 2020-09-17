@@ -7,5 +7,4 @@ com.wei.springboot.starter.config.FastjsonAutoConfig,\
 com.wei.springboot.starter.config.RedisAutoConfig,\
 com.wei.springboot.starter.sequence.RedisSequence,\
 com.wei.springboot.starter.sequence.DbSequence,\
-com.wei.springboot.starter.cache.CacheAutoConfig,\
-com.wei.springboot.starter.swagger2.SwaggerAutoConfiguration
+com.wei.springboot.starter.cache.CacheAutoConfig
