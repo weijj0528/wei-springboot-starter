@@ -1,13 +1,17 @@
 package com.wei.springbootstarterexample.service.impl;
 
-import com.wei.springboot.starter.bean.Page;
-import com.wei.springboot.starter.service.AbstractService;
+import com.wei.starter.base.util.WeiBeanUtil;
+import com.wei.starter.mybatis.xmapper.XMapper;
+import com.wei.starter.mybatis.service.AbstractService;
 import com.wei.springbootstarterexample.dto.UserInfoDto;
+import com.wei.springbootstarterexample.mapper.UserInfoMapper;
 import com.wei.springbootstarterexample.model.UserInfo;
 import com.wei.springbootstarterexample.service.UserInfoService;
+import com.wei.starter.base.bean.Page;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,6 +24,14 @@ import java.util.List;
 @Service
 public class UserInfoServiceImpl extends AbstractService<UserInfo> implements UserInfoService {
 
+    @Resource
+    private UserInfoMapper userInfoMapper;
+
+    @Override
+    public XMapper<UserInfo> getMapper() {
+        return userInfoMapper;
+    }
+
     /**
      * Save int.
      *
@@ -29,7 +41,7 @@ public class UserInfoServiceImpl extends AbstractService<UserInfo> implements Us
     @Override
     public int save(UserInfoDto dto) {
         UserInfo userInfo = dto.toModel();
-        return mapper.insertSelective(userInfo);
+        return getMapper().insertSelective(userInfo);
     }
 
     /**
@@ -40,7 +52,7 @@ public class UserInfoServiceImpl extends AbstractService<UserInfo> implements Us
      */
     @Override
     public int delete(Object id) {
-        return mapper.deleteByPrimaryKey(id);
+        return getMapper().deleteByPrimaryKey(id);
     }
 
     /**
@@ -52,7 +64,7 @@ public class UserInfoServiceImpl extends AbstractService<UserInfo> implements Us
     @Override
     public int update(UserInfoDto dto) {
         UserInfo userInfo = dto.toModel();
-        return mapper.updateByPrimaryKeySelective(userInfo);
+        return getMapper().updateByPrimaryKeySelective(userInfo);
     }
 
     /**
@@ -62,10 +74,8 @@ public class UserInfoServiceImpl extends AbstractService<UserInfo> implements Us
      */
     @Override
     public UserInfoDto details(Object id) {
-        UserInfo userInfo = mapper.selectByPrimaryKey(id);
-        UserInfoDto userInfoDto = new UserInfoDto();
-        userInfoDto.copyModel(userInfo);
-        return userInfoDto;
+        UserInfo userInfo = getMapper().selectByPrimaryKey(id);
+        return WeiBeanUtil.toBean(userInfo,UserInfoDto.class);
     }
 
     /**

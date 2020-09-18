@@ -1,10 +1,10 @@
 package com.wei.springbootstarterexample.controller;
 
-import com.wei.springboot.starter.bean.Page;
-import com.wei.springboot.starter.bean.Result;
-import com.wei.springboot.starter.valid.Add;
 import com.wei.springbootstarterexample.dto.UserInfoDto;
 import com.wei.springbootstarterexample.service.UserInfoService;
+import com.wei.starter.base.bean.Page;
+import com.wei.starter.base.bean.Result;
+import com.wei.starter.base.valid.Add;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -24,21 +24,21 @@ public class UserController {
 
     @ResponseBody
     @PostMapping
-    public Result save(@RequestBody @Validated(Add.class) UserInfoDto userInfoDto) {
+    public Result<Void> save(@RequestBody @Validated(Add.class) UserInfoDto userInfoDto) {
         userInfoService.save(userInfoDto);
         return Result.success();
     }
 
     @ResponseBody
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
+    public Result<Void> delete(@PathVariable Long id) {
         userInfoService.delete(id);
         return Result.success();
     }
 
     @ResponseBody
     @PutMapping("/{id}")
-    public Result update(@PathVariable Long id, @RequestBody @Validated(Add.class) UserInfoDto userInfoDto) {
+    public Result<Void> update(@PathVariable Long id, @RequestBody @Validated(Add.class) UserInfoDto userInfoDto) {
         userInfoDto.setId(id);
         userInfoService.update(userInfoDto);
         return Result.success();
@@ -46,14 +46,14 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/{id}")
-    public Result details(@PathVariable Long id) {
+    public Result<UserInfoDto> details(@PathVariable Long id) {
         UserInfoDto details = userInfoService.details(id);
         return Result.success(details);
     }
 
     @ResponseBody
     @GetMapping
-    public Result list(@RequestParam UserInfoDto userInfoDto, @RequestParam Page page) {
+    public Result<Page<UserInfoDto>> list(UserInfoDto userInfoDto, Page<UserInfoDto> page) {
         userInfoService.list(userInfoDto, page);
         return Result.success(page);
     }

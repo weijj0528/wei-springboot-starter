@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.weijj0528</groupId>
         <artifactId>wei-springboot-starter</artifactId>
         <version>3.0-SNAPSHOT</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>springboot-starter-example</artifactId>
-
-    <version>${wei.example.version}</version>
 
     <name>springboot-starter-example</name>
     <description>Demo project for Spring Boot</description>
@@ -19,28 +17,22 @@
         <dependency>
             <groupId>com.github.weijj0528</groupId>
             <artifactId>springboot-starter</artifactId>
-            <version>${wei.starter.version}</version>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.weijj0528</groupId>
+            <artifactId>wei-starter-cache</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.weijj0528</groupId>
+            <artifactId>wei-starter-sequence</artifactId>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.weijj0528</groupId>
             <artifactId>wei-starter-swagger2</artifactId>
-            <version>${wei.starter.swagger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 
@@ -101,16 +93,18 @@
             <plugin>
                 <groupId>com.github.weijj0528</groupId>
                 <artifactId>springboot-starter-code-plugin</artifactId>
-                <version>2.1.6</version>
+                <version>${parent.version}</version>
                 <configuration>
-                    <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-                    <jdbcURL>jdbc:mysql://localhost:3306/wei_com</jdbcURL>
+                    <jdbcDriver>com.mysql.cj.jdbc.Driver</jdbcDriver>
+                    <jdbcURL>jdbc:mysql://localhost:3306/wei_mall</jdbcURL>
                     <jdbcUserId>root</jdbcUserId>
-                    <jdbcPassword>******</jdbcPassword>
+                    <jdbcPassword>12345678</jdbcPassword>
                     <!--项目基础包名-->
                     <basePackage>com.wei.springbootstarterexample</basePackage>
                     <!--通用Mapper继承类-->
-                    <xMapper>com.wei.springboot.starter.mybatis.XMapper</xMapper>
+                    <xMapper>com.wei.starter.mybatis.xmapper.XMapper</xMapper>
+                    <overwrite>true</overwrite>
+                    <swagger>true</swagger>
                     <generatorClass>
                         <param>Model</param>
                         <param>Xml</param>
@@ -118,7 +112,7 @@
                         <param>Service</param>
                         <param>Controller</param>
                     </generatorClass>
-                    <tableNames>sys_id</tableNames>
+                    <tableNames>user_auth_phone</tableNames>
                 </configuration>
             </plugin>
             <!-- Skip Deploy -->

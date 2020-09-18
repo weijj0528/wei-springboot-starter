@@ -1,7 +1,7 @@
 package com.wei.springbootstarterexample.config;
 
-import com.wei.springboot.starter.sequence.incr.Space;
-import com.wei.springboot.starter.sequence.incr.SpaceFactory;
+import com.wei.starter.sequence.incr.Space;
+import com.wei.starter.sequence.incr.SpaceFactory;
 import com.wei.springbootstarterexample.model.SysId;
 import com.wei.springbootstarterexample.service.SysIdService;
 import org.springframework.beans.factory.annotation.Autowired;

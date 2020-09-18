@@ -1,9 +1,9 @@
 package com.wei.springbootstarterexample.controller;
 
-import com.wei.springboot.starter.bean.Page;
-import com.wei.springboot.starter.bean.Result;
-import com.wei.springboot.starter.valid.Add;
-import com.wei.springboot.starter.valid.Update;
+import com.wei.starter.base.bean.Page;
+import com.wei.starter.base.bean.Result;
+import com.wei.starter.base.valid.Add;
+import com.wei.starter.base.valid.Update;
 import com.wei.springbootstarterexample.dto.SysIdDto;
 import com.wei.springbootstarterexample.service.SysIdService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class SysIdController {
 
     @ResponseBody
     @GetMapping
-    public Result list(@RequestParam SysIdDto sysIdDto, @RequestParam Page page) {
+    public Result list(SysIdDto sysIdDto, Page page) {
         sysIdService.list(sysIdDto, page);
         return Result.success(page);
     }

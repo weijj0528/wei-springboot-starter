@@ -1,8 +1,10 @@
 package com.wei.springbootstarterexample.lock;
 
-import com.wei.springboot.starter.lock.RedisLock;
 import com.wei.springbootstarterexample.SpringbootStarterExampleApplicationTests;
+import com.wei.starter.redis.lock.LockService;
+import com.wei.starter.redis.lock.RedisLock;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -15,6 +17,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisLockTest extends SpringbootStarterExampleApplicationTests {
 
+    @Autowired
+    private LockService lockService;
+
     public class MyTask implements Runnable {
 
         private int stock = 0;
@@ -26,7 +31,7 @@ public class RedisLockTest extends SpringbootStarterExampleApplicationTests {
 
         @Override
         public void run() {
-            RedisLock redisLock = new RedisLock("addStock");
+            RedisLock redisLock = lockService.getRedisLock("addStock");
             try {
                 String name = Thread.currentThread().getName();
                 boolean b = redisLock.tryLock(1, 1, TimeUnit.SECONDS);

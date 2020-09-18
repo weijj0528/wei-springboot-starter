@@ -1,9 +1,10 @@
 package com.wei.springbootstarterexample.dto;
 
 import com.wei.springboot.starter.dto.BaseDto;
-import com.wei.springboot.starter.valid.Add;
-import com.wei.springboot.starter.valid.Update;
+import com.wei.starter.base.valid.Add;
+import com.wei.starter.base.valid.Update;
 import com.wei.springbootstarterexample.model.UserInfo;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ import java.util.Date;
  * @description
  */
 @Data
+@ApiModel(description = "用户信息")
 public class UserInfoDto extends BaseDto<UserInfo> implements Serializable {
 
     private static final long serialVersionUID = 1L;
