@@ -21,6 +21,11 @@
             <artifactId>springboot-starter</artifactId>
             <version>${wei.starter.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.weijj0528</groupId>
+            <artifactId>wei-starter-swagger2</artifactId>
+            <version>${wei.starter.swagger.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -136,18 +141,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <profileActive>test</profileActive>
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <profileActive>prod</profileActive>
-            </properties>
         </profile>
     </profiles>
 </project>
