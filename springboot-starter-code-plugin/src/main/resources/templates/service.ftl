@@ -1,7 +1,7 @@
 package ${package};
 
-import com.wei.springboot.starter.bean.Page;
-import com.wei.springboot.starter.service.BaseService;
+import com.wei.starter.base.bean.Page;
+import com.wei.starter.mybatis.service.BaseService;
 import ${package?replace(".service","")}.dto.${tableClass.shortClassName}Dto;
 import ${tableClass.fullClassName};
 
@@ -54,6 +54,6 @@ public interface ${tableClass.shortClassName}${props['mapperSuffix']} extends Ba
      * @param queryDto
      * @param page
      */
-    List<${tableClass.shortClassName}Dto> list(${tableClass.shortClassName}Dto queryDto, Page page);
+    List<${tableClass.shortClassName}Dto> list(${tableClass.shortClassName}Dto queryDto, Page<${tableClass.shortClassName}Dto> page);
 
 }
