@@ -105,6 +105,21 @@
                 <artifactId>spring-retry</artifactId>
                 <version>1.2.4.RELEASE</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.10.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.10.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.10.4</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -213,6 +228,22 @@
                 <version>1.9.3</version>
             </dependency>
             <dependency>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-core</artifactId>
+                <version>1.3.7</version>
+            </dependency>
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper-generator</artifactId>
+                <version>1.1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.23</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
                 <version>${springboot.version}</version>
@@ -259,6 +290,22 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -269,7 +316,11 @@
         <module>springboot-starter</module>
         <module>springboot-starter-example</module>
         <module>springboot-starter-code-plugin</module>
-        <module>wei-utils</module>
+        <module>wei-starter-base</module>
+        <module>wei-starter-cache</module>
+        <module>wei-starter-mybatis</module>
+        <module>wei-starter-redis</module>
+        <module>wei-starter-sequence</module>
         <module>wei-starter-swagger2</module>
     </modules>
 
@@ -282,13 +333,6 @@
                     <url>https://repo.rdc.aliyun.com/repository/35936-snapshot-wPlgaM/</url>
                 </snapshotRepository>
             </distributionManagement>
-            <properties>
-                <wei.starter.swagger.version>2.2.7-SNAPSHOT</wei.starter.swagger.version>
-                <wei.utils.version>2.2.7-SNAPSHOT</wei.utils.version>
-                <wei.starter.version>2.2.7-SNAPSHOT</wei.starter.version>
-                <wei.plugin.version>2.2.7-SNAPSHOT</wei.plugin.version>
-                <wei.example.version>2.2.7-SNAPSHOT</wei.example.version>
-            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -301,12 +345,6 @@
                     <url>https://repo.rdc.aliyun.com/repository/35936-release-uRTHTa/</url>
                 </repository>
             </distributionManagement>
-            <properties>
-                <wei.utils.version>2.2.7-RELEASE</wei.utils.version>
-                <wei.starter.version>2.2.7-RELEASE</wei.starter.version>
-                <wei.plugin.version>2.2.7-RELEASE</wei.plugin.version>
-                <wei.example.version>2.2.7-RELEASE</wei.example.version>
-            </properties>
         </profile>
         <profile>
             <id>deploy-center</id>
@@ -320,12 +358,6 @@
                     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
             </distributionManagement>
-            <properties>
-                <wei.utils.version>2.2.7-RELEASE</wei.utils.version>
-                <wei.starter.version>2.2.7-RELEASE</wei.starter.version>
-                <wei.plugin.version>2.2.7-RELEASE</wei.plugin.version>
-                <wei.example.version>2.2.7-RELEASE</wei.example.version>
-            </properties>
             <build>
                 <plugins>
                     <plugin>

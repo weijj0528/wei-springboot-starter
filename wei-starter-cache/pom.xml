@@ -9,30 +9,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>springboot-starter</artifactId>
+    <artifactId>wei-starter-cache</artifactId>
 
-    <name>springboot-starter</name>
+    <name>wei-starter-cache</name>
     <!-- FIXME change it to the project's website -->
-    <url>https://github.com/weijj0528/wei-springboot-starter</url>
+    <url>http://www.example.com</url>
 
     <dependencies>
         <dependency>
             <groupId>com.github.weijj0528</groupId>
-            <artifactId>wei-starter-mybatis</artifactId>
+            <artifactId>wei-starter-redis</artifactId>
             <version>${parent.version}</version>
         </dependency>
-        <!--Web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.retry</groupId>
-            <artifactId>spring-retry</artifactId>
+            <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
     </dependencies>
+
 </project>

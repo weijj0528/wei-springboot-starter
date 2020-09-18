@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.wei.starter.swagger2.SwaggerAutoConfiguration
+com.wei.starter.cache.CacheAutoConfig

@@ -9,30 +9,34 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>springboot-starter</artifactId>
+    <artifactId>wei-starter-redis</artifactId>
 
-    <name>springboot-starter</name>
+    <name>wei-starter-redis</name>
     <!-- FIXME change it to the project's website -->
-    <url>https://github.com/weijj0528/wei-springboot-starter</url>
+    <url>http://www.example.com</url>
 
     <dependencies>
         <dependency>
             <groupId>com.github.weijj0528</groupId>
-            <artifactId>wei-starter-mybatis</artifactId>
+            <artifactId>wei-starter-base</artifactId>
             <version>${parent.version}</version>
         </dependency>
-        <!--Web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.retry</groupId>
-            <artifactId>spring-retry</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
     </dependencies>
+
 </project>
