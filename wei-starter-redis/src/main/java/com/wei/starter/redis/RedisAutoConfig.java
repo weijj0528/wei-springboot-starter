@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wei.starter.redis.lock.LockService;
+import com.wei.starter.redis.service.IRedisIncrService;
+import com.wei.starter.redis.service.imp.RedisIncrServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -52,6 +54,11 @@ public class RedisAutoConfig {
     @Bean
     public LockService lockService(RedisConnectionFactory redisConnectionFactory) {
         return new LockService(redisConnectionFactory);
+    }
+
+    @Bean
+    public IRedisIncrService redisIncrService(RedisConnectionFactory redisConnectionFactory) {
+        return new RedisIncrServiceImpl(redisConnectionFactory);
     }
 
 }
