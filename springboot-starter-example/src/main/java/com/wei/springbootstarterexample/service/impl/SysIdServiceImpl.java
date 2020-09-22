@@ -1,12 +1,13 @@
 package com.wei.springbootstarterexample.service.impl;
 
-import com.wei.starter.mybatis.xmapper.XMapper;
-import com.wei.starter.mybatis.service.AbstractService;
 import com.wei.springbootstarterexample.dto.SysIdDto;
 import com.wei.springbootstarterexample.mapper.SysIdMapper;
 import com.wei.springbootstarterexample.model.SysId;
 import com.wei.springbootstarterexample.service.SysIdService;
 import com.wei.starter.base.bean.Page;
+import com.wei.starter.base.util.WeiBeanUtil;
+import com.wei.starter.mybatis.service.AbstractService;
+import com.wei.starter.mybatis.xmapper.XMapper;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -38,7 +39,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      */
     @Override
     public int save(SysIdDto dto) {
-        SysId sysId = dto.toModel();
+        SysId sysId = WeiBeanUtil.toBean(dto, SysId.class);
         return getMapper().insertSelective(sysId);
     }
 
@@ -61,7 +62,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      */
     @Override
     public int update(SysIdDto dto) {
-        SysId sysId = dto.toModel();
+        SysId sysId = WeiBeanUtil.toBean(dto, SysId.class);
         return getMapper().updateByPrimaryKeySelective(sysId);
     }
 
@@ -73,9 +74,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
     @Override
     public SysIdDto details(Object id) {
         SysId sysId = getMapper().selectByPrimaryKey(id);
-        SysIdDto sysIdDto = new SysIdDto();
-        sysIdDto.copyModel(sysId);
-        return sysIdDto;
+        return WeiBeanUtil.toBean(sysId, SysIdDto.class);
     }
 
     /**
