@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WeiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${spring.security.enable:false}")
     private boolean enable;
@@ -27,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
-    public TokenFilter tokenAuthenticationFilter() {
-        return new TokenFilter(openApis);
+    public WeiTokenFilter tokenAuthenticationFilter() {
+        return new WeiTokenFilter(openApis);
     }
 
     @Override

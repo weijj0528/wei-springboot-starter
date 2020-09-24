@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.wei.starter.security.SecurityConfig
+com.wei.starter.security.WeiSecurityConfig

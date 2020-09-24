@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class TokenFilter extends OncePerRequestFilter {
+public class WeiTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenService tokenService;
@@ -31,7 +31,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
     private Map<String, List<String>> openApiMap = new HashMap<>();
 
-    public TokenFilter(List<String> openApis) {
+    public WeiTokenFilter(List<String> openApis) {
         this.openApis = new ArrayList<>(openApis.size());
         for (String openApi : openApis) {
             String[] split = openApi.split(":");
@@ -113,7 +113,7 @@ public class TokenFilter extends OncePerRequestFilter {
                     }
                     // 添加权限信息，给到后续处理
                     if (hasPermission && principal != null) {
-                        SecurityContextHolder.getContext().setAuthentication(new TokenInfo(request, token, principal));
+                        SecurityContextHolder.getContext().setAuthentication(new WeiToken(request, token, principal));
                     }
                 }
             }

@@ -6,11 +6,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Slf4j
 public class WeiSecurityUtil {
 
-    public static TokenInfo getToken() {
+    public static WeiToken getToken() {
         if (SecurityContextHolder.getContext() == null) {
             return null;
         }
-        return SecurityContextHolder.getContext().getAuthentication() == null ? null : (TokenInfo) SecurityContextHolder.getContext().getAuthentication();
+        return SecurityContextHolder.getContext().getAuthentication() == null ? null : (WeiToken) SecurityContextHolder.getContext().getAuthentication();
     }
 
     public static <T> T getPrincipal() {

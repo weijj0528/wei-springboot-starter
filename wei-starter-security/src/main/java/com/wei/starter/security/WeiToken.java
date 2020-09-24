@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * @author William.Wei
  */
-public class TokenInfo extends WebAuthenticationDetails implements Authentication {
+public class WeiToken extends WebAuthenticationDetails implements Authentication {
 
 
     private String token;
@@ -27,11 +27,11 @@ public class TokenInfo extends WebAuthenticationDetails implements Authenticatio
      */
     private Principal principal;
 
-    public TokenInfo(HttpServletRequest request) {
+    public WeiToken(HttpServletRequest request) {
         super(request);
     }
 
-    public TokenInfo(HttpServletRequest request, String token, Principal principal) {
+    public WeiToken(HttpServletRequest request, String token, Principal principal) {
         super(request);
         this.token = token;
         this.principal = principal;
