@@ -76,7 +76,7 @@ public class TokenFilter extends OncePerRequestFilter {
                     }
                 }
                 if (match != null) {
-                    TokenInfo tokenInfo = tokenService.getToken(request, token);
+                    Principal principal = tokenService.getToken(token);
                     // 找到匹配的接口签名与执行器
                     Set<RequestMethod> methods = match.getMethodsCondition().getMethods();
                     List<String> methodNames = methods.stream().map(RequestMethod::name).collect(Collectors.toList());
@@ -104,7 +104,7 @@ public class TokenFilter extends OncePerRequestFilter {
                             }
                         }
                         for (String methodName : methodNames) {
-                            hasPermission = tokenService.permissionCheck(tokenInfo, methodName, pattern);
+                            hasPermission = tokenService.permissionCheck(principal, methodName, pattern);
                             log.info("UserPermissionCheck:[{}:{}] {} {}", methodName, pattern, hasPermission, token);
                             if (hasPermission) {
                                 break;
@@ -112,8 +112,8 @@ public class TokenFilter extends OncePerRequestFilter {
                         }
                     }
                     // 添加权限信息，给到后续处理
-                    if (hasPermission && tokenInfo != null) {
-                        SecurityContextHolder.getContext().setAuthentication(tokenInfo);
+                    if (hasPermission && principal != null) {
+                        SecurityContextHolder.getContext().setAuthentication(new TokenInfo(request, token, principal));
                     }
                 }
             }

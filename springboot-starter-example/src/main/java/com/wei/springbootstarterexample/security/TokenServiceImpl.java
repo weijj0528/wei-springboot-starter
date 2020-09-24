@@ -1,25 +1,29 @@
 package com.wei.springbootstarterexample.security;
 
-import com.wei.starter.security.TokenInfo;
+import com.wei.starter.security.Principal;
 import com.wei.starter.security.TokenService;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Service
 public class TokenServiceImpl implements TokenService {
+
     @Override
-    public TokenInfo createToken(HttpServletRequest request, String token) {
-        return null;
+    public void saveToken(String token, Principal principal) {
+
     }
 
     @Override
-    public TokenInfo getToken(HttpServletRequest request, String token) {
-        return new TokenInfo(request);
+    public void deleteToken(String token) {
+
     }
 
     @Override
-    public boolean permissionCheck(TokenInfo tokenInfo, String httpMethod, String pattern) {
+    public Principal getToken(String token) {
+        return new UserToken();
+    }
+
+    @Override
+    public boolean permissionCheck(Principal principal, String httpMethod, String pattern) {
         return false;
     }
 }
