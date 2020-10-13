@@ -10,9 +10,9 @@ public interface TokenService {
      *
      * @param token     the token
      * @param principal the principal
-     * @return the token
+     * @param timeout   the timeout
      */
-    void saveToken(String token, Principal principal);
+    void saveToken(String token, Principal principal, Long timeout);
 
     /**
      * Delete token principal.
@@ -27,7 +27,7 @@ public interface TokenService {
      * @param token the token
      * @return the token
      */
-    Principal getToken(String token);
+    <T extends Principal> T getToken(String token);
 
     /**
      * Permission check boolean.
