@@ -6,7 +6,6 @@ import com.wei.starter.mybatis.xmapper.XMapper;
 import com.wei.starter.mybatis.service.AbstractService;
 import ${package?replace(".service.impl","")}.dto.${tableClass.shortClassName}Dto;
 import ${package?replace(".service.impl","")}.mapper.${tableClass.shortClassName}Mapper;
-import ${package?replace(".service.impl","")}.model.${tableClass.shortClassName};
 import ${tableClass.fullClassName};
 import ${package?replace("impl",tableClass.shortClassName+"Service")};
 import org.springframework.stereotype.Service;
