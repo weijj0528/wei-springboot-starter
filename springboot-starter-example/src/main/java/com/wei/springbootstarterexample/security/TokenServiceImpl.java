@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class TokenServiceImpl implements TokenService {
 
+
     @Override
-    public void saveToken(String token, Principal principal) {
+    public void saveToken(String token, Principal principal, Long timeout) {
 
     }
 
