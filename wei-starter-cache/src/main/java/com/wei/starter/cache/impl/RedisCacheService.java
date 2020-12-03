@@ -20,6 +20,11 @@ public class RedisCacheService implements CacheService {
     }
 
     @Override
+    public void set(String key, Object value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+
+    @Override
     public void set(String key, Object value, int expirationTime) {
         set(key, value, expirationTime, TimeUnit.SECONDS);
     }
@@ -48,5 +53,10 @@ public class RedisCacheService implements CacheService {
     @Override
     public void removeAll() {
         redisTemplate.getConnectionFactory().getConnection().flushDb();
+    }
+
+    @Override
+    public RedisTemplate<String, ?> redisTemplate() {
+        return redisTemplate;
     }
 }

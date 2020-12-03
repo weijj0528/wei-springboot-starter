@@ -1,5 +1,7 @@
 package com.wei.starter.cache;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,6 +12,15 @@ import java.util.concurrent.TimeUnit;
  * @description 缓存服务 ，提供缓存的统一实现
  */
 public interface CacheService {
+
+
+    /**
+     * 添加  元素到 cache  长期保存
+     *
+     * @param key   the key
+     * @param value the value
+     */
+    void set(String key, Object value);
 
 
     /**
@@ -61,5 +72,12 @@ public interface CacheService {
      * 删除全部 数据
      */
     void removeAll();
+
+    /**
+     * 获取 redisTemplate
+     *
+     * @return
+     */
+    RedisTemplate<String, ?> redisTemplate();
 
 }
