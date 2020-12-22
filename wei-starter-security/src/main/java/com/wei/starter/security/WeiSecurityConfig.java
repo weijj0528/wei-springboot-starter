@@ -34,12 +34,13 @@ public class WeiSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         log.info("SecurityConfig {}", enable);
+        // 跨域认证关闭
+        http.csrf().disable();
         if (!enable) {
             http.authorizeRequests().anyRequest().permitAll();
             return;
         }
-        http.csrf().disable()
-                .formLogin().disable()
+        http.formLogin().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((req, resp, authException) -> {
                     resp.setStatus(401);
