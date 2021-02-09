@@ -93,7 +93,7 @@ swagger.contact-email=William.Wei@g-town.com.cn
         <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
         <jdbcURL>jdbc:mysql://localhost:3306/wei_com</jdbcURL>
         <jdbcUserId>root</jdbcUserId>
-        <jdbcPassword>Weijj0528!</jdbcPassword>
+        <jdbcPassword>******</jdbcPassword>
         <!--项目基础包名-->
         <basePackage>com.wei.springbootstarterexample</basePackage>
         <!--通用Mapper继承类-->

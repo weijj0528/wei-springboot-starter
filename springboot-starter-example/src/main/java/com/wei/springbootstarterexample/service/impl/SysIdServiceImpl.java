@@ -1,13 +1,17 @@
 package com.wei.springbootstarterexample.service.impl;
 
-import com.wei.springboot.starter.bean.Page;
-import com.wei.springboot.starter.service.AbstractService;
 import com.wei.springbootstarterexample.dto.SysIdDto;
+import com.wei.springbootstarterexample.mapper.SysIdMapper;
 import com.wei.springbootstarterexample.model.SysId;
 import com.wei.springbootstarterexample.service.SysIdService;
+import com.wei.starter.base.bean.Page;
+import com.wei.starter.base.util.WeiBeanUtil;
+import com.wei.starter.mybatis.service.AbstractService;
+import com.wei.starter.mybatis.xmapper.XMapper;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +23,14 @@ import java.util.List;
 @Service
 public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdService {
 
+    @Resource
+    private SysIdMapper sysIdMapper;
+
+    @Override
+    public XMapper<SysId> getMapper() {
+        return sysIdMapper;
+    }
+
     /**
      * Save int.
      *
@@ -27,8 +39,8 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      */
     @Override
     public int save(SysIdDto dto) {
-        SysId sysId = dto.toModel();
-        return mapper.insertSelective(sysId);
+        SysId sysId = WeiBeanUtil.toBean(dto, SysId.class);
+        return getMapper().insertSelective(sysId);
     }
 
     /**
@@ -39,7 +51,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      */
     @Override
     public int delete(Object id) {
-        return mapper.deleteByPrimaryKey(id);
+        return getMapper().deleteByPrimaryKey(id);
     }
 
     /**
@@ -50,8 +62,8 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      */
     @Override
     public int update(SysIdDto dto) {
-        SysId sysId = dto.toModel();
-        return mapper.updateByPrimaryKeySelective(sysId);
+        SysId sysId = WeiBeanUtil.toBean(dto, SysId.class);
+        return getMapper().updateByPrimaryKeySelective(sysId);
     }
 
     /**
@@ -61,10 +73,8 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      */
     @Override
     public SysIdDto details(Object id) {
-        SysId sysId = mapper.selectByPrimaryKey(id);
-        SysIdDto sysIdDto = new SysIdDto();
-        sysIdDto.copyModel(sysId);
-        return sysIdDto;
+        SysId sysId = getMapper().selectByPrimaryKey(id);
+        return WeiBeanUtil.toBean(sysId, SysIdDto.class);
     }
 
     /**
@@ -84,7 +94,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
 
     @Override
     public void updateByPrimaryKeySelective(SysId sysId) {
-        mapper.updateByPrimaryKeySelective(sysId);
+        getMapper().updateByPrimaryKeySelective(sysId);
     }
 
     @Override
@@ -104,7 +114,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
         sysId.setNextStart(0L);
         sysId.setStep(1000L);
         sysId.setCtime(new Date());
-        mapper.insertSelective(sysId);
+        getMapper().insertSelective(sysId);
         return sysId;
     }
 }

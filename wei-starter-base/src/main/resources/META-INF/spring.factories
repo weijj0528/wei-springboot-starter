@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.wei.starter.base.config.SpringContext,\
+com.wei.starter.base.config.FastjsonAutoConfig

@@ -1,7 +1,7 @@
 package com.wei.springbootstarterexample.service;
 
-import com.wei.springboot.starter.bean.Page;
-import com.wei.springboot.starter.service.BaseService;
+import com.wei.starter.base.bean.Page;
+import com.wei.starter.mybatis.service.BaseService;
 import com.wei.springbootstarterexample.dto.UserInfoDto;
 import com.wei.springbootstarterexample.model.UserInfo;
 

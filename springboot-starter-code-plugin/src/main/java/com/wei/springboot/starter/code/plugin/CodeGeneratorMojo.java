@@ -71,6 +71,12 @@ public class CodeGeneratorMojo extends AbstractMojo {
     private String basePackage;
 
     /**
+     * Swagger开启
+     */
+    @Parameter(defaultValue = "true")
+    private boolean swagger;
+
+    /**
      * 需要生成的类，Base-xml与model生成,Dto-Dto生成,Service-Service接口与实现生成,Controller-控制层生成
      */
     @Parameter(property = "generatorClass", defaultValue = "Model")
@@ -104,9 +110,7 @@ public class CodeGeneratorMojo extends AbstractMojo {
                 context.setCommentGeneratorConfiguration(getCommentGeneratorConfiguration());
                 context.setJdbcConnectionConfiguration(getJdbcConnectionConfiguration());
                 context.setJavaTypeResolverConfiguration(getJavaTypeResolverConfiguration());
-                if (generatorClass.contains("Model")) {
-                    context.setJavaModelGeneratorConfiguration(getJavaModelGeneratorConfiguration());
-                }
+                context.setJavaModelGeneratorConfiguration(getJavaModelGeneratorConfiguration());
                 context.setJavaClientGeneratorConfiguration(getJavaClientGeneratorConfiguration());
                 if (generatorClass.contains("Xml")) {
                     context.setSqlMapGeneratorConfiguration(getSqlMapGeneratorConfiguration());
@@ -131,8 +135,7 @@ public class CodeGeneratorMojo extends AbstractMojo {
             context.addTableConfiguration(getTableConfiguration(context, "%", null));
         } else {
             String[] split = tableNames.trim().split(",");
-            for (int i = 0; i < split.length; i++) {
-                String table = split[i];
+            for (String table : split) {
                 if (StringUtility.stringHasValue(table)) {
                     context.addTableConfiguration(getTableConfiguration(context, table, null));
                 }
@@ -206,6 +209,7 @@ public class CodeGeneratorMojo extends AbstractMojo {
         dtoProperties.put("targetPackage", basePackage + ".dto");
         dtoProperties.put("templatePath", "templates/dto.ftl");
         dtoProperties.put("mapperSuffix", "Dto");
+        dtoProperties.put("swagger", String.valueOf(swagger));
         dtoProperties.put("fileName", "${tableClass.shortClassName}${mapperSuffix}.java");
         context.addPluginConfiguration(getPluginConfiguration(filePlugin, dtoProperties));
     }
@@ -240,6 +244,7 @@ public class CodeGeneratorMojo extends AbstractMojo {
         controllerProperties.put("targetPackage", basePackage + ".controller");
         controllerProperties.put("templatePath", "templates/controller.ftl");
         controllerProperties.put("mapperSuffix", "Controller");
+        controllerProperties.put("swagger", String.valueOf(swagger));
         controllerProperties.put("fileName", "${tableClass.shortClassName}${mapperSuffix}.java");
         context.addPluginConfiguration(getPluginConfiguration(filePlugin, controllerProperties));
 

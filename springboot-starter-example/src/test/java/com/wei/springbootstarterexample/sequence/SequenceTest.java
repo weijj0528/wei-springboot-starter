@@ -1,7 +1,7 @@
 package com.wei.springbootstarterexample.sequence;
 
-import com.wei.springboot.starter.sequence.DbSequence;
-import com.wei.springboot.starter.sequence.RedisSequence;
+import com.wei.starter.sequence.DbSequence;
+import com.wei.starter.sequence.RedisSequence;
 import com.wei.springbootstarterexample.SpringbootStarterExampleApplicationTests;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,20 +1,19 @@
 package com.wei.springbootstarterexample.dto;
 
-import com.wei.springboot.starter.dto.BaseDto;
-import com.wei.springbootstarterexample.model.SysId;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * @author
  * @createTime 2019-10-24 21:42:09
  * @description
  */
 @Data
-public class SysIdDto extends BaseDto<SysId> implements Serializable {
+public class SysIdDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
