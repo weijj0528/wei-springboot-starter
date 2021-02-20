@@ -1,6 +1,7 @@
-package com.wei.starter.redis.lock;
+package com.wei.starter.lock.impl;
 
 import cn.hutool.core.util.IdUtil;
+import com.wei.starter.lock.WeiLock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -9,7 +10,6 @@ import org.springframework.data.redis.core.types.Expiration;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 
 /**
  * @author William
@@ -17,17 +17,27 @@ import java.util.concurrent.locks.Lock;
  * @Description 基于Redis实现的分布式锁
  */
 @Slf4j
-public class RedisLock implements Lock {
-
-    /**
-     * 锁头
-     */
-    private static final String LOCK = "LOCK:";
+public class RedisLock implements WeiLock {
 
     /**
      * 默认过期时间，秒
      */
-    private static final long Default_Expired_Time = 3;
+    private static final long DEFAULT_EXPIRED_TIME = 3;
+
+    /**
+     * 连接工厂
+     */
+    private final RedisConnectionFactory redisConnectionFactory;
+
+    /**
+     * 锁头
+     */
+    private final String lockKey;
+
+    /**
+     * 锁芯
+     */
+    private final String lockValue;
 
     /**
      * 开始锁定时间
@@ -35,23 +45,25 @@ public class RedisLock implements Lock {
     private long lockStartTime = 0;
 
     /**
-     * 连接工厂
+     * 过期时间
      */
-    private RedisConnectionFactory redisConnectionFactory;
+    private long expiredTime;
 
     /**
-     * 锁芯 ~ ha
+     * 等待时间
      */
-    private final String lockKey;
-    /**
-     * 锁值
-     */
-    private final String lockValue;
+    private long waitTime;
 
     public RedisLock(String lockKey, RedisConnectionFactory redisConnectionFactory) {
-        this.lockKey = LOCK + lockKey;
-        this.lockValue = IdUtil.simpleUUID();
+        this(lockKey, 0, DEFAULT_EXPIRED_TIME, redisConnectionFactory);
+    }
+
+    public RedisLock(String lockKey, long waitTime, long expiredTime, RedisConnectionFactory redisConnectionFactory) {
         this.redisConnectionFactory = redisConnectionFactory;
+        this.lockKey = lockKey;
+        this.lockValue = IdUtil.simpleUUID();
+        this.expiredTime = expiredTime;
+        this.waitTime = waitTime;
     }
 
     private RedisConnection getRedisConnection() {
@@ -74,7 +86,7 @@ public class RedisLock implements Lock {
     @Override
     public boolean tryLock() {
         try {
-            return tryLock(Default_Expired_Time, TimeUnit.SECONDS);
+            return tryLock(expiredTime, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             throw new RuntimeException("Did not get a lock:" + lockKey);
         }
@@ -82,7 +94,7 @@ public class RedisLock implements Lock {
 
     @Override
     public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-        return tryLock(0, time, unit);
+        return tryLock(waitTime, time, unit);
     }
 
     /**
@@ -141,6 +153,6 @@ public class RedisLock implements Lock {
 
     @Override
     public Condition newCondition() {
-        throw new RuntimeException("RedisLock lockInterruptibly method is unrealized!");
+        throw new RuntimeException("RedisLock newCondition method is unrealized!");
     }
 }
