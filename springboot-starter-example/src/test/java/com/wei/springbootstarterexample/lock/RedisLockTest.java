@@ -1,8 +1,8 @@
 package com.wei.springbootstarterexample.lock;
 
 import com.wei.springbootstarterexample.SpringbootStarterExampleApplicationTests;
-import com.wei.starter.redis.lock.LockService;
-import com.wei.starter.redis.lock.RedisLock;
+import com.wei.starter.lock.service.LockService;
+import com.wei.starter.lock.impl.RedisLock;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
