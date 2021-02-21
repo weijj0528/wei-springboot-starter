@@ -1,10 +1,26 @@
 # SpringBoot项目基础Starter
 ### 提供常用的基础配置与代码生成插件
-1. springboot-starter 基础Starter项目
+1. springboot-starter 集成Starter，包含各wei-starter模块
 
 2. springboot-starter-code-plugin 代码生成Maven插件
 
 3. springboot-starter-example 示例项目
+
+4. wei-starter-base 基础Starter项目，包含通用Bean、异常架构、工具类集成、校验分组及相关配置
+
+5. wei-starter-cache 缓存实践，集成Redis缓存
+
+6. wei-starter-lock 基于Redis实现类似于声明式缓存式的声明式分布式锁
+
+7. wei-starter-mybatis 集成Mybatis，集成通用Mapper与通用分页插件
+
+8. wei-starter-redis 集成Redis，提供多Key[hashKey]原子操作
+
+8. wei-starter-security 安全实践，抽象基于Token的安全策略
+
+8. wei-starter-sequence 序号生成，抽象基于数据库的双缓冲序号生成
+
+8. wei-starter-swagger2 Swagger2集成配置
 
 ### springboot-starter介绍
 
@@ -83,6 +99,7 @@ swagger.contact-email=William.Wei@g-town.com.cn
 - 基础（bean,dto,service）
 - 日志打印，添加MDC日志链路追踪
 - 基于flyway的数据库版本控制
+
 ### springboot-starter-code-plugin使用
 ```xml
 <plugin>
