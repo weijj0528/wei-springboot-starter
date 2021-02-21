@@ -323,6 +323,7 @@
         <module>springboot-starter-code-plugin</module>
         <module>wei-starter-base</module>
         <module>wei-starter-cache</module>
+        <module>wei-starter-lock</module>
         <module>wei-starter-mybatis</module>
         <module>wei-starter-redis</module>
         <module>wei-starter-sequence</module>

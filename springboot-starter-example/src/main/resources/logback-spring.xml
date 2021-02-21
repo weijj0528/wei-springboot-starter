@@ -33,7 +33,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>info</level>
+            <level>DEBUG</level>
         </filter>
         <encoder>
             <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
@@ -128,7 +128,7 @@
         可以包含零个或多个元素，标识这个appender将会添加到这个logger。
     -->
     <!--开发环境:打印控制台-->
-    <root level="info">
+    <root>
         <springProfile name="dev">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="INFO_FILE"/>
