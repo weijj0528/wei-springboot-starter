@@ -21,6 +21,21 @@
             <artifactId>wei-starter-base</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <!--数据库连接-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--数据库连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+        <!--flywaydb 数据库版本控制-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
         <!--mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
