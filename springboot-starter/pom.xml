@@ -21,5 +21,10 @@
             <artifactId>wei-starter-mybatis</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.weijj0528</groupId>
+            <artifactId>wei-starter-lock</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

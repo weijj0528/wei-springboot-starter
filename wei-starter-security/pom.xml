@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.github.weijj0528</groupId>
-            <artifactId>wei-starter-mybatis</artifactId>
+            <artifactId>wei-starter-base</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
