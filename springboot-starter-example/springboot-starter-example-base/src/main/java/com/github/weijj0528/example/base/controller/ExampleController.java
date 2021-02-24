@@ -1,5 +1,6 @@
 package com.github.weijj0528.example.base.controller;
 
+import com.github.weijj0528.example.base.dto.QueryDto;
 import com.github.weijj0528.example.base.service.UserInfoService;
 import com.wei.starter.base.bean.Result;
 import io.swagger.annotations.Api;
@@ -26,7 +27,7 @@ public class ExampleController {
 
     @ApiOperation(value = "Hello world")
     @GetMapping("/hello")
-    public Result<Void> hello() {
+    public Result<Void> hello(QueryDto query) {
         Result<Void> resultBean = new Result<>();
         resultBean.setCode("20000");
         resultBean.setMsg("Hello world!");
