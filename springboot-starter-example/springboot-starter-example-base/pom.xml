@@ -18,22 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>com.github.weijj0528</groupId>
-            <artifactId>springboot-starter</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.weijj0528</groupId>
-            <artifactId>wei-starter-sequence</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.weijj0528</groupId>
-            <artifactId>wei-starter-security</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.weijj0528</groupId>
-            <artifactId>wei-starter-swagger2</artifactId>
+            <artifactId>wei-starter-base</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>

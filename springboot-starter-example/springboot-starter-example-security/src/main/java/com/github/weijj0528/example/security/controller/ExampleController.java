@@ -1,6 +1,5 @@
-package com.github.weijj0528.example.base.controller;
+package com.github.weijj0528.example.security.controller;
 
-import com.github.weijj0528.example.base.dto.QueryDto;
 import com.wei.starter.base.bean.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/example")
 public class ExampleController {
 
+
     @GetMapping("/hello")
-    public Result<Void> hello(QueryDto query) {
+    public Result<Void> hello() {
         Result<Void> resultBean = new Result<>();
         resultBean.setCode("20000");
         resultBean.setMsg("Hello world!");

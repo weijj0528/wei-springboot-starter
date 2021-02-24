@@ -23,7 +23,11 @@
         <module>springboot-starter-example-base</module>
         <module>springboot-starter-example-cache</module>
         <module>springboot-starter-example-lock</module>
+        <module>springboot-starter-example-mybatis</module>
         <module>springboot-starter-example-redis</module>
+        <module>springboot-starter-example-security</module>
+        <module>springboot-starter-example-sequence</module>
+        <module>springboot-starter-example-swagger2</module>
     </modules>
 
     <profiles>

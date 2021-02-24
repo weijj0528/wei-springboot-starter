@@ -1,16 +1,15 @@
-package com.github.weijj0528.example.base;
+package com.github.weijj0528.example.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * The type Cache example application.
+ * The type Redis example application.
  *
  * @author William.Wei
  */
-
 @SpringBootApplication
-public class BaseExampleApplication {
+public class SecurityExampleApplication {
 
     /**
      * The entry point of application.
@@ -18,7 +17,7 @@ public class BaseExampleApplication {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        SpringApplication.run(BaseExampleApplication.class, args);
+        SpringApplication.run(SecurityExampleApplication.class, args);
     }
 
 }
