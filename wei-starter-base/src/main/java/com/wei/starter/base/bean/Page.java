@@ -14,12 +14,24 @@ import java.util.List;
 @Data
 public class Page<T> {
 
+    /**
+     * 分页数据，默认为空集
+     */
     private List<T> list = Collections.emptyList();
 
+    /**
+     * 页码，从1开始
+     */
     private int page = 1;
 
+    /**
+     * 页容量，默认为20
+     */
     private int size = 20;
 
+    /**
+     * 总数默认为0
+     */
     private long total = 0;
 
     /**

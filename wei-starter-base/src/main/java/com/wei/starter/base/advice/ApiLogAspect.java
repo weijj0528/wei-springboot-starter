@@ -1,18 +1,18 @@
-package com.wei.springboot.starter.advice;
+package com.wei.starter.base.advice;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wei.starter.base.bean.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.lang.reflect.Parameter;
@@ -28,6 +28,9 @@ import java.util.Map;
 @Aspect
 @Component
 public class ApiLogAspect {
+
+    @Resource
+    private ObjectMapper mapper;
 
     /**
      * 返回 Result 的接口拦截
@@ -53,7 +56,7 @@ public class ApiLogAspect {
         if (args.length == 0) {
             params = "no params!";
         } else if (args.length == 1) {
-            params = JSON.toJSONString(args[0]);
+            params = mapper.writeValueAsString(args[0]);
         } else {
             Map<String, Object> paramsMap = new HashMap<>();
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
@@ -65,12 +68,12 @@ public class ApiLogAspect {
                     paramsMap.put(parameters[i].getName(), args[i]);
                 }
             }
-            params = JSON.toJSONString(paramsMap);
+            params = mapper.writeValueAsString(paramsMap);
         }
         log.info("[RQ] {}", params);
         Result<Object> result = (Result<Object>) joinPoint.proceed();
         // 响应
-        log.info("[RP] {}", JSON.toJSONString(result));
+        log.info("[RP] {}", mapper.writeValueAsString(result));
         return result;
     }
 

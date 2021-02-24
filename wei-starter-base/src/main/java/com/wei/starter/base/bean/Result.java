@@ -1,9 +1,9 @@
 package com.wei.starter.base.bean;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 返回结果封装
@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @author
  */
 @Data
-@NoArgsConstructor
 public class Result<T> implements Serializable, Cloneable {
     /**
      * @author
@@ -25,10 +24,19 @@ public class Result<T> implements Serializable, Cloneable {
      * 错误信息
      */
     private String msg;
+
+    /**
+     * 系统时间
+     */
+    private Date time;
     /**
      * 业务数据
      */
     private T data;
+
+    public Result() {
+        this.time = new Date();
+    }
 
     public Result(T data) {
         this("20000", "success", data);
@@ -38,6 +46,7 @@ public class Result<T> implements Serializable, Cloneable {
         this.code = code;
         this.msg = msg;
         this.data = data;
+        this.time = new Date();
     }
 
     public static <T> Result<T> success() {

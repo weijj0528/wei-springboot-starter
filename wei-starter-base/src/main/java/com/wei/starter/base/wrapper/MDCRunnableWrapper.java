@@ -1,4 +1,4 @@
-package com.wei.springboot.starter.wrapper;
+package com.wei.starter.base.wrapper;
 
 import org.slf4j.MDC;
 

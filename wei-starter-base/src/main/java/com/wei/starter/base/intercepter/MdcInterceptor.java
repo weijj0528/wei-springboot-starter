@@ -1,4 +1,4 @@
-package com.wei.springboot.starter.intercepter;
+package com.wei.starter.base.intercepter;
 
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class MdcInterceptor implements HandlerInterceptor {
 
-    private static final String KEY = "requestId";
+    private static final String KEY = "PV";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -27,7 +27,10 @@ public class MdcInterceptor implements HandlerInterceptor {
         String requestUri = request.getRequestURI();
         String method = request.getMethod();
         String contentType = request.getHeader("Content-Type");
-        log.info("[MDC] {}({}) {}", method, contentType, requestUri);
+        if (contentType == null) {
+            contentType = "-/-";
+        }
+        log.info("[PV] {}({}) {}", method, contentType, requestUri);
         return true;
     }
 

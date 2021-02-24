@@ -1,4 +1,4 @@
-package com.wei.springboot.starter.advice;
+package com.wei.starter.base.advice;
 
 import cn.hutool.core.util.StrUtil;
 import com.wei.starter.base.bean.Result;
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public Result handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public Result<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error("参数解析失败 {}:{}", e.getStackTrace()[0].getClassName(), e.getStackTrace()[0].getMethodName(), e);
         return Result.failure(ErrorEnum.BadRequestException.getCode(), "参数解析失败");
     }
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+    public Result<Void> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
         log.error("{} {}.{} 不支持当前请求方法 {}, 支持方法 {}",
                 request.getRequestURI(), e.getStackTrace()[0].getClassName(),
                 e.getStackTrace()[1].getMethodName(), e.getMethod(),
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public Result handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e, HttpServletRequest request) {
+    public Result<Void> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e, HttpServletRequest request) {
         log.error("{} 不支持当前媒体类型 {}, 支持类型 {}",
                 request.getRequestURI(), e.getContentType(), e.getSupportedMediaTypes());
         return Result.failure(HttpStatus.UNSUPPORTED_MEDIA_TYPE.toString(), "不支持的请求方式");
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Result omsExceptionHandle(MethodArgumentNotValidException ex) {
+    public Result<Void> omsExceptionHandle(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         FieldError error = result.getFieldError();
         String field = error.getField();
@@ -70,20 +70,20 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     @ExceptionHandler(UnauthorizedException.class)
-    public Result unauthorizedExceptionHandle() {
+    public Result<Void> unauthorizedExceptionHandle() {
         return Result.failure(ErrorEnum.UnauthorizedException.getCode(), ErrorEnum.UnauthorizedException.getMsg());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     @ExceptionHandler(ForbiddenException.class)
-    public Result forbiddenExceptionHandle() {
+    public Result<Void> forbiddenExceptionHandle() {
         return Result.failure(ErrorEnum.ForbiddenException.getCode(), ErrorEnum.ForbiddenException.getMsg());
     }
 
     @ResponseBody
     @ExceptionHandler()
-    public Result exceptionHandle(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+    public Result<Void> exceptionHandle(HttpServletRequest request, HttpServletResponse response, Exception ex) {
         if (!(ex instanceof BaseException)) {
             String method = request.getMethod();
             String contentType = request.getHeader("Content-Type");
@@ -93,11 +93,11 @@ public class GlobalExceptionHandler {
             ex = new ErrorMsgException("System error!");
         }
         BaseException e = (BaseException) ex;
-        Result Result = new Result(e.getCode(), e.getMessage(), null);
+        Result<Void> result = new Result<>(e.getCode(), e.getMessage(), null);
         if (!(e instanceof ErrorMsgException)) {
             response.setStatus(Integer.parseInt(e.getCode()));
         }
-        return Result;
+        return result;
     }
 
 }

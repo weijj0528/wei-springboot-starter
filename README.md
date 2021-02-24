@@ -6,7 +6,7 @@
 
 3. springboot-starter-example 示例项目
 
-4. wei-starter-base 基础Starter项目，包含通用Bean、异常架构、工具类集成、校验分组及相关配置
+4. wei-starter-base 基础Starter项目，定义一套通用Bean、异常、校验分组，集成常用工具类，及相关配置与增强
 
 5. wei-starter-cache 缓存实践，集成Redis缓存
 
@@ -20,7 +20,7 @@
 
 8. wei-starter-sequence 序号生成，抽象基于数据库的双缓冲序号生成
 
-8. wei-starter-swagger2 Swagger2集成配置
+8. wei-starter-swagger2 Swagger2集成配置，与一套好看的UI
 
 ### springboot-starter介绍
 

@@ -17,14 +17,17 @@ public class Header implements Serializable, Cloneable {
      * 请求版本号
      */
     private String version;
+
     /**
      * 时间戳字符串
      */
     private String time;
+
     /**
      * 设备ID
      */
     private String devices;
+
     /**
      * 签名
      */

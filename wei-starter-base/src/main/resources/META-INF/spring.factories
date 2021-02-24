@@ -1,3 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.wei.starter.base.config.SpringContext,\
-com.wei.starter.base.config.FastjsonAutoConfig
+com.wei.starter.base.config.JsonAutoConfig,\
+com.wei.starter.base.config.WeiMvcConfigurer,\
+com.wei.starter.base.advice.ApiLogAspect,\
+com.wei.starter.base.advice.GlobalExceptionHandler

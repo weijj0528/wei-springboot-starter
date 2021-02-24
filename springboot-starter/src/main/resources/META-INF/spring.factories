@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.wei.springboot.starter.config.WeiMvcConfigurer,\
-com.wei.springboot.starter.advice.ApiLogAspect,\
-com.wei.springboot.starter.advice.GlobalExceptionHandler
