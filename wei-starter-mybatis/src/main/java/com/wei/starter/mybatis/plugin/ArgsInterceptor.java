@@ -59,7 +59,11 @@ public class ArgsInterceptor implements Interceptor {
                 source = null;
         }
         // 属性复制
-        Optional.ofNullable(source).ifPresent(s -> BeanUtil.copyProperties(s, parameter, WeiBeanUtil.getNullPropertyNames(s)));
+        try {
+            Optional.ofNullable(source).ifPresent(s -> BeanUtil.copyProperties(s, parameter, WeiBeanUtil.getNullPropertyNames(s)));
+        } catch (Exception e) {
+            log.warn("ArgsInterceptor copy properties error!", e);
+        }
         return invocation.proceed();
     }
 
