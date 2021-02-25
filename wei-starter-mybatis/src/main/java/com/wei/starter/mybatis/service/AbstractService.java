@@ -22,6 +22,21 @@ public abstract class AbstractService<T> implements BaseService<T> {
      */
     public abstract XMapper<T> getMapper();
 
+    @Override
+    public int insertSelective(T t) {
+        return getMapper().insertSelective(t);
+    }
+
+    @Override
+    public int insertList(List<T> list) {
+        return getMapper().insertList(list);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(T t) {
+        return getMapper().updateByPrimaryKeySelective(t);
+    }
+
     /**
      * Select by primary key t.
      *

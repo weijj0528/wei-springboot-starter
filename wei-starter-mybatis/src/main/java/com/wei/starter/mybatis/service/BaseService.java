@@ -17,6 +17,30 @@ import java.util.List;
 public interface BaseService<T> {
 
     /**
+     * Insert selective int.
+     *
+     * @param t the t
+     * @return the int
+     */
+    int insertSelective(T t);
+
+    /**
+     * Insert list int.
+     *
+     * @param list the list
+     * @return the int
+     */
+    int insertList(List<T> list);
+
+    /**
+     * Update by primary key selective int.
+     *
+     * @param t the t
+     * @return the int
+     */
+    int updateByPrimaryKeySelective(T t);
+
+    /**
      * Select by primary key t.
      *
      * @param pk the pk

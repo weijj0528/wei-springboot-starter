@@ -17,7 +17,7 @@ import java.util.Properties;
 
 /**
  * The type Sql cost interceptor.
- * Sql执行时间记录与打印拦截器
+ * Sql执行时间记录与打印
  */
 @Slf4j
 @Intercepts({@Signature(type = StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class}),
@@ -124,15 +124,13 @@ public class SqlCostInterceptor implements Interceptor {
             for (Object obj : col) {
                 String value = null;
                 Class<?> objClass = obj.getClass();
-
                 // 只处理基本数据类型、基本数据类型的包装类、String这三种
                 // 如果是复合类型也是可以的，不过复杂点且这种场景较少，写代码的时候要判断一下要拿到的是复合类型中的哪个属性
                 if (isPrimitiveOrPrimitiveWrapper(objClass)) {
                     value = obj.toString();
-                } else if (objClass.isAssignableFrom(String.class)) {
-                    value = "\"" + obj.toString() + "\"";
+                } else {
+                    value = "'" + obj.toString() + "'";
                 }
-
                 sql = sql.replaceFirst("\\?", value);
             }
         }
@@ -148,14 +146,12 @@ public class SqlCostInterceptor implements Interceptor {
             Object propertyName = parameterMapping.getProperty();
             Object propertyValue = paramMap.get(propertyName);
             if (propertyValue != null) {
-                if (propertyValue.getClass().isAssignableFrom(String.class)) {
-                    propertyValue = "\"" + propertyValue + "\"";
+                if (!isPrimitiveOrPrimitiveWrapper(propertyValue.getClass())) {
+                    propertyValue = "'" + propertyValue + "'";
                 }
-
                 sql = sql.replaceFirst("\\?", propertyValue.toString());
             }
         }
-
         return sql;
     }
 
@@ -175,9 +171,11 @@ public class SqlCostInterceptor implements Interceptor {
                 Field field = parameterObjectClass.getDeclaredField(propertyName);
                 // 要获取Field中的属性值，这里必须将私有属性的accessible设置为true
                 field.setAccessible(true);
-                propertyValue = String.valueOf(field.get(parameterObject));
-                if (parameterMapping.getJavaType().isAssignableFrom(String.class)) {
-                    propertyValue = "\"" + propertyValue + "\"";
+                final Object obj = field.get(parameterObject);
+                propertyValue = String.valueOf(obj);
+                if (!isPrimitiveOrPrimitiveWrapper(obj.getClass())) {
+                    // 非基本类型均用''包裹
+                    propertyValue = "'" + propertyValue + "'";
                 }
             }
 
