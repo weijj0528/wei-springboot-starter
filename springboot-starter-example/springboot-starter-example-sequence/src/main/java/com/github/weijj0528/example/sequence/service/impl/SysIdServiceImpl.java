@@ -40,7 +40,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
     @Override
     public int save(SysIdDto dto) {
         SysId sysId = WeiBeanUtil.toBean(dto, SysId.class);
-        return getMapper().insertSelective(sysId);
+        return insertSelective(sysId);
     }
 
     /**
@@ -90,11 +90,6 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
         Example.Criteria criteria = example.createCriteria();
         selectPageByExample(example, page);
         return page.getList();
-    }
-
-    @Override
-    public void updateByPrimaryKeySelective(SysId sysId) {
-        getMapper().updateByPrimaryKeySelective(sysId);
     }
 
     @Override

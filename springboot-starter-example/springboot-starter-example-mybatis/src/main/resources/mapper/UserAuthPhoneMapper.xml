@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wei.springbootstarterexample.mapper.UserAuthPhoneMapper">
-  <resultMap id="BaseResultMap" type="com.wei.springbootstarterexample.model.UserAuthPhone">
+<mapper namespace="com.github.weijj0528.example.mybatis.mapper.UserAuthPhoneMapper">
+  <resultMap id="BaseResultMap" type="com.github.weijj0528.example.mybatis.model.UserAuthPhone">
     <!--
       WARNING - @mbg.generated
     -->

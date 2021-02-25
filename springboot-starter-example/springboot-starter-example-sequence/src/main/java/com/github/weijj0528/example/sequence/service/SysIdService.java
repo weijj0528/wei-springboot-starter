@@ -55,8 +55,6 @@ public interface SysIdService extends BaseService<SysId> {
      */
     List<SysIdDto> list(SysIdDto dto, Page page);
 
-    void updateByPrimaryKeySelective(SysId sysId);
-
     /**
      * Query by sys name and biz type com id.
      *
