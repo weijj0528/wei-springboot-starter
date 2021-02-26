@@ -54,7 +54,7 @@ public interface IRedisIncrService {
      * @param hashKeys the hash keys
      * @return the hincr
      */
-    Result<Map<String, Long>> getHincr(String key, String[] hashKeys);
+    Result<Map<String, Long>> getHasIncr(String key, String[] hashKeys);
 
     /**
      * Hash key incr
@@ -68,7 +68,7 @@ public interface IRedisIncrService {
      * @param keyArgs the params
      * @return the result
      */
-    Result<Map<String, Long>> hincr(String key, Integer expire, Map<String, Long> keyArgs);
+    Result<Map<String, Long>> hasIncr(String key, Integer expire, Map<String, Long> keyArgs);
 
     /**
      * Hincr result.
@@ -77,21 +77,7 @@ public interface IRedisIncrService {
      * @param key     the key
      * @param keyArgs the key args
      * @return the result
-     * @see IRedisIncrService#hincr(String, Integer, Map) IRedisIncrService#hincr(String, Integer, Map)IRedisIncrService#hincr(String, Long, Map)
+     * @see IRedisIncrService#hasIncr(String, Integer, Map) IRedisIncrService#hincr(String, Integer, Map)IRedisIncrService#hincr(String, Long, Map)
      */
-    Result<Map<String, Long>> hincr(String key, Map<String, Long> keyArgs);
-
-    /**
-     * Hash key set
-     * Hash模式库存设置，返回与设置前的变化量，新设置量应大于已使用量，设置出错自动回滚
-     * Hash模式库存
-     * {id}:count 剩余库存
-     * {id}-total:count 总库存
-     * {id}-used:count 使用库存
-     *
-     * @param key     the key
-     * @param keyArgs the params
-     * @return the result
-     */
-    Result<Map<String, Long>> hStockSet(String key, Map<String, Long> keyArgs);
+    Result<Map<String, Long>> hasIncr(String key, Map<String, Long> keyArgs);
 }

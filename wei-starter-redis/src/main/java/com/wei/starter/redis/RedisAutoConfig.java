@@ -3,7 +3,9 @@ package com.wei.starter.redis;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wei.starter.redis.service.IRedisCommonStockService;
 import com.wei.starter.redis.service.IRedisIncrService;
+import com.wei.starter.redis.service.imp.RedisCommonStockServiceImpl;
 import com.wei.starter.redis.service.imp.RedisIncrServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,6 +55,11 @@ public class RedisAutoConfig {
     @Bean
     public IRedisIncrService redisIncrService(RedisConnectionFactory redisConnectionFactory) {
         return new RedisIncrServiceImpl(redisConnectionFactory);
+    }
+
+    @Bean
+    public IRedisCommonStockService redisCommonStockService(RedisConnectionFactory redisConnectionFactory) {
+        return new RedisCommonStockServiceImpl(redisConnectionFactory);
     }
 
 }

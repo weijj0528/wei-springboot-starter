@@ -36,20 +36,11 @@ public class IRedisIncrServiceTest extends RedisExampleApplicationTest {
         HashMap<String, Long> keyArgs = new HashMap<>();
         keyArgs.put("test0", 100L);
         keyArgs.put("test1", 100L);
-        Result<Map<String, Long>> result = redisIncrService.hincr("stock", keyArgs);
+        Result<Map<String, Long>> result = redisIncrService.hasIncr("stock", keyArgs);
         System.out.println(JSON.toJSONString(result));
     }
 
     @Test
     public void hincr() {
-    }
-
-    @Test
-    public void hStockSet() {
-        HashMap<String, Long> keyArgs = new HashMap<>();
-        keyArgs.put("test0", 1L);
-        keyArgs.put("test1", 200L);
-        Result<Map<String, Long>> result = redisIncrService.hStockSet("stock", keyArgs);
-        System.out.println(JSON.toJSONString(result));
     }
 }
