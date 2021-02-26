@@ -1,5 +1,6 @@
 package com.wei.starter.base.exception;
 
+import com.wei.starter.base.bean.CodeEnum;
 import lombok.Data;
 
 /**
@@ -13,11 +14,11 @@ public class ErrorMsgException extends BaseException {
     private static final long serialVersionUID = 1452976038790619628L;
 
     public ErrorMsgException() {
-        super(ErrorEnum.ERROR_SERVER);
+        super(CodeEnum.ERROR_SERVER);
     }
 
     public ErrorMsgException(String msg) {
-        super(ErrorEnum.ERROR_SERVER.getCode(), msg);
+        super(CodeEnum.ERROR_SERVER.getCode(), msg);
     }
 
     public ErrorMsgException(String code, String msg) {

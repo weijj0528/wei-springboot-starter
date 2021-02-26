@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 返回结果封装
@@ -47,6 +48,10 @@ public class Result<T> implements Serializable, Cloneable {
         this.msg = msg;
         this.data = data;
         this.time = new Date();
+    }
+
+    public boolean successfully() {
+        return Objects.equals(code, CodeEnum.SUCCESS.getCode());
     }
 
     public static <T> Result<T> success() {

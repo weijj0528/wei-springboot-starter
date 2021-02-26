@@ -1,5 +1,7 @@
 package com.wei.starter.base.exception;
 
+import com.wei.starter.base.bean.CodeEnum;
+
 /**
  * 异常基类
  *
@@ -26,8 +28,8 @@ public abstract class BaseException extends RuntimeException {
         this.message = message;
     }
 
-    public BaseException(ErrorEnum errorEnum) {
-        this(errorEnum.getCode(), errorEnum.getMsg());
+    public BaseException(CodeEnum codeEnum) {
+        this(codeEnum.getCode(), codeEnum.getMsg());
     }
 
     public String getCode() {

@@ -1,6 +1,8 @@
 package com.wei.starter.base.exception;
 
 
+import com.wei.starter.base.bean.CodeEnum;
+
 /**
  * 用户已在其他设备登录  当前认证无效	   抛出 401
  *
@@ -12,7 +14,7 @@ public class UnauthorizedException extends BaseException {
     private static final long serialVersionUID = 8088934606432865810L;
 
     public UnauthorizedException() {
-        super(ErrorEnum.UnauthorizedException);
+        super(CodeEnum.UnauthorizedException);
     }
 
 }

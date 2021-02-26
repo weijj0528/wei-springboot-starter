@@ -1,6 +1,7 @@
 package com.wei.starter.base.advice;
 
 import cn.hutool.core.util.StrUtil;
+import com.wei.starter.base.bean.CodeEnum;
 import com.wei.starter.base.bean.Result;
 import com.wei.starter.base.exception.*;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Result<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error("参数解析失败 {}:{}", e.getStackTrace()[0].getClassName(), e.getStackTrace()[0].getMethodName(), e);
-        return Result.failure(ErrorEnum.BadRequestException.getCode(), "参数解析失败");
+        return Result.failure(CodeEnum.BadRequestException.getCode(), "参数解析失败");
     }
 
     @ResponseBody
@@ -64,21 +65,21 @@ public class GlobalExceptionHandler {
         String field = error.getField();
         String message = error.getDefaultMessage();
         log.error("{} 参数校验失败 {}:{}", ex.getParameter().getMethod(), field, message);
-        return Result.failure(ErrorEnum.BadRequestException.getCode(), message);
+        return Result.failure(CodeEnum.BadRequestException.getCode(), message);
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     @ExceptionHandler(UnauthorizedException.class)
     public Result<Void> unauthorizedExceptionHandle() {
-        return Result.failure(ErrorEnum.UnauthorizedException.getCode(), ErrorEnum.UnauthorizedException.getMsg());
+        return Result.failure(CodeEnum.UnauthorizedException.getCode(), CodeEnum.UnauthorizedException.getMsg());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     @ExceptionHandler(ForbiddenException.class)
     public Result<Void> forbiddenExceptionHandle() {
-        return Result.failure(ErrorEnum.ForbiddenException.getCode(), ErrorEnum.ForbiddenException.getMsg());
+        return Result.failure(CodeEnum.ForbiddenException.getCode(), CodeEnum.ForbiddenException.getMsg());
     }
 
     @ResponseBody

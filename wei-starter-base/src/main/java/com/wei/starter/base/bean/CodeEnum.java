@@ -1,14 +1,14 @@
-package com.wei.starter.base.exception;
+package com.wei.starter.base.bean;
 
 import lombok.Getter;
 
 /**
- * V1  错误枚举列表
+ * V1  编号枚举定义
  *
  * @author Johnson.Jia
  */
 @Getter
-public enum ErrorEnum {
+public enum CodeEnum {
 
     /**
      * 操作处理成功
@@ -51,7 +51,7 @@ public enum ErrorEnum {
      */
     private final String msg;
 
-    ErrorEnum(String code, String msg) {
+    CodeEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
