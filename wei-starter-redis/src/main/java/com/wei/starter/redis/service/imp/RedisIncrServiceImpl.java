@@ -46,22 +46,6 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
         hSetScriptHas1 = SecureUtil.sha1(hSetScript);
     }
 
-    @Override
-    public Result<Map<String, Long>> getIncr(String[] keys) {
-        Map<String, Long> map = new HashMap<>(keys.length);
-        RedisConnection connection = redisConnectionFactory.getConnection();
-        for (int i = 0; i < keys.length; i++) {
-            byte[] bytes = connection.get(keys[i].getBytes());
-            if (bytes == null) {
-                map.put(keys[i], 0L);
-            } else {
-                map.put(keys[i], Long.parseLong(new String(bytes)));
-            }
-        }
-        connection.close();
-        return Result.success(map);
-    }
-
     /**
      * Incr result.
      * 批量Key增量操作，保证操作后数量>=0
@@ -111,15 +95,15 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
     }
 
     @Override
-    public Result<Map<String, Long>> getHasIncr(String key, String[] hashKeys) {
-        Map<String, Long> map = new HashMap<>(hashKeys.length);
+    public Result<Map<String, Long>> getIncr(String[] keys) {
+        Map<String, Long> map = new HashMap<>(keys.length);
         RedisConnection connection = redisConnectionFactory.getConnection();
-        for (int i = 0; i < hashKeys.length; i++) {
-            byte[] bytes = connection.hashCommands().hGet(key.getBytes(), hashKeys[i].getBytes());
+        for (int i = 0; i < keys.length; i++) {
+            byte[] bytes = connection.get(keys[i].getBytes());
             if (bytes == null) {
-                map.put(hashKeys[i], 0L);
+                map.put(keys[i], 0L);
             } else {
-                map.put(hashKeys[i], Long.parseLong(new String(bytes)));
+                map.put(keys[i], Long.parseLong(new String(bytes)));
             }
         }
         connection.close();
@@ -181,5 +165,21 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
     @Override
     public Result<Map<String, Long>> hasIncr(String key, Map<String, Long> keyArgs) {
         return hasIncr(key, 0, keyArgs);
+    }
+
+    @Override
+    public Result<Map<String, Long>> getHasIncr(String key, String[] hashKeys) {
+        Map<String, Long> map = new HashMap<>(hashKeys.length);
+        RedisConnection connection = redisConnectionFactory.getConnection();
+        for (int i = 0; i < hashKeys.length; i++) {
+            byte[] bytes = connection.hashCommands().hGet(key.getBytes(), hashKeys[i].getBytes());
+            if (bytes == null) {
+                map.put(hashKeys[i], 0L);
+            } else {
+                map.put(hashKeys[i], Long.parseLong(new String(bytes)));
+            }
+        }
+        connection.close();
+        return Result.success(map);
     }
 }

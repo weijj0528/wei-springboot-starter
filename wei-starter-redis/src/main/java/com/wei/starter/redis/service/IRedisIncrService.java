@@ -14,15 +14,6 @@ import java.util.Map;
 public interface IRedisIncrService {
 
     /**
-     * Gets incr.
-     * 获取当前值
-     *
-     * @param keys the keys
-     * @return the incr
-     */
-    Result<Map<String, Long>> getIncr(String[] keys);
-
-    /**
      * Incr result.
      * 批量Key增量操作，保证操作后数量>=0
      * 如出现<0情况本次操作失败已操作Key回滚
@@ -47,14 +38,13 @@ public interface IRedisIncrService {
     Result<Map<String, Long>> incr(Map<String, Long> keyArgs);
 
     /**
-     * Gets hincr.
+     * Gets incr.
      * 获取当前值
      *
-     * @param key      the key
-     * @param hashKeys the hash keys
-     * @return the hincr
+     * @param keys the keys
+     * @return the incr
      */
-    Result<Map<String, Long>> getHasIncr(String key, String[] hashKeys);
+    Result<Map<String, Long>> getIncr(String[] keys);
 
     /**
      * Hash key incr
@@ -80,4 +70,14 @@ public interface IRedisIncrService {
      * @see IRedisIncrService#hasIncr(String, Integer, Map) IRedisIncrService#hincr(String, Integer, Map)IRedisIncrService#hincr(String, Long, Map)
      */
     Result<Map<String, Long>> hasIncr(String key, Map<String, Long> keyArgs);
+
+    /**
+     * Gets hincr.
+     * 获取当前值
+     *
+     * @param key      the key
+     * @param hashKeys the hash keys
+     * @return the hincr
+     */
+    Result<Map<String, Long>> getHasIncr(String key, String[] hashKeys);
 }
