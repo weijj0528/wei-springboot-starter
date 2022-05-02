@@ -10,11 +10,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
+ * The type Wei security config.
+ * 安全配置
  *
+ * @author William.Wei
  */
 @Slf4j
 @Configuration
@@ -24,18 +30,47 @@ public class WeiSecurityConfig extends WebSecurityConfigurerAdapter {
     private boolean enable;
     @Value("${spring.security.open-apis:}")
     private List<String> openApis;
+    @Value("${spring.security.cors.path-pattern:/**}")
+    private String pathPattern;
+    @Value("${spring.security.cors.path-pattern:*}")
+    private String[] origins;
+    @Value("${spring.security.cors.path-pattern:*}")
+    private String[] headers;
+    @Value("${spring.security.cors.path-pattern:*}")
+    private String[] methods;
 
+    /**
+     * Token authentication filter wei token filter.
+     *
+     * @return the wei token filter
+     */
     @Bean
     @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
     public WeiTokenFilter tokenAuthenticationFilter() {
         return new WeiTokenFilter(openApis);
     }
 
+    @Bean
+    public WebMvcConfigurer corsConfig(){
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping(pathPattern)
+                        .allowedOrigins(origins)
+                        .allowedHeaders(headers)
+                        .allowedMethods(methods)
+                        .maxAge(3600)
+                        .allowCredentials(true);
+                log.info("addCorsMappings success!");
+            }
+        };
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         log.info("SecurityConfig {}", enable);
-        // 跨域认证关闭
-        http.csrf().disable();
+        // CSRF关闭
+        http.csrf().disable().cors();
         if (!enable) {
             http.authorizeRequests().anyRequest().permitAll();
             return;
