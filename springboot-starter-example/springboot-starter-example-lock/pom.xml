@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.github.weijj0528</groupId>
     <artifactId>springboot-starter-example</artifactId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.0-RELEASE</version>
   </parent>
 
   <artifactId>springboot-starter-example-lock</artifactId>
