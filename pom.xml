@@ -285,9 +285,9 @@
     </licenses>
     <scm>
         <tag>master</tag>
-        <url>git@github.com:weijj0528/wei-springboot-starter.git</url>
-        <connection>scm:git@github.com:weijj0528/wei-springboot-starter.git</connection>
-        <developerConnection>scm:git@github.com:weijj0528/wei-springboot-starter.git</developerConnection>
+        <url>https://github.com/weijj0528/wei-springboot-starter</url>
+        <connection>https://github.com/weijj0528/wei-springboot-starter.git</connection>
+        <developerConnection>https://github.com/weijj0528/wei-springboot-starter.git</developerConnection>
     </scm>
     <developers>
         <developer>
