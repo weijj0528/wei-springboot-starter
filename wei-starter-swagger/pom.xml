@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>wei-starter-swagger2</artifactId>
+    <artifactId>wei-starter-swagger</artifactId>
 
     <name>wei-starter-swagger</name>
     <!-- FIXME change it to the project's website -->

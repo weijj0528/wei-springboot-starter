@@ -20,7 +20,7 @@
 
 8. wei-starter-sequence 序号生成，抽象基于数据库的双缓冲序号生成
 
-8. wei-starter-swagger2 Swagger2集成配置，与一套好看的UI
+8. wei-starter-swagger Swagger2集成配置，与一套好看的UI
 
 ### springboot-starter介绍
 
