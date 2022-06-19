@@ -9,9 +9,9 @@
     <version>3.0-RELEASE</version>
   </parent>
 
-  <artifactId>springboot-starter-example-swagger2</artifactId>
+  <artifactId>springboot-starter-example-swagger</artifactId>
 
-  <name>springboot-starter-example-swagger2</name>
+  <name>springboot-starter-example-swagger</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 

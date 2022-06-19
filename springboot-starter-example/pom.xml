@@ -27,7 +27,7 @@
         <module>springboot-starter-example-redis</module>
         <module>springboot-starter-example-security</module>
         <module>springboot-starter-example-sequence</module>
-        <module>springboot-starter-example-swagger2</module>
+        <module>springboot-starter-example-swagger</module>
     </modules>
 
     <profiles>
@@ -41,4 +41,18 @@
             </activation>
         </profile>
     </profiles>
+
+    <build>
+        <plugins>
+            <!-- Skip Deploy -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
