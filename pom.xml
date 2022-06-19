@@ -349,27 +349,6 @@
 
     <profiles>
         <profile>
-            <id>deploy-snapshot</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>rdc-snapshots</id>
-                    <url>https://repo.rdc.aliyun.com/repository/35936-snapshot-wPlgaM/</url>
-                </snapshotRepository>
-            </distributionManagement>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>deploy-release</id>
-            <distributionManagement>
-                <repository>
-                    <id>rdc-release</id>
-                    <url>https://repo.rdc.aliyun.com/repository/35936-release-uRTHTa/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-        <profile>
             <id>deploy-center</id>
             <distributionManagement>
                 <repository>
