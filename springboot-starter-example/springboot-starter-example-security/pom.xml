@@ -12,7 +12,7 @@
     <artifactId>springboot-starter-example-security</artifactId>
 
     <name>springboot-starter-example-security</name>
-    <!-- FIXME change it to the project's website -->
+
     <url>https://github.com/weijj0528/wei-springboot-starter</url>
 
     <properties>
