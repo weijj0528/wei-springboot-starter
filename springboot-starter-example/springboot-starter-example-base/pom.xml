@@ -74,13 +74,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <configuration>
-                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.github.weijj0528</groupId>
                 <artifactId>springboot-starter-code-plugin</artifactId>
                 <version>${parent.version}</version>
