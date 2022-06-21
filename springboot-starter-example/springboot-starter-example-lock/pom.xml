@@ -13,7 +13,11 @@
 
     <name>springboot-starter-example-lock</name>
     <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <url>https://github.com/weijj0528/wei-springboot-starter</url>
+
+    <properties>
+        <skip_maven_deploy>true</skip_maven_deploy>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -22,19 +26,4 @@
             <version>${parent.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <!-- Skip Deploy -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

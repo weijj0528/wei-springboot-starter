@@ -15,6 +15,10 @@
     <!-- FIXME change it to the project's website -->
     <url>https://github.com/weijj0528/wei-springboot-starter</url>
 
+    <properties>
+        <skip_maven_deploy>false</skip_maven_deploy>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.github.weijj0528</groupId>
