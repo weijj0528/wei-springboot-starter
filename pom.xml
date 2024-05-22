@@ -6,7 +6,7 @@
 
     <groupId>com.github.weijj0528</groupId>
     <artifactId>wei-springboot-starter</artifactId>
-    <version>3.0-RELEASE</version>
+    <version>3.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>wei-springboot-starter</name>
@@ -334,8 +334,6 @@
         <module>springboot-starter-example</module>
         <module>springboot-starter-code-plugin</module>
         <module>wei-starter-base</module>
-        <module>wei-starter-cache</module>
-        <module>wei-starter-lock</module>
         <module>wei-starter-mybatis</module>
         <module>wei-starter-redis</module>
         <module>wei-starter-sequence</module>

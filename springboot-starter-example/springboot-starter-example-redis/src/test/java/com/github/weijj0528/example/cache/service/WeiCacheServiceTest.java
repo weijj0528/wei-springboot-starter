@@ -1,12 +1,12 @@
 package com.github.weijj0528.example.cache.service;
 
-import com.github.weijj0528.example.cache.CacheExampleApplicationTest;
 import com.github.weijj0528.example.cache.entity.UserInfo;
+import com.github.weijj0528.example.redis.RedisExampleApplicationTest;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;
 
-class WeiCacheServiceTest extends CacheExampleApplicationTest {
+class WeiCacheServiceTest extends RedisExampleApplicationTest {
 
     @Resource
     private WeiCacheService weiCacheService;

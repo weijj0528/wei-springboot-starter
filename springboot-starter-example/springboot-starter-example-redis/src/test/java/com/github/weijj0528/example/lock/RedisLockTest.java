@@ -1,5 +1,6 @@
 package com.github.weijj0528.example.lock;
 
+import com.github.weijj0528.example.redis.RedisExampleApplicationTest;
 import com.wei.starter.lock.impl.RedisLock;
 import com.wei.starter.lock.service.LockService;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @Date 2019/4/2
  * @Description 锁测试
  */
-public class RedisLockTest extends LockExampleApplicationTest {
+public class RedisLockTest extends RedisExampleApplicationTest {
 
     @Autowired
     private LockService lockService;
