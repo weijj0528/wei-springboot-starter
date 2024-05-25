@@ -10,6 +10,8 @@
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.flattened-pom.xml
+.vscode
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
