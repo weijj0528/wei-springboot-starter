@@ -95,7 +95,6 @@
         <module>wei-starter-redis</module>
         <module>wei-starter-sequence</module>
         <module>wei-starter-swagger</module>
-        <module>wei-starter-security</module>
     </modules>
 
     <build>
