@@ -3,6 +3,7 @@ package com.wei.starter.security;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,25 +12,24 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class WeiTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
+    @Resource
     private TokenService tokenService;
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
     private Set<RequestMappingInfo> requestMappingInfos;
+    private final List<String> openApis;
 
-    private List<String> openApis;
-
-    private Map<String, List<String>> openApiMap = new HashMap<>();
+    private final Map<String, List<String>> openApiMap = new HashMap<>();
 
     public WeiTokenFilter(List<String> openApis) {
         this.openApis = new ArrayList<>(openApis.size());
@@ -63,8 +63,9 @@ public class WeiTokenFilter extends OncePerRequestFilter {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) {
         try {
             String token = request.getHeader("token");
             if (StringUtils.isNotEmpty(token) && requestMappingInfos != null && !requestMappingInfos.isEmpty()) {
@@ -84,7 +85,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                         // 所有方法开放
                         methodNames.add("*");
                     }
-                    Set<String> patterns = match.getPatternsCondition().getPatterns();
+                    Set<String> patterns = Collections.emptySet();
+                    if (match.getPatternsCondition() != null) {
+                        patterns = match.getPatternsCondition().getPatterns();
+                    }
                     boolean hasPermission = false;
                     for (String pattern : patterns) {
                         // 是否为开放接口

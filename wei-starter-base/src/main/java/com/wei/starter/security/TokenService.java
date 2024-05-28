@@ -27,7 +27,7 @@ public interface TokenService {
      * @param token the token
      * @return the token
      */
-    <T extends Principal> T getToken(String token);
+    Principal getToken(String token);
 
     /**
      * Permission check boolean.
