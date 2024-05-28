@@ -12,7 +12,7 @@
     <property name="log.path" value="."/>
     <!-- 从application.properties中获取配置 -->
     <springProperty scope="context" name="APPLICATION_NAME" source="spring.application.name"/>
-    <springProperty scope="context" name="LOGGING_FILE" source="logging.file"/>
+    <springProperty scope="context" name="LOGGING_FILE" source="logging.file.name"/>
 
 
     <!-- 彩色日志 -->
