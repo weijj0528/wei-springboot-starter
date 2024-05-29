@@ -1,5 +1,7 @@
 package com.wei.starter.security;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.http.Header;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +69,8 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) {
         try {
-            String token = request.getHeader("token");
-            if (StringUtils.isNotEmpty(token) && requestMappingInfos != null && !requestMappingInfos.isEmpty()) {
+            String token = request.getHeader(Header.AUTHORIZATION.toString());
+            if (StringUtils.isNotEmpty(token) && CollUtil.isNotEmpty(requestMappingInfos)) {
                 RequestMappingInfo match = null;
                 for (RequestMappingInfo requestMappingInfo : requestMappingInfos) {
                     match = requestMappingInfo.getMatchingCondition(request);
@@ -78,6 +80,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                 }
                 if (match != null) {
                     Principal principal = tokenService.getToken(token);
+                    if (principal == null) {
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
                     // 找到匹配的接口签名与执行器
                     Set<RequestMethod> methods = match.getMethodsCondition().getMethods();
                     List<String> methodNames = methods.stream().map(RequestMethod::name).collect(Collectors.toList());
