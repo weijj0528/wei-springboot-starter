@@ -91,7 +91,7 @@ swagger.base-package=com.wei.springbootstarterexample
 #联系人
 swagger.contact-name=William
 swagger.contact-url=http://xxx.xxx.xxx
-swagger.contact-email=William.Wei@g-town.com.cn
+swagger.contact-email=William@xxxxxx.com
 ```
 - 自动配置（缓存，Fastjson，Redis，SpringMvc）
 - 锁封装（RedisLock）
