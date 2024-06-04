@@ -12,7 +12,7 @@ public interface TokenService {
      * @param principal the principal
      * @param timeout   the timeout
      */
-    void saveToken(String token, Principal principal, Long timeout);
+    String saveToken(Principal principal, Long timeout);
 
     /**
      * Delete token principal.

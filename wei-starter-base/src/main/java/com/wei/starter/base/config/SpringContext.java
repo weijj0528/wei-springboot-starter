@@ -60,4 +60,12 @@ public class SpringContext implements ApplicationContextAware {
         context.publishEvent(event);
     }
 
+    /**
+     * Gets context.
+     *
+     * @return the context
+     */
+    public static ApplicationContext getContext() {
+        return context;
+    }
 }
