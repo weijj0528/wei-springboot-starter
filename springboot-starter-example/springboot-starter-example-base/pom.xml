@@ -28,6 +28,16 @@
             <artifactId>wei-starter-base</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bitbucket.b_c/jose4j -->
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>0.9.6</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -45,13 +55,6 @@
                 <includes>
                     <include>application-${profileActive}.properties</include>
                     <include>application.properties</include>
-                </includes>
-                <!-- true 打包時候變量替換 -->
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
                     <include>banner.txt</include>
                 </includes>
                 <!-- true 打包時候變量替換 -->

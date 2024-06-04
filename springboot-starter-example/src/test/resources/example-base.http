@@ -1,0 +1,14 @@
+# 基础接口演示
+
+### Login
+POST {{host}}/security/login
+
+> {% client.global.set("token", response.body.data); %}
+
+### Logout
+POST {{host}}/security/logout
+Authorization: Bearer {{token}}
+
+### UserInfo
+GET {{host}}/security/userInfo/123
+Authorization: Bearer {{token}}
