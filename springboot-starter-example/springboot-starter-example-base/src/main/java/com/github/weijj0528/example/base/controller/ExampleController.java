@@ -22,6 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/example")
 public class ExampleController {
 
+    /**
+     * Hello world!
+     *
+     * @param query
+     * @return
+     */
     @GetMapping("/hello")
     public Result<QueryDto> hello(QueryDto query) {
         Result<QueryDto> resultBean = new Result<>();
@@ -31,16 +37,17 @@ public class ExampleController {
         return resultBean;
     }
 
+    /**
+     * 异常演示
+     *
+     * @param request
+     * @param query
+     * @return
+     */
     @GetMapping("/exception")
-    public Result<Void> exception(HttpServletRequest request,QueryDto query) {
+    public Result<Void> exception(HttpServletRequest request, QueryDto query) {
         String clientIp = WeiWebUtils.getClientIp(request);
         log.info("clientIp:{}", clientIp);
         throw new ErrorMsgException(CodeEnum.ERROR_SERVER.getMsg());
-    }
-
-    @GetMapping("/cache")
-    public Result<Void> cacheTest() {
-        System.out.println("Hello cache!");
-        return Result.success();
     }
 }

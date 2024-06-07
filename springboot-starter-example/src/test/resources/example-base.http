@@ -2,6 +2,9 @@
 
 ### Login
 POST {{host}}/security/login
+Content-Type: application/x-www-form-urlencoded
+
+username=Admin&password=123456
 
 > {% client.global.set("token", response.body.data); %}
 
@@ -11,4 +14,32 @@ Authorization: Bearer {{token}}
 
 ### UserInfo
 GET {{host}}/security/userInfo/123
+Authorization: Bearer {{token}}
+
+### roleCheckSuccess
+GET {{host}}/security/roleCheckSuccess
+Authorization: Bearer {{token}}
+
+### roleCheckFail
+GET {{host}}/security/roleCheckFail
+Authorization: Bearer {{token}}
+
+
+### permission
+POST {{host}}/security/permission
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "username": "Admin",
+  "permissions": [
+    "POST:/security/permission",
+    "/security/permissionCheck"
+  ]
+}
+
+
+### permissionCheck
+POST {{host}}/security/permissionCheck
+Content-Type: application/json
 Authorization: Bearer {{token}}

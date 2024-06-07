@@ -14,14 +14,33 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
 import java.security.KeyPair;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
+ * The type Security config.
+ *
  * @author William.Wei
  */
 @Configuration
 public class SecurityConfig implements ApplicationContextAware {
 
     private ApplicationContext context;
+
+    /**
+     * 用户权限分配
+     */
+    private final Map<String, Set<String>> userPermission = new HashMap<>();
+
+    /**
+     * Gets user permission.
+     *
+     * @return the user permission
+     */
+    public Map<String, Set<String>> getUserPermission() {
+        return userPermission;
+    }
 
     @Override
     public void setApplicationContext(@NonNull ApplicationContext context) throws BeansException {
@@ -42,6 +61,7 @@ public class SecurityConfig implements ApplicationContextAware {
      * @param keyStore    key store
      * @param keyPassword key password
      * @return key pair
+     * @throws FileNotFoundException the file not found exception
      */
     @Bean
     public KeyPair keyPair(@Value("${wei-jwt.key-alias}") String keyAlias,

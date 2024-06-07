@@ -1,7 +1,9 @@
 package com.github.weijj0528.example.security.security;
 
 import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.text.StrPool;
 import cn.hutool.json.JSONUtil;
+import com.github.weijj0528.example.security.config.SecurityConfig;
 import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.base.exception.UnauthorizedException;
 import com.wei.starter.security.Principal;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.security.KeyPair;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * JWT token service
@@ -30,6 +33,8 @@ public class JwtTokenServiceImpl implements TokenService {
 
     @Resource
     private KeyPair keyPair;
+    @Resource
+    private SecurityConfig securityConfig;
 
     @Override
     public String saveToken(Principal principal, Long timeout) {
@@ -89,6 +94,11 @@ public class JwtTokenServiceImpl implements TokenService {
 
     @Override
     public boolean permissionCheck(Principal principal, String httpMethod, String pattern) {
+        // TODO 按用户权限分配情况检查
+        Set<String> set = securityConfig.getUserPermission().get(principal.getName());
+        if (set != null) {
+            return set.contains(httpMethod + StrPool.COLON + pattern) || set.contains(pattern);
+        }
         return true;
     }
 }
