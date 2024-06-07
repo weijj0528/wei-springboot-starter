@@ -7,6 +7,7 @@ import com.wei.starter.base.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -62,21 +63,25 @@ public class GlobalExceptionHandler {
     public Result<Void> omsExceptionHandle(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         FieldError error = result.getFieldError();
-        String field = error.getField();
-        String message = error.getDefaultMessage();
+        String field = null;
+        String message = null;
+        if (error != null) {
+            field = error.getField();
+            message = error.getDefaultMessage();
+        }
         log.error("{} 参数校验失败 {}:{}", ex.getParameter().getMethod(), field, message);
         return Result.failure(CodeEnum.BadRequestException.getCode(), message);
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler({UnauthorizedException.class, AccessDeniedException.class})
     public Result<Void> unauthorizedExceptionHandle() {
         return Result.failure(CodeEnum.UnauthorizedException.getCode(), CodeEnum.UnauthorizedException.getMsg());
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ForbiddenException.class)
     public Result<Void> forbiddenExceptionHandle() {
         return Result.failure(CodeEnum.ForbiddenException.getCode(), CodeEnum.ForbiddenException.getMsg());

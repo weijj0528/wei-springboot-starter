@@ -8,7 +8,6 @@ public interface TokenService {
     /**
      * Create token token.
      *
-     * @param token     the token
      * @param principal the principal
      * @param timeout   the timeout
      */

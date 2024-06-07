@@ -7,10 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -29,6 +32,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WeiSecurityConfig {
 
     @Value("${spring.security.enable:false}")
@@ -43,8 +47,20 @@ public class WeiSecurityConfig {
     private String[] headers;
     @Value("${spring.security.cors.methods:*}")
     private String[] methods;
+    @Value("${spring.security.role-prefix:ROLE_}")
+    private String rolePrefix;
 
-    private static final String ALL = "*";
+    public static final String ALL = "*";
+
+    /**
+     * Gets role prefix.
+     * 获取角色前缀
+     *
+     * @return the role prefix
+     */
+    public String getRolePrefix() {
+        return rolePrefix;
+    }
 
     /**
      * Token authentication filter wei token filter.
@@ -57,6 +73,23 @@ public class WeiSecurityConfig {
         return new WeiTokenFilter(openApis);
     }
 
+    /**
+     * Expression handler default web security expression handler.
+     *
+     * @return the default web security expression handler
+     */
+    @Bean
+    public DefaultWebSecurityExpressionHandler expressionHandler() {
+        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        expressionHandler.setDefaultRolePrefix(rolePrefix);
+        return expressionHandler;
+    }
+
+    /**
+     * Cors config web mvc configurer.
+     *
+     * @return the web mvc configurer
+     */
     @Bean
     public WebMvcConfigurer corsConfig() {
         return new WebMvcConfigurer() {
@@ -78,27 +111,34 @@ public class WeiSecurityConfig {
         };
     }
 
+    /**
+     * Configure security filter chain.
+     *
+     * @param http the http
+     * @return the security filter chain
+     * @throws Exception the exception
+     */
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         log.info("SecurityConfig {}", enable);
         // CSRF关闭
-        http.csrf().disable().cors();
-        if (!enable) {
-            http.authorizeRequests().anyRequest().permitAll();
-            return http.build();
-        }
-        http.formLogin().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint((req, resp, authException) -> {
+        http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().headers().frameOptions().disable()
+                .and().headers().cacheControl().disable()
+                .and().formLogin().disable()
+                .exceptionHandling().authenticationEntryPoint((req, resp, authException) -> {
                     resp.setStatus(401);
                     resp.setCharacterEncoding("UTF-8");
                     resp.setContentType("application/json; charset=utf-8");
                     resp.getWriter().write("{\"code\": 401, \"msg\": \"Authentication failed, please login again!\"}");
                     resp.getWriter().flush();
-                }).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().headers().frameOptions().disable()
-                .and().headers().cacheControl().disable();
+                });
+        // 未开启权限检查
+        if (!enable) {
+            http.authorizeRequests().anyRequest().permitAll();
+            return http.build();
+        }
         // 默认开放的接口
         String[] antPatterns = {"/webjars/**", "/", "/index", "/docs", "/v2/**", "/swagger", "/swagger2", "/swagger-resources"};
         http.authorizeRequests().antMatchers(antPatterns).permitAll();
@@ -113,7 +153,7 @@ public class WeiSecurityConfig {
             }
         }
         // 其他接口开启认证
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().expressionHandler(expressionHandler()).anyRequest().authenticated();
         // 添加过滤器
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

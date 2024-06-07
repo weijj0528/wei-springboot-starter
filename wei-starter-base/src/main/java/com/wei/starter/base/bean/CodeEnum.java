@@ -21,9 +21,9 @@ public enum CodeEnum {
     BadRequestException("400", "错误请求，参数不完整"),
 
     /**
-     * 没有权限
+     * 身份验证失败，请重新登录！
      */
-    UnauthorizedException("401", "没有权限"),
+    UnauthorizedException("401", "身份验证失败，请重新登录！"),
 
     /**
      * 账户禁用
@@ -38,7 +38,7 @@ public enum CodeEnum {
     /**
      * 系统错误 请稍候重新尝试
      */
-    ERROR_SERVER("50000", "系统错误,请稍候尝试");
+    ERROR_SERVER("50000", "系统开小差，请稍候尝试");
 
 
     /**
