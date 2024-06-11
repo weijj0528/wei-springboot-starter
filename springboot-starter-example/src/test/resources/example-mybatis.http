@@ -29,5 +29,8 @@ GET {{host}}/userAuthPhone/2
 ### 查询
 GET {{host}}/userAuthPhone
 
+### 游标
+GET {{host}}/userAuthPhone/cursor
+
 ### 删除
 DELETE {{host}}/userAuthPhone/2

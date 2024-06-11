@@ -1,11 +1,21 @@
 package com.wei.starter.mybatis.service;
 
+import cn.hutool.core.text.StrPool;
 import com.github.pagehelper.PageHelper;
-import com.wei.starter.mybatis.xmapper.XMapper;
+import com.wei.starter.base.bean.CodeEnum;
 import com.wei.starter.base.bean.Page;
+import com.wei.starter.base.exception.ErrorMsgException;
+import com.wei.starter.mybatis.xmapper.XMapper;
+import org.apache.ibatis.cursor.Cursor;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import tk.mybatis.mapper.common.BaseMapper;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * The type Abstract service.
@@ -16,6 +26,9 @@ import java.util.List;
  * @Description 抽象基础服务 ，提供通用的Mapper方法接入
  */
 public abstract class AbstractService<T> implements BaseService<T> {
+
+    @Resource
+    private SqlSessionFactory sqlSessionFactory;
 
     /**
      * The Mapper.
@@ -112,13 +125,46 @@ public abstract class AbstractService<T> implements BaseService<T> {
      */
     @Override
     public Page<T> selectPageByExample(Example example, Page<T> page) {
-        PageHelper.startPage(page.getPage(), page.getSize());
-        com.github.pagehelper.Page<T> tPage = (com.github.pagehelper.Page<T>) getMapper().selectByExample(example);
-        page.setList(tPage);
-        page.setTotal(tPage.getTotal());
-        page.setPage(tPage.getPageNum());
-        page.setSize(tPage.getPageSize());
-        return page;
+        try (com.github.pagehelper.Page<T> tPage = PageHelper.startPage(page.getPage(), page.getSize())) {
+            getMapper().selectByExample(example);
+            page.setList(tPage);
+            page.setTotal(tPage.getTotal());
+            page.setPage(tPage.getPageNum());
+            page.setSize(tPage.getPageSize());
+            return page;
+        }
+    }
+
+    @Override
+    public <R> void cursorOperator(String method, int batchSize, Object params, Consumer<List<R>> consumer) {
+        Class<?> mapperClass = Arrays.stream(getMapper().getClass().getInterfaces()).filter(
+                XMapper.class::isAssignableFrom
+        ).findAny().orElseThrow(() -> new ErrorMsgException(CodeEnum.ERROR_SERVER.getCode(), "Mapper不存在"));
+        String s = mapperClass.getName() + StrPool.DOT + method;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Cursor<R> cursor = sqlSession.selectCursor(s, params);
+        try {
+            Iterator<R> iterator = cursor.iterator();
+            List<R> buffer = new ArrayList<>(batchSize);
+            while (iterator.hasNext()) {
+                buffer.add(iterator.next());
+                if (buffer.size() == batchSize) {
+                    consumer.accept(buffer);
+                    buffer.clear();
+                }
+            }
+            if (!buffer.isEmpty()) {
+                consumer.accept(buffer);
+            }
+        } finally {
+            if (cursor != null) {
+                try {
+                    cursor.close();
+                } catch (IOException ignored) {
+                }
+            }
+            sqlSession.close();
+        }
     }
 
 }

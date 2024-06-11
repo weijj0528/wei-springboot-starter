@@ -5,6 +5,8 @@ import com.wei.starter.base.bean.Page;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * The interface Base service.
@@ -96,5 +98,18 @@ public interface BaseService<T> {
      * @return the page info
      */
     Page<T> selectPageByExample(Example example, Page<T> page);
+
+    /**
+     * Cursor operator.
+     * 游标操作
+     * 注意参数应与SQL中参数一致
+     *
+     * @param <R>       the type parameter
+     * @param method    the method
+     * @param batchSize the batch size
+     * @param params    the params
+     * @param consumer  the consumer
+     */
+    <R> void cursorOperator(String method, int batchSize, Object params, Consumer<List<R>> consumer);
 
 }
