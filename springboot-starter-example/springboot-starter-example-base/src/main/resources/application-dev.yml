@@ -1,0 +1,19 @@
+server:
+    port: 8080
+spring:
+    application:
+        name: example
+    # 自定义安全配置
+    security:
+        # 是否开启安全配置，true：开启；false：关闭
+        enable: true
+        # 开放接口，默认为空，表示所有接口都需要认证
+        # 配置接口不进行权限解析与认证，也无法获取用户信息
+        open-apis:
+            - /example/hello
+            - /security/login
+
+wei-jwt:
+    key-alias: jwt.weijj0528.cn
+    key-password: weijj0528
+    key-store: classpath:jwt.jks

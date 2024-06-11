@@ -1,0 +1,25 @@
+server:
+    error:
+        path: /error.html
+    servlet:
+        context-path: /
+spring:
+    profiles:
+        active: @profileActive@
+    banner:
+        location: classpath:banner.txt
+    mvc:
+        servlet:
+            load-on-startup: 1
+            path: /
+    servlet:
+        multipart:
+            location: ./upload
+            max-file-size: 10MB
+            max-request-size: 30MB
+    output:
+        ansi:
+            enabled: ALWAYS
+logging:
+    file:
+        name: ./logs/${spring.application.name}

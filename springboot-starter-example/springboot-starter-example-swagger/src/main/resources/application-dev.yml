@@ -1,0 +1,14 @@
+server:
+    port: 8080
+spring:
+    application:
+        name: example-swagger
+swagger:
+    enabled: true
+    version: 1.0
+    title: \u793A\u4F8B\u9879\u76EE API
+    description: \u793A\u4F8B\u9879\u76EE API
+    contact-url: https://xxx.xxx.xxx
+    contact-name: weijj0528
+    contact-email: weijj0528@163.com
+    base-package: com.github.weijj0528.example.swagger2
