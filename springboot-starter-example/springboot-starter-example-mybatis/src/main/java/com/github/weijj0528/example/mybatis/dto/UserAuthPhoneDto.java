@@ -1,6 +1,7 @@
 package com.github.weijj0528.example.mybatis.dto;
 
 import com.wei.starter.base.valid.Add;
+import com.wei.starter.base.valid.Update;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,6 @@ public class UserAuthPhoneDto implements Serializable {
     /**
      * ID
      */
-    @NotNull(groups = Add.class, message = "ID不能为空")
     private Long id;
 
     /**
@@ -50,31 +50,27 @@ public class UserAuthPhoneDto implements Serializable {
     /**
      * 是否删除
      */
-    @NotNull(groups = Add.class, message = "是否删除不能为空")
+    @NotNull(groups = Update.class, message = "是否删除不能为空")
     private Boolean del;
 
     /**
      * 更新人
      */
-    @NotNull(groups = Add.class, message = "更新人不能为空")
     private String updater;
 
     /**
      * 最后更新时间
      */
-    @NotNull(groups = Add.class, message = "最后更新时间不能为空")
     private Date utime;
 
     /**
      * 创建人
      */
-    @NotNull(groups = Add.class, message = "创建人不能为空")
     private String creater;
 
     /**
      * 记录时间
      */
-    @NotNull(groups = Add.class, message = "记录时间不能为空")
     private Date ctime;
 
 }

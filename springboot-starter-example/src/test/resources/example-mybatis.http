@@ -1,0 +1,33 @@
+# 基础接口演示
+
+### 新增
+POST {{host}}/userAuthPhone
+Content-Type: application/json
+
+{
+  "tenantId": 0,
+  "phone": "13800000000",
+  "pwd": "123456",
+  "userId": 0
+}
+
+### 更新
+PUT {{host}}/userAuthPhone/1
+Content-Type: application/json
+
+{
+  "tenantId": 1,
+  "phone": "13800000000",
+  "pwd": "123456",
+  "userId": 0,
+  "del": 0
+}
+
+### 详情
+GET {{host}}/userAuthPhone/2
+
+### 查询
+GET {{host}}/userAuthPhone
+
+### 删除
+DELETE {{host}}/userAuthPhone/2

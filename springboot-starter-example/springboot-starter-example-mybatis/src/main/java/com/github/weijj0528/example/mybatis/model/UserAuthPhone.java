@@ -2,7 +2,9 @@ package com.github.weijj0528.example.mybatis.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,7 +15,6 @@ public class UserAuthPhone implements Serializable {
      * ID
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
