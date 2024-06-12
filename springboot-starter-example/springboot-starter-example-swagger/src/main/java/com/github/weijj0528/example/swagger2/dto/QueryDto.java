@@ -13,13 +13,13 @@ import java.util.Date;
  * @author William.Wei
  */
 @Data
-@ApiModel(description = "查询条件")
+@ApiModel(value = "参数实体名称", description = "参数实体说明")
 public class QueryDto {
 
     /**
      * The Range 1.
      */
-    @ApiModelProperty(name = "范围", notes = "年龄范围")
+    @ApiModelProperty(name = "参数名称", notes = "参数说明")
     Range<Integer> range1;
 
     /**

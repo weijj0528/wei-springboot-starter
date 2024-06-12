@@ -220,12 +220,27 @@
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
-                <version>2.9.2</version>
+                <version>3.0.0</version>
             </dependency>
+            <!--引入Knife4j的官方start包,该指南选择Spring Boot版本<3.0,开发者需要注意-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>swagger-bootstrap-ui</artifactId>
-                <version>1.9.3</version>
+                <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+                <version>4.5.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.springfox</groupId>
+                        <artifactId>springfox-swagger2</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-models</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.generator</groupId>

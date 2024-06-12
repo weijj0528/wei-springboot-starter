@@ -108,7 +108,7 @@ public class UserAuthPhoneController {
     public Result<Page<UserAuthPhoneDto>> cursor(UserAuthPhoneDto queryDto) {
         Example example = new Example(UserAuthPhone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(UserAuthPhone.ID, 1);
+        // criteria.andEqualTo(UserAuthPhone.ID, 1);
         userAuthPhoneService.cursorOperator("selectByExample", 10, example, list -> {
             list.forEach(o -> log.info("cursor record: {}", o));
         });

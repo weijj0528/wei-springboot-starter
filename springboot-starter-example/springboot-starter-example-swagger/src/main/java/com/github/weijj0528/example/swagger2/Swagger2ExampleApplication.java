@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * The type Redis example application.
+ * The type Swagger example application.
  *
  * @author William.Wei
  */

@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(tags = {"演示接口模块", "演示模块分组"})
 @RestController
-@RequestMapping("/example")
-public class ExampleController {
+@RequestMapping("/example2")
+public class Example2Controller {
 
     @ApiOperation(value = "接口标题", notes = "接口详细说明……", tags = {"接口分组"})
     @GetMapping("/hello")

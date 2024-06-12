@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### 更新
-PUT {{host}}/userAuthPhone/1
+POST {{host}}/userAuthPhone/1
 Content-Type: application/json
 
 {

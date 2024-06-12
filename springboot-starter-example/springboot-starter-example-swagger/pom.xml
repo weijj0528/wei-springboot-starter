@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.github.weijj0528</groupId>
             <artifactId>wei-starter-swagger</artifactId>
-            <version>${parent.version}</version>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 </project>

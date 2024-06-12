@@ -6,8 +6,8 @@ spring:
 swagger:
     enabled: true
     version: 1.0
-    title: \u793A\u4F8B\u9879\u76EE API
-    description: \u793A\u4F8B\u9879\u76EE API
+    title: Swagger演示API
+    description: API简介说明，本系统用于演示Swagger2功能
     contact-url: https://xxx.xxx.xxx
     contact-name: weijj0528
     contact-email: weijj0528@163.com
