@@ -4,8 +4,9 @@ spring:
     application:
         name: example-redis
     redis:
-        database: 0
-        host: 127.0.0.1
+        database: 15
+        host: 192.168.1.113
+        password: Gtown991((!
         jedis:
             pool:
                 max-active: 8
@@ -13,3 +14,12 @@ spring:
                 max-wait: -1ms
                 min-idle: 0
         port: 6379
+
+redisson:
+    config:
+        type: STANDALONE # 或者是CLUSTER, MASTER_SLAVE等，根据你的Redis部署类型来选择
+        address: "${spring.redis.host}:${spring.redis.port}"
+        password: "${spring.redis.password}" # 如果有密码的话
+        # 更多配置可以根据需要添加，比如对于集群的配置
+        # cluster:
+        #   nodeAddresses: ["redis://127.0.0.1:7000", "redis://127.0.0.1:7001"]

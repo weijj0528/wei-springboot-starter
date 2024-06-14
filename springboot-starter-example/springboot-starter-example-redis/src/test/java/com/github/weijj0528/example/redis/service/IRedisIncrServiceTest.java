@@ -1,7 +1,7 @@
 package com.github.weijj0528.example.redis.service;
 
 import com.alibaba.fastjson.JSON;
-import com.github.weijj0528.example.redis.RedisExampleApplicationTest;
+import com.github.weijj0528.example.RedisExampleApplicationTest;
 import com.wei.starter.base.bean.Result;
 import com.wei.starter.redis.service.IRedisIncrService;
 import org.junit.jupiter.api.Test;

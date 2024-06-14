@@ -29,7 +29,7 @@ public class LockAspect implements Ordered {
         return Integer.MAX_VALUE;
     }
 
-    @Around("@annotation(com.wei.starter.lock.annotation.Lock)")
+    @Around("@annotation(com.wei.starter.lock.annotation.Lock)||@annotation(com.wei.starter.lock.annotation.Locking)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         WeiLock weiLock = lockService.getWeiLock(joinPoint);
         try {

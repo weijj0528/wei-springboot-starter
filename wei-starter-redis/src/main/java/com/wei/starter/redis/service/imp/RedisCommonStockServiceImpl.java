@@ -17,6 +17,12 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.*;
 
+/**
+ * The type Redis common stock service.
+ * 通用库存操作
+ *
+ * @author William.Wei
+ */
 @Slf4j
 @Validated
 public class RedisCommonStockServiceImpl implements IRedisCommonStockService {

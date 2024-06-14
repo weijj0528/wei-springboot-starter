@@ -12,23 +12,36 @@ import java.util.concurrent.locks.Lock;
  */
 public interface WeiLock extends Lock {
 
-
     @Override
-    default public void lockInterruptibly() throws InterruptedException {
+    default void lockInterruptibly() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    default public boolean tryLock() {
+    default boolean tryLock() {
         return false;
     }
 
     @Override
-    default public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+    default boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+        return false;
+    }
+
+    /**
+     * Try lock boolean.
+     *
+     * @param waitTime the wait time
+     * @param time     the time
+     * @param unit     the unit
+     * @return the boolean
+     * @throws InterruptedException the interrupted exception
+     */
+    default boolean tryLock(long waitTime, long time, TimeUnit unit) throws InterruptedException {
         return false;
     }
 
     @Override
-    default public Condition newCondition() {
-        return null;
+    default Condition newCondition() {
+        throw new UnsupportedOperationException();
     }
 }

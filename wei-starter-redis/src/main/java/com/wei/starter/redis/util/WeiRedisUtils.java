@@ -6,7 +6,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * The type Wei redis utils.
+ *
+ * @author William.Wei
+ */
 public class WeiRedisUtils {
+    /**
+     * Read script string.
+     *
+     * @param scriptName the script name
+     * @return the string
+     */
     public static String readScript(String scriptName) {
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;

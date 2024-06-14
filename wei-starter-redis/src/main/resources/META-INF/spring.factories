@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.wei.starter.redis.RedisAutoConfig,\
 com.wei.starter.cache.CacheAutoConfig,\
-com.wei.starter.cache.LockAutoConfig
+com.wei.starter.lock.LockAutoConfig

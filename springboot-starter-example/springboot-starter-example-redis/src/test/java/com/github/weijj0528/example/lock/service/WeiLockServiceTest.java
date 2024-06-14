@@ -1,7 +1,7 @@
 package com.github.weijj0528.example.lock.service;
 
+import com.github.weijj0528.example.RedisExampleApplicationTest;
 import com.github.weijj0528.example.lock.entity.UserInfo;
-import com.github.weijj0528.example.redis.RedisExampleApplicationTest;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;

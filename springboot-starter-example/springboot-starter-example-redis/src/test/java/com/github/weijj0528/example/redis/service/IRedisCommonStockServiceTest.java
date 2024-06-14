@@ -1,6 +1,6 @@
 package com.github.weijj0528.example.redis.service;
 
-import com.github.weijj0528.example.redis.RedisExampleApplicationTest;
+import com.github.weijj0528.example.RedisExampleApplicationTest;
 import com.wei.starter.base.bean.Result;
 import com.wei.starter.redis.model.StockDTO;
 import com.wei.starter.redis.model.StockInitDTO;

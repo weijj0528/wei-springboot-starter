@@ -1,11 +1,12 @@
-package com.github.weijj0528.example.lock;
+package com.github.weijj0528.example.lock.service;
 
-import com.github.weijj0528.example.redis.RedisExampleApplicationTest;
-import com.wei.starter.lock.impl.RedisLock;
+import com.github.weijj0528.example.RedisExampleApplicationTest;
+import com.wei.starter.lock.WeiLock;
 import com.wei.starter.lock.service.LockService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
+import org.redisson.Redisson;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -17,13 +18,29 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisLockTest extends RedisExampleApplicationTest {
 
-    @Autowired
+    @Resource
+    private Redisson redisson;
+    @Resource
     private LockService lockService;
+
+    @Test
+    public void lockTest() throws IOException, InterruptedException {
+        System.out.println(redisson);
+        CountDownLatch latch = new CountDownLatch(100);
+
+        MyTask task = new MyTask(latch);
+        for (int i = 0; i < 100; i++) {
+            new Thread(task).start();
+        }
+        latch.await();
+        System.out.print("LockTest finish!");
+    }
 
     public class MyTask implements Runnable {
 
         private int stock = 0;
-        private CountDownLatch latch;
+
+        private final CountDownLatch latch;
 
         public MyTask(CountDownLatch latch) {
             this.latch = latch;
@@ -31,10 +48,10 @@ public class RedisLockTest extends RedisExampleApplicationTest {
 
         @Override
         public void run() {
-            RedisLock redisLock = lockService.getRedisLock("addStock");
+            WeiLock redisLock = lockService.getRedisLock("addStock");
             try {
                 String name = Thread.currentThread().getName();
-                boolean b = redisLock.tryLock(1, 1, TimeUnit.SECONDS);
+                boolean b = redisLock.tryLock(3, 3, TimeUnit.SECONDS);
                 if (!b) {
                     latch.countDown();
                     return;
@@ -48,19 +65,6 @@ public class RedisLockTest extends RedisExampleApplicationTest {
                 redisLock.unlock();
             }
         }
-    }
-
-    @Test
-    public void lockTest() throws IOException, InterruptedException {
-
-        CountDownLatch latch = new CountDownLatch(100);
-
-        MyTask task = new MyTask(latch);
-        for (int i = 0; i < 100; i++) {
-            new Thread(task).start();
-        }
-        latch.await();
-        System.out.printf("LockTest finish!");
     }
 
 }

@@ -18,6 +18,8 @@ import java.util.Optional;
 
 /**
  * The type Redis incr service.
+ *
+ * @author William.Wei
  */
 public class RedisIncrServiceImpl implements IRedisIncrService {
 
@@ -51,6 +53,7 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
      * 批量Key增量操作，保证操作后数量>=0
      * 如出现<0情况本次操作失败已操作Key回滚
      * 正数为增加负数为扣减
+     * <p>
      * ***注意：批量操作的Key必须在同一节点
      *
      * @return the result

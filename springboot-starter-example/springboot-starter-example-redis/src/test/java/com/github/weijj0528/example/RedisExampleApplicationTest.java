@@ -1,8 +1,8 @@
-package com.github.weijj0528.example.redis;
+package com.github.weijj0528.example;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = RedisExampleApplication.class)
 public class RedisExampleApplicationTest {
 
 }

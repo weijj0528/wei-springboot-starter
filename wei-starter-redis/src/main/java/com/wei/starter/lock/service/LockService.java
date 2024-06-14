@@ -1,12 +1,15 @@
 package com.wei.starter.lock.service;
 
+import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.lock.WeiLock;
 import com.wei.starter.lock.annotation.Lock;
 import com.wei.starter.lock.annotation.Locking;
 import com.wei.starter.lock.impl.MultipleLock;
 import com.wei.starter.lock.impl.RedisLock;
+import com.wei.starter.lock.impl.RedissonLock;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.Redisson;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -35,9 +38,24 @@ public class LockService {
     private final ConcurrentHashMap<String, Expression> cache = new ConcurrentHashMap<>(16);
 
     /**
+     * redisson
+     */
+    private Redisson redisson;
+
+    /**
      * 连接工厂
      */
     private RedisConnectionFactory redisConnectionFactory;
+
+
+    /**
+     * Instantiates a new Lock service.
+     *
+     * @param redisson the redisson
+     */
+    public LockService(Redisson redisson) {
+        this.redisson = redisson;
+    }
 
     /**
      * Instantiates a new Lock service.
@@ -54,10 +72,24 @@ public class LockService {
      * @param lockKey the lock key
      * @return redis lock
      */
-    public RedisLock getRedisLock(String lockKey) {
-        return new RedisLock(lockKey, redisConnectionFactory);
+    public WeiLock getRedisLock(String lockKey) {
+        if (redisson != null) {
+            return new RedissonLock(lockKey, redisson);
+        }
+        if (redisConnectionFactory != null) {
+            new RedisLock(lockKey, redisConnectionFactory);
+        }
+        throw new ErrorMsgException("redisson and redisConnectionFactory is null!");
     }
 
+    /**
+     * Gets redis lock.
+     *
+     * @param lockKey     the lock key
+     * @param waitTime    the wait time
+     * @param expiredTime the expired time
+     * @return the redis lock
+     */
     public RedisLock getRedisLock(String lockKey, long waitTime, long expiredTime) {
         return new RedisLock(lockKey, waitTime, expiredTime, redisConnectionFactory);
     }

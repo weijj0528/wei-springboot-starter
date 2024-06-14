@@ -9,11 +9,12 @@ import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.types.Expiration;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
 
 /**
+ * The type Redis lock.
+ *
  * @author William
- * @Date 2019/4/1
+ * @Date 2019 /4/1
  * @Description 基于Redis实现的分布式锁
  */
 @Slf4j
@@ -47,17 +48,31 @@ public class RedisLock implements WeiLock {
     /**
      * 过期时间
      */
-    private long expiredTime;
+    private final long expiredTime;
 
     /**
      * 等待时间
      */
-    private long waitTime;
+    private final long waitTime;
 
+    /**
+     * Instantiates a new Redis lock.
+     *
+     * @param lockKey                the lock key
+     * @param redisConnectionFactory the redis connection factory
+     */
     public RedisLock(String lockKey, RedisConnectionFactory redisConnectionFactory) {
         this(lockKey, 0, DEFAULT_EXPIRED_TIME, redisConnectionFactory);
     }
 
+    /**
+     * Instantiates a new Redis lock.
+     *
+     * @param lockKey                the lock key
+     * @param waitTime               the wait time
+     * @param expiredTime            the expired time
+     * @param redisConnectionFactory the redis connection factory
+     */
     public RedisLock(String lockKey, long waitTime, long expiredTime, RedisConnectionFactory redisConnectionFactory) {
         this.redisConnectionFactory = redisConnectionFactory;
         this.lockKey = lockKey;
@@ -79,8 +94,8 @@ public class RedisLock implements WeiLock {
     }
 
     @Override
-    public void lockInterruptibly() throws InterruptedException {
-        throw new RuntimeException("RedisLock lockInterruptibly method is unrealized!");
+    public void lockInterruptibly() {
+        unlock();
     }
 
     @Override
@@ -107,6 +122,7 @@ public class RedisLock implements WeiLock {
      * @return the boolean
      * @throws InterruptedException the interrupted exception
      */
+    @Override
     public boolean tryLock(long time, long expirationTime, TimeUnit unit) throws InterruptedException {
         // 获取连接
         RedisConnection redisConnection = getRedisConnection();
@@ -149,10 +165,5 @@ public class RedisLock implements WeiLock {
             log.debug(lockKey + " locking " + time + "ms");
             redisConnection.close();
         }
-    }
-
-    @Override
-    public Condition newCondition() {
-        throw new RuntimeException("RedisLock newCondition method is unrealized!");
     }
 }

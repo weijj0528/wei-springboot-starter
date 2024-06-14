@@ -15,17 +15,17 @@ import java.util.List;
  * 基于Redis 的通用库存服务
  * 库存数据结构设计
  * {key}:单商品库存KEY
- * |--usable:count 可用库存
- * |--lock:count 锁定库存
- * |--used:count 使用库存
- * |--total:count 总库存
+ * |--usable: count 可用库存
+ * |--lock: count 锁定库存
+ * |--used: count 使用库存
+ * |--total: count 总库存
  * 库存流转使用场景
  * usable->lock:剩余库存锁定
  * lock->usable:锁定库存解锁
  * lock->used:锁定库存消耗
  * usable->used:剩余消耗
  * 库存数量约定
- * total = count + lock + used
+ * total = usable + lock + used
  *
  * @author William.Wei
  */
