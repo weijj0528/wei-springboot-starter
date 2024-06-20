@@ -5,15 +5,15 @@ spring:
         name: example-redis
     redis:
         database: 15
-        host: 192.168.1.113
-        password: Gtown991((!
+        host: 192.168.1.3
+        port: 6379
+        password: Weijj0528!
         jedis:
             pool:
                 max-active: 8
                 max-idle: 8
                 max-wait: -1ms
                 min-idle: 0
-        port: 6379
 
 redisson:
     config:

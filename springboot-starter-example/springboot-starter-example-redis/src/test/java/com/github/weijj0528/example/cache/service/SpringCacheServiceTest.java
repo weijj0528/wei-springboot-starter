@@ -6,16 +6,16 @@ import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;
 
-class WeiCacheServiceTest extends RedisExampleApplicationTest {
+class SpringCacheServiceTest extends RedisExampleApplicationTest {
 
     @Resource
-    private WeiCacheService weiCacheService;
+    private WeiCacheService springCacheService;
 
     @Test
     public void addCache() {
         final UserInfo query = new UserInfo();
         query.setId(1L);
-        final UserInfo userInfo = weiCacheService.addCache(query);
+        final UserInfo userInfo = springCacheService.addCache(query);
         System.out.println(userInfo);
     }
 
@@ -23,7 +23,7 @@ class WeiCacheServiceTest extends RedisExampleApplicationTest {
     public void updateCache() {
         final UserInfo query = new UserInfo();
         query.setId(1L);
-        final UserInfo userInfo = weiCacheService.updateCache(query);
+        final UserInfo userInfo = springCacheService.updateCache(query);
         System.out.println(userInfo);
     }
 
@@ -31,6 +31,6 @@ class WeiCacheServiceTest extends RedisExampleApplicationTest {
     public void removeCache() {
         final UserInfo query = new UserInfo();
         query.setId(1L);
-        weiCacheService.removeCache(query);
+        springCacheService.removeCache(query);
     }
 }

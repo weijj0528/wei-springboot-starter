@@ -7,15 +7,19 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import static com.wei.starter.cache.CacheAutoConfig.DEFAULT_KEY_GENERATOR;
+
 /**
  * The type Wei cache service.
+ * 默认KEY生成演示
+ * 注意：缓存保存与更新删除 KEY 都可能会不一样，这取决于KEY生成策略
  *
  * @author William.Wei
  */
-@Service
-public class WeiCacheServiceImpl implements WeiCacheService {
+@Service("defaultCacheService")
+public class DefaultCacheServiceImpl implements WeiCacheService {
 
-    @Cacheable(value = "user_info", key = "#query.id")
+    @Cacheable(value = "default_cache", keyGenerator = DEFAULT_KEY_GENERATOR)
     @Override
     public UserInfo addCache(UserInfo query) {
         System.out.println("addCache = " + query);
@@ -24,7 +28,7 @@ public class WeiCacheServiceImpl implements WeiCacheService {
         return userInfo;
     }
 
-    @CachePut(value = "user_info", key = "#query.id")
+    @CachePut(value = "default_cache", keyGenerator = DEFAULT_KEY_GENERATOR)
     @Override
     public UserInfo updateCache(UserInfo query) {
         System.out.println("updateCache = " + query);
@@ -33,9 +37,10 @@ public class WeiCacheServiceImpl implements WeiCacheService {
         return userInfo;
     }
 
-    @CacheEvict(value = "user_info", key = "#query.id")
+    @CacheEvict(value = "default_cache", keyGenerator = DEFAULT_KEY_GENERATOR)
     @Override
     public void removeCache(UserInfo query) {
         System.out.println("removeCache = " + query);
     }
+
 }
