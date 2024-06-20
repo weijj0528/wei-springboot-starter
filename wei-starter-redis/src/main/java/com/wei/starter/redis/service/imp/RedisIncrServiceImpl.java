@@ -69,6 +69,9 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
         }
         List<Long> eval = connection.evalSha(scriptHas1, ReturnType.fromJavaType(List.class), hashKey.length, keyArgs);
         connection.close();
+        if (eval == null || eval.isEmpty()) {
+            return Result.failure(CodeEnum.ERROR_SERVER.getCode(), "RedisIncrServiceImpl incr fail!");
+        }
         Long aLong = eval.get(0);
         if (aLong < 0) {
             // 操作失败
@@ -101,12 +104,12 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
     public Result<Map<String, Long>> getIncr(String[] keys) {
         Map<String, Long> map = new HashMap<>(keys.length);
         RedisConnection connection = redisConnectionFactory.getConnection();
-        for (int i = 0; i < keys.length; i++) {
-            byte[] bytes = connection.get(keys[i].getBytes());
+        for (String key : keys) {
+            byte[] bytes = connection.get(key.getBytes());
             if (bytes == null) {
-                map.put(keys[i], 0L);
+                map.put(key, 0L);
             } else {
-                map.put(keys[i], Long.parseLong(new String(bytes)));
+                map.put(key, Long.parseLong(new String(bytes)));
             }
         }
         connection.close();
@@ -174,12 +177,12 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
     public Result<Map<String, Long>> getHasIncr(String key, String[] hashKeys) {
         Map<String, Long> map = new HashMap<>(hashKeys.length);
         RedisConnection connection = redisConnectionFactory.getConnection();
-        for (int i = 0; i < hashKeys.length; i++) {
-            byte[] bytes = connection.hashCommands().hGet(key.getBytes(), hashKeys[i].getBytes());
+        for (String hashKey : hashKeys) {
+            byte[] bytes = connection.hashCommands().hGet(key.getBytes(), hashKey.getBytes());
             if (bytes == null) {
-                map.put(hashKeys[i], 0L);
+                map.put(hashKey, 0L);
             } else {
-                map.put(hashKeys[i], Long.parseLong(new String(bytes)));
+                map.put(hashKey, Long.parseLong(new String(bytes)));
             }
         }
         connection.close();

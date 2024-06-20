@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.*;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -104,7 +105,17 @@ public class RedisCommonStockServiceImpl implements IRedisCommonStockService {
     public Result<StockDTO> getStock(String key) {
         final RedisConnection connection = redisConnectionFactory.getConnection();
         final Map<byte[], byte[]> map = connection.hashCommands().hGetAll(key.getBytes());
-        final StockDTO stockDTO = getStockDTO(key, map);
+        final StockDTO stockDTO;
+        if (map != null) {
+            stockDTO = getStockDTO(key, map);
+        } else {
+            stockDTO = new StockDTO();
+            stockDTO.setKey(key);
+            stockDTO.setTotal(BigInteger.ZERO.intValue());
+            stockDTO.setUsed(BigInteger.ZERO.intValue());
+            stockDTO.setUsable(BigInteger.ZERO.intValue());
+            stockDTO.setLock(BigInteger.ZERO.intValue());
+        }
         connection.close();
         return Result.success(stockDTO);
     }
@@ -116,16 +127,16 @@ public class RedisCommonStockServiceImpl implements IRedisCommonStockService {
             final String hashKey = new String(entry.getKey());
             final Integer value = Integer.valueOf(new String(entry.getValue()));
             switch (hashKey) {
-                case "usable":
+                case USABLE:
                     stockDTO.setUsable(value);
                     break;
-                case "lock":
+                case LOCK:
                     stockDTO.setLock(value);
                     break;
-                case "used":
+                case USED:
                     stockDTO.setUsed(value);
                     break;
-                case "total":
+                case TOTAL:
                     stockDTO.setTotal(value);
                     break;
                 default:
@@ -215,9 +226,7 @@ public class RedisCommonStockServiceImpl implements IRedisCommonStockService {
 
     @Override
     public Result<List<StockDTO>> unLock(@Validated(Unlock.class) Collection<StockUpdateDTO> updateDTOList) {
-        updateDTOList.forEach(updateDTO -> {
-            updateDTO.setFlag(false);
-        });
+        updateDTOList.forEach(updateDTO -> updateDTO.setFlag(false));
         return batchUpdate(updateDTOList);
     }
 

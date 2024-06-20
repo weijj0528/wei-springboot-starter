@@ -30,6 +30,11 @@ import java.util.List;
  * @author William.Wei
  */
 public interface IRedisCommonStockService {
+    public static final String USABLE = "usable";
+    public static final String LOCK = "lock";
+    public static final String USED = "used";
+    public static final String TOTAL = "total";
+
     /**
      * Stock set
      * 库存设置，返回与设置前的变化量，新设置量应大于已使用量，设置出错自动回滚
