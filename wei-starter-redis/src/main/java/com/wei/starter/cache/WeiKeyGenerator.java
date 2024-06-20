@@ -1,6 +1,7 @@
 package com.wei.starter.cache;
 
 import cn.hutool.core.util.HashUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.util.ClassUtils;
@@ -10,11 +11,14 @@ import java.lang.reflect.Method;
 
 /**
  * The type Cache key generator.
+ * 缓存 KEY 生成策略
+ * 如没有配置缓存KEY 则使用该策略生成
+ * eg. [Prefix:]ClassSimpleName:methodName:{paramsHash}
  *
  * @author William
  */
 @Slf4j
-public class CacheKeyGenerator implements KeyGenerator {
+public class WeiKeyGenerator implements KeyGenerator {
     /**
      * The constant NO_PARAM_KEY.
      */
@@ -22,38 +26,52 @@ public class CacheKeyGenerator implements KeyGenerator {
     /**
      * The constant NULL_PARAM_KEY.
      */
-    public static final int NULL_PARAM_KEY = 53;
+    public static final int NULL_PARAM_KEY = 99;
 
+    /**
+     * 缓存 KEY 生成策略
+     * 如没有配置缓存KEY 则使用该策略生成
+     * eg. [Prefix:]SimpleName:methodName:{paramsHash}
+     *
+     * @param target the target object
+     * @param method the method
+     * @param params the params
+     * @return
+     */
     @Override
     public Object generate(Object target, Method method, Object... params) {
-
         StringBuilder key = new StringBuilder();
-        key.append(target.getClass().getSimpleName()).append(".").append(method.getName()).append(":");
-        if (params.length == 0) {
-            return key.append(NO_PARAM_KEY).toString();
-        }
+        key.append(target.getClass().getSimpleName())
+                .append(StrUtil.COLON).append(method.getName())
+                .append(StrUtil.COLON);
+        StringBuilder args = new StringBuilder();
         for (Object param : params) {
             if (param == null) {
                 log.warn("input null param for Spring cache, use default key={}", NULL_PARAM_KEY);
-                key.append(NULL_PARAM_KEY);
+                args.append(NULL_PARAM_KEY);
             } else if (ClassUtils.isPrimitiveArray(param.getClass())) {
                 int length = Array.getLength(param);
                 for (int i = 0; i < length; i++) {
-                    key.append(Array.get(param, i));
-                    key.append(',');
+                    args.append(Array.get(param, i));
+                    args.append(StrUtil.COMMA);
                 }
             } else if (ClassUtils.isPrimitiveOrWrapper(param.getClass()) || param instanceof String) {
-                key.append(param);
+                args.append(param);
             } else {
                 log.warn("Using an object as a cache key may lead to unexpected results. " +
                         "Either use @Cacheable(key=..) or implement CacheKey. Method is " + target.getClass() + "#" + method.getName());
-                key.append(param.hashCode());
+                args.append(param.hashCode());
             }
-            key.append('-');
+            args.append(StrUtil.DASHED);
         }
-        String finalKey = key.toString();
-        long cacheKeyHash = HashUtil.mixHash(finalKey);
-        log.debug("using cache key={} hashCode={}", finalKey, cacheKeyHash);
-        return key.toString();
+        if (args.length() == 0) {
+            args.append(NO_PARAM_KEY);
+        }
+        String argsKey = args.toString();
+        long argsKeyHash = HashUtil.mixHash(argsKey);
+        key.append(argsKeyHash);
+        String kkk = key.toString();
+        log.debug("using cache Key={} argsKey={}", kkk, argsKey);
+        return kkk;
     }
 }

@@ -1,9 +1,11 @@
 package com.wei.starter.cache.impl;
 
+import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.cache.CacheService;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisCacheService implements CacheService {
 
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public RedisCacheService(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -46,13 +48,21 @@ public class RedisCacheService implements CacheService {
 
     @Override
     public void removePattern(String pattern) {
-        Set<String> keys = redisTemplate.keys(pattern);
-        redisTemplate.delete(keys);
+        ScanOptions scanOptions = ScanOptions.scanOptions()
+                .match(pattern)
+                .count(1000)
+                .build();
+        try (Cursor<String> scan = redisTemplate.scan(scanOptions)) {
+            scan.forEachRemaining(redisTemplate::delete);
+        } catch (Exception e) {
+            throw new ErrorMsgException("缓存删除失败");
+        }
     }
 
     @Override
     public void removeAll() {
-        redisTemplate.getConnectionFactory().getConnection().flushDb();
+        // redisTemplate.getConnectionFactory().getConnection().flushDb();
+        throw new UnsupportedOperationException();
     }
 
     @Override

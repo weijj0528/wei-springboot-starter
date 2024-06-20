@@ -26,7 +26,7 @@ public class LockAspect implements Ordered {
     @Override
     public int getOrder() {
         // 最外层执行
-        return Integer.MAX_VALUE;
+        return Integer.MIN_VALUE;
     }
 
     @Around("@annotation(com.wei.starter.lock.annotation.Lock)||@annotation(com.wei.starter.lock.annotation.Locking)")
