@@ -1,0 +1,48 @@
+server:
+    error:
+        path: /error.html
+    servlet:
+        context-path: /
+spring:
+    profiles:
+        active: @profileActive@
+    banner:
+        location: classpath:banner.txt
+    mvc:
+        servlet:
+            load-on-startup: 1
+            path: /
+    servlet:
+        multipart:
+            location: ./upload
+            max-file-size: 10MB
+            max-request-size: 30MB
+    output:
+        ansi:
+            enabled: ALWAYS
+    # 数据库连接池
+    datasource:
+        hikari:
+            minimum-idle: 16
+            maximum-pool-size: 100
+            max-lifetime: 1800000
+            idle-timeout: 600000
+            connection-timeout: 30000
+            connection-test-query: SELECT 1
+    flyway:
+        baseline-on-migrate: true
+        fail-on-missing-locations: false
+        locations: classpath:db/migration
+    # Redis lettuce pool
+    redis:
+        lettuce:
+            pool:
+                enabled: true
+                max-active: 8
+                max-idle: 8
+                max-wait: -1ms
+                min-idle: 0
+# 日志配置
+logging:
+    file:
+        name: ./logs/${spring.application.name}

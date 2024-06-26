@@ -87,6 +87,7 @@
 
     <modules>
         <module>springboot-starter</module>
+        <module>springboot-starter-archetype</module>
         <module>springboot-starter-example</module>
         <module>springboot-starter-code-plugin</module>
         <module>wei-dependencies</module>

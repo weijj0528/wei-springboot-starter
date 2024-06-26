@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}</artifactId>
+        <version>${version}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>${artifactId}</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${artifactId}</name>
+
+    <description>服务实现</description>
+
+    <url>https://github.com/weijj0528/wei-springboot-starter</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>${rootArtifactId}-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.weijj0528</groupId>
+            <artifactId>wei-starter-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.weijj0528</groupId>
+            <artifactId>wei-starter-redis</artifactId>
+        </dependency>
+    </dependencies>
+</project>
