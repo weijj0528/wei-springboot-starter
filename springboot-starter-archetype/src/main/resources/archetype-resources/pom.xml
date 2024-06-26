@@ -23,6 +23,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <modules>
+        <module>${rootArtifactId}-api</module>
+        <module>${rootArtifactId}-service</module>
+        <module>${rootArtifactId}-web</module>
+    </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

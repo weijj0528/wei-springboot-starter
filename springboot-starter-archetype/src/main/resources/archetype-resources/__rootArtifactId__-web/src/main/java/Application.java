@@ -25,7 +25,7 @@ public class Application {
      */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        System.out.println("----------------- starter success! -----------------");
+        System.out.println("----------------- ${rootArtifactId} starter success! -----------------");
     }
 
 }

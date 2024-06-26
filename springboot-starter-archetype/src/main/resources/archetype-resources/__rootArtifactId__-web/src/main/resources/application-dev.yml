@@ -19,10 +19,10 @@ spring:
         username: SA
         password:
     redis:
-        database: 15
-        host: 192.168.1.3
+        database: 0
+        host: localhost
         port: 6379
-        password: Weijj0528!
+        password: 123456789
 
 # Redisson
 redisson:
@@ -43,9 +43,9 @@ mybatis:
 swagger:
     enabled: true
     version: 1.0
-    title: Swagger演示API
-    description: API简介说明，本系统用于演示Swagger2功能
-    contact-url: https://xxx.xxx.xxx
-    contact-name: 联系人
-    contact-email: xxxxxx@163.com
+    title: ${rootArtifactId} API
+    description: ${rootArtifactId} api description
+    contact-url: http://localhost:8080/doc.html#/home
+    contact-name: ${rootArtifactId}
+    contact-email: ${rootArtifactId}@163.com
     base-package: ${package}
