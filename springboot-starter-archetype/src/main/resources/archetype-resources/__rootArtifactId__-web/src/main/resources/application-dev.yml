@@ -43,7 +43,7 @@ mybatis:
 swagger:
     enabled: true
     version: 1.0
-    title: ${rootArtifactId} API
+    title: ${rootArtifactId} api
     description: ${rootArtifactId} api description
     contact-url: http://localhost:8080/doc.html#/home
     contact-name: ${rootArtifactId}

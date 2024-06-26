@@ -66,6 +66,12 @@
                         <include>**/*.java</include>
                     </includes>
                 </fileSet>
+                <fileSet encoding="UTF-8" filtered="true" packaged="true">
+                    <directory>src/test/java</directory>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+                </fileSet>
                 <fileSet encoding="UTF-8" filtered="true">
                     <directory>src/main/resources</directory>
                     <includes>
