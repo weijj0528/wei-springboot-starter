@@ -34,9 +34,9 @@ public class HelloController {
      * @return the result
      */
     @PostMapping
-    public Result<Void> save(@RequestBody @Validated(Add.class) HelloDTO saveDto) {
-        helloService.save(saveDto);
-        return Result.success();
+    public Result<HelloDTO> save(@RequestBody @Validated(Add.class) HelloDTO saveDto) {
+        HelloDTO dto = helloService.saveAndGet(saveDto);
+        return Result.success(dto);
     }
 
     /**
@@ -47,10 +47,10 @@ public class HelloController {
      * @return the result
      */
     @PostMapping("/{id}")
-    public Result<Void> update(@PathVariable Long id, @RequestBody @Validated(Update.class) HelloDTO updateDto) {
+    public Result<HelloDTO> update(@PathVariable Long id, @RequestBody @Validated(Update.class) HelloDTO updateDto) {
         updateDto.setId(id);
-        helloService.update(updateDto);
-        return Result.success();
+        HelloDTO dto = helloService.updateAndGet(updateDto);
+        return Result.success(dto);
     }
 
     /**
@@ -60,9 +60,9 @@ public class HelloController {
      * @return the result
      */
     @PostMapping("/del/{id}")
-    public Result<Void> delete(@PathVariable Long id) {
-        helloService.delete(id);
-        return Result.success();
+    public Result<HelloDTO> delete(@PathVariable Long id) {
+        HelloDTO dto = helloService.deleteAndGet(id);
+        return Result.success(dto);
     }
 
     /**

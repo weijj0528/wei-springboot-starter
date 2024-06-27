@@ -18,6 +18,7 @@ import java.util.Properties;
 /**
  * The type Sql cost interceptor.
  * Sql执行时间记录与打印
+ * @author Weijj0528
  */
 @Slf4j
 @Intercepts({@Signature(type = StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class}),

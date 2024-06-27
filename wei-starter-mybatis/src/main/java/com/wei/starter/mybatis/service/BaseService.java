@@ -1,11 +1,12 @@
 package com.wei.starter.mybatis.service;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wei.starter.base.bean.Page;
-import tk.mybatis.mapper.entity.Example;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
  * @Date 2019 /3/1
  * @Description 基础服务
  */
-public interface BaseService<T> {
+public interface BaseService<T> extends IService<T> {
 
     /**
      * Insert selective int.
@@ -35,6 +36,14 @@ public interface BaseService<T> {
     int insertList(List<T> list);
 
     /**
+     * Delete by primary key int.
+     *
+     * @param id the id
+     * @return the int
+     */
+    int deleteByPrimaryKey(Serializable id);
+
+    /**
      * Update by primary key selective int.
      *
      * @param t the t
@@ -45,18 +54,10 @@ public interface BaseService<T> {
     /**
      * Select by primary key t.
      *
-     * @param pk the pk
+     * @param id the id
      * @return the t
      */
-    T selectByPrimaryKey(Object pk);
-
-    /**
-     * Select one by example record.
-     *
-     * @param example the example
-     * @return the record
-     */
-    T selectOneByExample(Example example);
+    T selectByPrimaryKey(Serializable id);
 
     /**
      * Select one t.
@@ -67,14 +68,6 @@ public interface BaseService<T> {
     T selectOne(T t);
 
     /**
-     * Select count by example int.
-     *
-     * @param example the example
-     * @return the int
-     */
-    int selectCountByExample(Example example);
-
-    /**
      * Select list.
      *
      * @param t the t
@@ -83,21 +76,37 @@ public interface BaseService<T> {
     List<T> select(T t);
 
     /**
+     * Select one by example record.
+     *
+     * @param wrapper the wrapper
+     * @return the record
+     */
+    T selectOneByExample(Wrapper<T> wrapper);
+
+    /**
      * Select by example list.
      *
-     * @param example the example
+     * @param wrapper the wrapper
      * @return the list
      */
-    List<T> selectByExample(Example example);
+    List<T> selectByExample(Wrapper<T> wrapper);
+
+    /**
+     * Select count by example int.
+     *
+     * @param wrapper the wrapper
+     * @return the int
+     */
+    Long selectCountByExample(Wrapper<T> wrapper);
 
     /**
      * Select page by example page info.
      *
-     * @param example the example
+     * @param wrapper the wrapper
      * @param page    the page
      * @return the page info
      */
-    Page<T> selectPageByExample(Example example, Page<T> page);
+    Page<T> selectPageByExample(Wrapper<T> wrapper, Page<T> page);
 
     /**
      * Cursor operator.

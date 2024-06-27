@@ -5,6 +5,7 @@ import com.github.weijj0528.example.mybatis.model.UserAuthPhone;
 import com.wei.starter.base.bean.Page;
 import com.wei.starter.mybatis.service.BaseService;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public interface UserAuthPhoneService extends BaseService<UserAuthPhone> {
      * @param id the id
      * @return the int
      */
-    int delete(Object id);
+    int delete(Serializable id);
 
     /**
      * Update int.
@@ -44,7 +45,7 @@ public interface UserAuthPhoneService extends BaseService<UserAuthPhone> {
      * @param id the id
      * @return the
      */
-    UserAuthPhoneDto details(Object id);
+    UserAuthPhoneDto details(Serializable id);
 
     /**
      * List list.

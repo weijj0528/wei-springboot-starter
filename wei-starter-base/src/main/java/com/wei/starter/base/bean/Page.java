@@ -22,12 +22,12 @@ public class Page<T> {
     /**
      * 页码，从1开始
      */
-    private int page = 1;
+    private long page = 1;
 
     /**
      * 页容量，默认为20
      */
-    private int size = 20;
+    private long size = 20;
 
     /**
      * 总数默认为0

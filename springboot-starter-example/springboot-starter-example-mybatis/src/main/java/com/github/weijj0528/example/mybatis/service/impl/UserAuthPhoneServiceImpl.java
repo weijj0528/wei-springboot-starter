@@ -1,5 +1,6 @@
 package com.github.weijj0528.example.mybatis.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.weijj0528.example.mybatis.dto.UserAuthPhoneDto;
 import com.github.weijj0528.example.mybatis.mapper.UserAuthPhoneMapper;
 import com.github.weijj0528.example.mybatis.model.UserAuthPhone;
@@ -9,9 +10,9 @@ import com.wei.starter.base.util.WeiBeanUtil;
 import com.wei.starter.mybatis.service.AbstractService;
 import com.wei.starter.mybatis.xmapper.XMapper;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class UserAuthPhoneServiceImpl extends AbstractService<UserAuthPhone> imp
     @Override
     public int save(UserAuthPhoneDto dto) {
         UserAuthPhone userAuthPhone = WeiBeanUtil.toBean(dto, UserAuthPhone.class);
-        return getMapper().insertSelective(userAuthPhone);
+        return insertSelective(userAuthPhone);
     }
 
     /**
@@ -49,8 +50,8 @@ public class UserAuthPhoneServiceImpl extends AbstractService<UserAuthPhone> imp
      * @return the int
      */
     @Override
-    public int delete(Object id) {
-        return getMapper().deleteByPrimaryKey(id);
+    public int delete(Serializable id) {
+        return deleteByPrimaryKey(id);
     }
 
     /**
@@ -62,7 +63,7 @@ public class UserAuthPhoneServiceImpl extends AbstractService<UserAuthPhone> imp
     @Override
     public int update(UserAuthPhoneDto dto) {
         UserAuthPhone userAuthPhone = WeiBeanUtil.toBean(dto, UserAuthPhone.class);
-        return getMapper().updateByPrimaryKeySelective(userAuthPhone);
+        return updateByPrimaryKeySelective(userAuthPhone);
     }
 
     /**
@@ -71,8 +72,8 @@ public class UserAuthPhoneServiceImpl extends AbstractService<UserAuthPhone> imp
      * @return the userAuthPhone dto
      */
     @Override
-    public UserAuthPhoneDto details(Object id) {
-        UserAuthPhone userAuthPhone = getMapper().selectByPrimaryKey(id);
+    public UserAuthPhoneDto details(Serializable id) {
+        UserAuthPhone userAuthPhone = selectByPrimaryKey(id);
         return WeiBeanUtil.toBean(userAuthPhone, UserAuthPhoneDto.class);
     }
 
@@ -85,13 +86,13 @@ public class UserAuthPhoneServiceImpl extends AbstractService<UserAuthPhone> imp
      */
     @Override
     public List<UserAuthPhoneDto> list(UserAuthPhoneDto queryDto, Page<UserAuthPhoneDto> page) {
-        Example example = new Example(UserAuthPhone.class);
-        Example.Criteria criteria = example.createCriteria();
+        QueryWrapper<UserAuthPhone> wrapper = new QueryWrapper<>(UserAuthPhone.class);
         // TODO 查询条件组装
+        wrapper.checkSqlInjection();
         Page<UserAuthPhone> userAuthPhonePage = new Page<>();
         userAuthPhonePage.setPage(page.getPage());
         userAuthPhonePage.setSize(page.getSize());
-        selectPageByExample(example, userAuthPhonePage);
+        selectPageByExample(wrapper, userAuthPhonePage);
         List<UserAuthPhoneDto> userAuthPhoneDtoList = WeiBeanUtil.toList(userAuthPhonePage.getList(), UserAuthPhoneDto.class);
         page.setTotal(userAuthPhonePage.getTotal());
         page.setList(userAuthPhoneDtoList);

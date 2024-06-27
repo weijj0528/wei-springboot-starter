@@ -1,11 +1,11 @@
 package com.github.weijj0528.example.mybatis.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.weijj0528.example.mybatis.MybatisExampleApplicationTest;
 import com.github.weijj0528.example.mybatis.dto.UserAuthPhoneDto;
 import com.github.weijj0528.example.mybatis.mapper.UserAuthPhoneMapper;
 import com.github.weijj0528.example.mybatis.model.UserAuthPhone;
 import org.junit.jupiter.api.Test;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -43,11 +43,10 @@ class UserAuthPhoneServiceTest extends MybatisExampleApplicationTest {
 
     @Test
     void selectByExample() {
-        final Example example = new Example(UserAuthPhone.class);
-        final Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(UserAuthPhone.IS_DEL, false);
-        criteria.andIn(UserAuthPhone.ID, Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
-        final List<UserAuthPhone> userAuthPhones = userAuthPhoneMapper.selectByExample(example);
+        final QueryWrapper<UserAuthPhone> example = new QueryWrapper<>(UserAuthPhone.class);
+        example.eq(UserAuthPhone.IS_DEL, false);
+        example.in(UserAuthPhone.ID, Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+        final List<UserAuthPhone> userAuthPhones = userAuthPhoneMapper.selectList(example);
         assertFalse(userAuthPhones.isEmpty());
     }
 }

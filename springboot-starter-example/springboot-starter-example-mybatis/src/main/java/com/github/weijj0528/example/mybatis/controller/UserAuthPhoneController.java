@@ -1,5 +1,6 @@
 package com.github.weijj0528.example.mybatis.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.weijj0528.example.mybatis.dto.UserAuthPhoneDto;
 import com.github.weijj0528.example.mybatis.model.UserAuthPhone;
 import com.github.weijj0528.example.mybatis.service.UserAuthPhoneService;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * 演示 Controller
@@ -106,8 +106,7 @@ public class UserAuthPhoneController {
     @ResponseBody
     @GetMapping("/cursor")
     public Result<Page<UserAuthPhoneDto>> cursor(UserAuthPhoneDto queryDto) {
-        Example example = new Example(UserAuthPhone.class);
-        Example.Criteria criteria = example.createCriteria();
+        QueryWrapper<UserAuthPhone> example = new QueryWrapper<>(UserAuthPhone.class);
         // criteria.andEqualTo(UserAuthPhone.ID, 1);
         userAuthPhoneService.cursorOperator("selectByExample", 10, example, list -> {
             list.forEach(o -> log.info("cursor record: {}", o));

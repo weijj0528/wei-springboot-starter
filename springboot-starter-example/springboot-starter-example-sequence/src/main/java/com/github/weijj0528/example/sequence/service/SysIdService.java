@@ -5,6 +5,7 @@ import com.github.weijj0528.example.sequence.model.SysId;
 import com.wei.starter.base.bean.Page;
 import com.wei.starter.mybatis.service.BaseService;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public interface SysIdService extends BaseService<SysId> {
      * @param id the id
      * @return the int
      */
-    int delete(Object id);
+    int delete(Serializable id);
 
     /**
      * Update int.
@@ -44,7 +45,7 @@ public interface SysIdService extends BaseService<SysId> {
      * @param id the id
      * @return the
      */
-    SysIdDto details(Object id);
+    SysIdDto details(Serializable id);
 
     /**
      * List list.

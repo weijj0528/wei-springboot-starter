@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.wei.starter.base.config.EnvConfig,\
 com.wei.starter.base.config.SpringContext,\
 com.wei.starter.base.config.JsonAutoConfig,\
 com.wei.starter.base.config.WeiMvcConfigurer,\

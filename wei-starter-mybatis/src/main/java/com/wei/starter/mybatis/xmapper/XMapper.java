@@ -24,8 +24,7 @@
 
 package com.wei.starter.mybatis.xmapper;
 
-import tk.mybatis.mapper.common.Mapper;
-import tk.mybatis.mapper.common.MySqlMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * 继承自己的MyMapper
@@ -33,7 +32,7 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @author liuzh
  * @since 2015-09-06 21:53
  */
-public interface XMapper<T> extends Mapper<T>, MySqlMapper<T> {
+public interface XMapper<T> extends BaseMapper<T> {
     //TODO
     //FIXME 特别注意，该接口不能被扫描到，否则会出错
 }

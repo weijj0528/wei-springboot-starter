@@ -1,26 +1,23 @@
 package com.github.weijj0528.example.mybatis.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@Table(name = "user_auth_phone")
+@TableName("user_auth_phone")
 public class UserAuthPhone implements Serializable {
     /**
      * ID
      */
-    @Id
     private Long id;
 
     /**
      * 租户ID
      */
-    @Column(name = "tenant_id")
     private Long tenantId;
 
     /**
@@ -36,13 +33,13 @@ public class UserAuthPhone implements Serializable {
     /**
      * 用户ID
      */
-    @Column(name = "user_id")
+    @TableField("user_id")
     private Long userId;
 
     /**
      * 是否删除
      */
-    @Column(name = "is_del")
+    @TableField("is_del")
     private Boolean del;
 
     /**
@@ -77,7 +74,7 @@ public class UserAuthPhone implements Serializable {
 
     public static final String USER_ID = "userId";
 
-    public static final String IS_DEL = "del";
+    public static final String IS_DEL = "iS_del";
 
     public static final String UPDATER = "updater";
 

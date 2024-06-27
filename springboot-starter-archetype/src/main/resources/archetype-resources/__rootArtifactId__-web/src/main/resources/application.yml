@@ -1,8 +1,17 @@
+# Spring Boot Server
 server:
     error:
         path: /error.html
     servlet:
         context-path: /
+# Actuator http://localhost:8080/wei-actuator/health
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health
+            base-path: /wei-actuator
+# Spring
 spring:
     profiles:
         active: @profileActive@

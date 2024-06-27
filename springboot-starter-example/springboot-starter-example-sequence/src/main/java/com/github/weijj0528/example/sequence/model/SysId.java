@@ -1,43 +1,42 @@
 package com.github.weijj0528.example.sequence.model;
 
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@Table(name = "sys_id")
+@TableName("sys_id")
 public class SysId implements Serializable {
     /**
      * ID
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableId
     private Long id;
 
     /**
      * 租户ID
      */
-    @Column(name = "tenant_id")
+    @TableField("tenant_id")
     private Long tenantId;
 
     /**
      * 系统名称
      */
-    @Column(name = "sys_name")
+    @TableField("sys_name")
     private String sysName;
 
     /**
      * 业务类型
      */
-    @Column(name = "biz_type")
+    @TableField("biz_type")
     private String bizType;
 
     /**
      * 下一次开始值
      */
-    @Column(name = "next_start")
+    @TableField("next_start")
     private Long nextStart;
 
     /**
@@ -45,7 +44,7 @@ public class SysId implements Serializable {
      */
     private Long step;
 
-    @Column(name = "is_del")
+    @TableField("is_del")
     private Boolean isDel;
 
     /**

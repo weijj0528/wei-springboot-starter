@@ -1,5 +1,6 @@
 package com.github.weijj0528.example.sequence.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.weijj0528.example.sequence.dto.SysIdDto;
 import com.github.weijj0528.example.sequence.mapper.SysIdMapper;
 import com.github.weijj0528.example.sequence.model.SysId;
@@ -9,9 +10,9 @@ import com.wei.starter.base.util.WeiBeanUtil;
 import com.wei.starter.mybatis.service.AbstractService;
 import com.wei.starter.mybatis.xmapper.XMapper;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -50,8 +51,8 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      * @return the int
      */
     @Override
-    public int delete(Object id) {
-        return getMapper().deleteByPrimaryKey(id);
+    public int delete(Serializable id) {
+        return deleteByPrimaryKey(id);
     }
 
     /**
@@ -63,7 +64,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
     @Override
     public int update(SysIdDto dto) {
         SysId sysId = WeiBeanUtil.toBean(dto, SysId.class);
-        return getMapper().updateByPrimaryKeySelective(sysId);
+        return updateByPrimaryKeySelective(sysId);
     }
 
     /**
@@ -72,8 +73,8 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      * @return the sysId dto
      */
     @Override
-    public SysIdDto details(Object id) {
-        SysId sysId = getMapper().selectByPrimaryKey(id);
+    public SysIdDto details(Serializable id) {
+        SysId sysId = selectByPrimaryKey(id);
         return WeiBeanUtil.toBean(sysId, SysIdDto.class);
     }
 
@@ -86,18 +87,16 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
      */
     @Override
     public List<SysIdDto> list(SysIdDto sysIdDto, Page page) {
-        Example example = new Example(SysId.class);
-        Example.Criteria criteria = example.createCriteria();
+        QueryWrapper<SysId> example = new QueryWrapper<>(SysId.class);
         selectPageByExample(example, page);
         return page.getList();
     }
 
     @Override
     public SysId queryBySysNameAndBizType(String sysName, String bizKey) {
-        Example example = new Example(SysId.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(SysId.SYS_NAME, sysName);
-        criteria.andEqualTo(SysId.BIZ_TYPE, bizKey);
+        QueryWrapper<SysId> example = new QueryWrapper<>(SysId.class);
+        example.eq(SysId.SYS_NAME, sysName);
+        example.eq(SysId.BIZ_TYPE, bizKey);
         return selectOneByExample(example);
     }
 
@@ -109,7 +108,7 @@ public class SysIdServiceImpl extends AbstractService<SysId> implements SysIdSer
         sysId.setNextStart(0L);
         sysId.setStep(1000L);
         sysId.setCtime(new Date());
-        getMapper().insertSelective(sysId);
+        insertSelective(sysId);
         return sysId;
     }
 }

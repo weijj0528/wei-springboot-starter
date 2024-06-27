@@ -3,9 +3,10 @@
 #set( $symbol_escape = '\' )
 package ${package}.model;
 
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * (Hello)实体类
@@ -13,47 +14,48 @@ import javax.persistence.*;
  * @author EasyCode
  * @since 2024-06-26 11:50:49
  */
-@Table(name = "HELLO")
+@TableName("HELLO")
 public class Hello implements Serializable {
     private static final long serialVersionUID = -99040535432383690L;
 
-    @Id
-    /*@GeneratedValue(strategy = GenerationType.IDENTITY)*/
+    @OrderBy(asc = false, sort = 10)
+    @TableId
     private Integer id;
     /**
      * 租户ID
      */
-    @Column(name = "TENANT_ID")
+    @TableField("TENANT_ID")
     private Integer tenantId;
     /**
      * 手机号
      */
-    @Column(name = "NAME")
+    @TableField("NAME")
     private String name;
     /**
      * 是否删除
      */
-    @Column(name = "IS_DEL")
+    @TableLogic(value = "0", delval = "1")
+    @TableField("IS_DEL")
     private Integer isDel;
     /**
      * 更新人
      */
-    @Column(name = "UPDATER")
+    @TableField("UPDATER")
     private String updater;
     /**
      * 更新时间
      */
-    @Column(name = "UTIME")
+    @TableField("UTIME")
     private Date utime;
     /**
      * 创建人
      */
-    @Column(name = "CREATER")
+    @TableField("CREATER")
     private String creater;
     /**
      * 创建时间
      */
-    @Column(name = "CTIME")
+    @TableField("CTIME")
     private Date ctime;
 
     public static final String ID = "id";

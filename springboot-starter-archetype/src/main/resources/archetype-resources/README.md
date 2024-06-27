@@ -7,8 +7,7 @@
 已集成常用开发框架：
 
 - [Wei Spring Boot Starter](https://github.com/weijj0528/wei-springboot-starter)
-  - [通用Mapper]()
-  - [PageHelper分页插件]()
+  - [Mybatis-Plus](https://baomidou.com/introduce/)
   - ……
 
 ## 快速开始
@@ -17,7 +16,7 @@
 
 [接口文档](http://localhost:8080/doc.html)
 
-#### ==注意：线上环境关闭接口文档==
+#### 注意：线上环境关闭接口文档
 
 ```yaml
 

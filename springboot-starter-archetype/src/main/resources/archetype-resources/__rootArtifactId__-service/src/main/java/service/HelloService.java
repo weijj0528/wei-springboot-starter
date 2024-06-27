@@ -8,6 +8,7 @@ import ${package}.model.Hello;
 import com.wei.starter.base.bean.Page;
 import com.wei.starter.mybatis.service.BaseService;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -27,12 +28,28 @@ public interface HelloService extends BaseService<Hello> {
     int save(HelloDTO dto);
 
     /**
+     * 新增保存并返回新增记录
+     *
+     * @param dto the dto
+     * @return the Hello dto
+     */
+    HelloDTO saveAndGet(HelloDTO dto);
+
+    /**
      * Delete int.
      *
      * @param id the id
      * @return the int
      */
-    int delete(Object id);
+    int delete(Serializable id);
+
+    /**
+     * 按主键删除并返回删除的记录
+     *
+     * @param id the id
+     * @return the Hello dto
+     */
+    HelloDTO deleteAndGet(Serializable id);
 
     /**
      * Update int.
@@ -43,12 +60,20 @@ public interface HelloService extends BaseService<Hello> {
     int update(HelloDTO dto);
 
     /**
+     * 按主键更新并返回更新记录
+     *
+     * @param dto the dto
+     * @return the Hello dto
+     */
+    HelloDTO updateAndGet(HelloDTO dto);
+
+    /**
      * Details
      *
      * @param id the id
      * @return the
      */
-    HelloDTO details(Object id);
+    HelloDTO details(Serializable id);
 
     /**
      * List.

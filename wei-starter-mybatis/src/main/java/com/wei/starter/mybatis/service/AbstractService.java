@@ -1,21 +1,29 @@
 package com.wei.starter.mybatis.service;
 
 import cn.hutool.core.text.StrPool;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wei.starter.base.bean.CodeEnum;
 import com.wei.starter.base.bean.Page;
 import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.mybatis.xmapper.XMapper;
 import org.apache.ibatis.cursor.Cursor;
+import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import tk.mybatis.mapper.common.BaseMapper;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * The type Abstract service.
@@ -25,29 +33,43 @@ import java.util.function.Consumer;
  * @Date 2019 /2/28
  * @Description 抽象基础服务 ，提供通用的Mapper方法接入
  */
-public abstract class AbstractService<T> implements BaseService<T> {
+public abstract class AbstractService<T> extends ServiceImpl<BaseMapper<T>, T> implements BaseService<T> {
 
     @Resource
     private SqlSessionFactory sqlSessionFactory;
 
     /**
      * The Mapper.
+     *
+     * @return the mapper
      */
     public abstract XMapper<T> getMapper();
 
     @Override
+    public BaseMapper<T> getBaseMapper() {
+        return getMapper();
+    }
+
+    @Override
     public int insertSelective(T t) {
-        return getMapper().insertSelective(t);
+        return getMapper().insert(t);
     }
 
     @Override
     public int insertList(List<T> list) {
-        return getMapper().insertList(list);
+        List<BatchResult> results = getMapper().insert(list);
+        return results.stream().flatMap(b -> Stream.of(b.getUpdateCounts()))
+                .mapToInt(m -> Arrays.stream(m).sum()).sum();
+    }
+
+    @Override
+    public int deleteByPrimaryKey(Serializable id) {
+        return getMapper().deleteById(id);
     }
 
     @Override
     public int updateByPrimaryKeySelective(T t) {
-        return getMapper().updateByPrimaryKeySelective(t);
+        return getMapper().updateById(t);
     }
 
     /**
@@ -57,19 +79,8 @@ public abstract class AbstractService<T> implements BaseService<T> {
      * @return the t
      */
     @Override
-    public T selectByPrimaryKey(Object pk) {
-        return getMapper().selectByPrimaryKey(pk);
-    }
-
-    /**
-     * Select one by example record.
-     *
-     * @param example the example
-     * @return the record
-     */
-    @Override
-    public T selectOneByExample(Example example) {
-        return getMapper().selectOneByExample(example);
+    public T selectByPrimaryKey(Serializable pk) {
+        return getMapper().selectById(pk);
     }
 
     /**
@@ -80,18 +91,8 @@ public abstract class AbstractService<T> implements BaseService<T> {
      */
     @Override
     public T selectOne(T t) {
-        return getMapper().selectOne(t);
-    }
-
-    /**
-     * Select count by example int.
-     *
-     * @param example the example
-     * @return the int
-     */
-    @Override
-    public int selectCountByExample(Example example) {
-        return getMapper().selectCountByExample(example);
+        QueryWrapper<T> wrapper = new QueryWrapper<>(t);
+        return getMapper().selectOne(wrapper);
     }
 
     /**
@@ -102,37 +103,60 @@ public abstract class AbstractService<T> implements BaseService<T> {
      */
     @Override
     public List<T> select(T t) {
-        return getMapper().select(t);
+        QueryWrapper<T> wrapper = new QueryWrapper<>(t);
+        return getMapper().selectList(wrapper);
+    }
+
+    /**
+     * Select one by example record.
+     *
+     * @param wrapper the wrapper
+     * @return the record
+     */
+    @Override
+    public T selectOneByExample(Wrapper<T> wrapper) {
+        return getMapper().selectOne(wrapper);
     }
 
     /**
      * Select by example list.
      *
-     * @param example the example
+     * @param wrapper the example
      * @return the list
      */
     @Override
-    public List<T> selectByExample(Example example) {
-        return getMapper().selectByExample(example);
+    public List<T> selectByExample(Wrapper<T> wrapper) {
+        return getMapper().selectList(wrapper);
+    }
+
+
+    /**
+     * Select count by example int.
+     *
+     * @param wrapper the example
+     * @return the int
+     */
+    @Override
+    public Long selectCountByExample(Wrapper<T> wrapper) {
+        return getMapper().selectCount(wrapper);
     }
 
     /**
      * Select page by example page info.
      *
-     * @param example the example
+     * @param wrapper the wrapper
      * @param page    the page
      * @return the page info
      */
     @Override
-    public Page<T> selectPageByExample(Example example, Page<T> page) {
-        try (com.github.pagehelper.Page<T> tPage = PageHelper.startPage(page.getPage(), page.getSize())) {
-            getMapper().selectByExample(example);
-            page.setList(tPage);
-            page.setTotal(tPage.getTotal());
-            page.setPage(tPage.getPageNum());
-            page.setSize(tPage.getPageSize());
-            return page;
-        }
+    public Page<T> selectPageByExample(Wrapper<T> wrapper, Page<T> page) {
+        IPage<T> iPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>();
+        getMapper().selectPage(iPage, wrapper);
+        page.setList(iPage.getRecords());
+        page.setTotal(iPage.getTotal());
+        page.setPage(iPage.getCurrent());
+        page.setSize(iPage.getSize());
+        return page;
     }
 
     @Override
