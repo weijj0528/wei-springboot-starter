@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package ${package}.controller;
+package ${package}.controller.admin;
 
 import ${package}.dto.HelloDTO;
 import ${package}.service.HelloService;
@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @since 2024-06-26 11:54:31
  */
 @RestController
-@RequestMapping("/hello")
+@RequestMapping("/admin/hello")
 public class HelloController {
 
     @Resource
@@ -40,18 +40,6 @@ public class HelloController {
     }
 
     /**
-     * 删除
-     *
-     * @param id the id
-     * @return the result
-     */
-    @PostMapping("/del/{id}")
-    public Result<Void> delete(@PathVariable Long id) {
-        helloService.delete(id);
-        return Result.success();
-    }
-
-    /**
      * 更新修改
      *
      * @param id        the id
@@ -62,6 +50,18 @@ public class HelloController {
     public Result<Void> update(@PathVariable Long id, @RequestBody @Validated(Update.class) HelloDTO updateDto) {
         updateDto.setId(id);
         helloService.update(updateDto);
+        return Result.success();
+    }
+
+    /**
+     * 主键删除
+     *
+     * @param id the id
+     * @return the result
+     */
+    @PostMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable Long id) {
+        helloService.delete(id);
         return Result.success();
     }
 

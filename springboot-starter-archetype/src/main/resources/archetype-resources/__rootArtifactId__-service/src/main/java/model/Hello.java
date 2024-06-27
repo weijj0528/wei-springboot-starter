@@ -18,7 +18,7 @@ public class Hello implements Serializable {
     private static final long serialVersionUID = -99040535432383690L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /*@GeneratedValue(strategy = GenerationType.IDENTITY)*/
     private Integer id;
     /**
      * 租户ID
