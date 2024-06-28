@@ -70,13 +70,13 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
         List<Long> eval = connection.evalSha(scriptHas1, ReturnType.fromJavaType(List.class), hashKey.length, keyArgs);
         connection.close();
         if (eval == null || eval.isEmpty()) {
-            return Result.failure(CodeEnum.ERROR_SERVER.getCode(), "RedisIncrServiceImpl incr fail!");
+            return Result.failure(CodeEnum.SYSTEM_ERROR.getCode(), "RedisIncrServiceImpl incr fail!");
         }
         Long aLong = eval.get(0);
         if (aLong < 0) {
             // 操作失败
             int i = -1 - aLong.intValue();
-            return Result.failure(CodeEnum.ERROR_SERVER.getCode(), hashKey[i] + " 数量不足");
+            return Result.failure(CodeEnum.SYSTEM_ERROR.getCode(), hashKey[i] + " 数量不足");
         }
         Map<String, Long> map = new HashMap<>();
         for (int j = 0; j < hashKey.length; j++) {
@@ -141,7 +141,7 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
         if (aLong < 0) {
             // 操作失败
             i = -1 - aLong.intValue();
-            return Result.failure(CodeEnum.ERROR_SERVER.getCode(), hashKey[i] + " 数量不足");
+            return Result.failure(CodeEnum.SYSTEM_ERROR.getCode(), hashKey[i] + " 数量不足");
         }
         Map<String, Long> map = new HashMap<>();
         for (int j = 0; j < hashKey.length; j++) {

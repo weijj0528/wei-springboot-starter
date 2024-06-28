@@ -48,6 +48,6 @@ public class ExampleController {
     public Result<Void> exception(HttpServletRequest request, QueryDto query) {
         String clientIp = WeiWebUtils.getClientIp(request);
         log.info("clientIp:{}", clientIp);
-        throw new ErrorMsgException(CodeEnum.ERROR_SERVER.getMsg());
+        throw new ErrorMsgException(CodeEnum.SYSTEM_ERROR.getMsg());
     }
 }

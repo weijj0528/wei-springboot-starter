@@ -163,7 +163,7 @@ public abstract class AbstractService<T> extends ServiceImpl<BaseMapper<T>, T> i
     public <R> void cursorOperator(String method, int batchSize, Object params, Consumer<List<R>> consumer) {
         Class<?> mapperClass = Arrays.stream(getMapper().getClass().getInterfaces()).filter(
                 XMapper.class::isAssignableFrom
-        ).findAny().orElseThrow(() -> new ErrorMsgException(CodeEnum.ERROR_SERVER.getCode(), "Mapper不存在"));
+        ).findAny().orElseThrow(() -> new ErrorMsgException(CodeEnum.SYSTEM_ERROR.getCode(), "Mapper不存在"));
         String s = mapperClass.getName() + StrPool.DOT + method;
         SqlSession sqlSession = sqlSessionFactory.openSession();
         Cursor<R> cursor = sqlSession.selectCursor(s, params);

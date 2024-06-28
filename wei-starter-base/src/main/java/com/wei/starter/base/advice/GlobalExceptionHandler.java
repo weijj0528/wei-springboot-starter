@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Result<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error("参数解析失败 {}:{}", e.getStackTrace()[0].getClassName(), e.getStackTrace()[0].getMethodName(), e);
-        return Result.failure(CodeEnum.BadRequestException.getCode(), "参数解析失败");
+        return Result.failure(CodeEnum.BAD_REQUEST.getCode(), "参数解析失败");
     }
 
     @ResponseBody
@@ -70,21 +70,21 @@ public class GlobalExceptionHandler {
             message = error.getDefaultMessage();
         }
         log.error("{} 参数校验失败 {}:{}", ex.getParameter().getMethod(), field, message);
-        return Result.failure(CodeEnum.BadRequestException.getCode(), message);
+        return Result.failure(CodeEnum.BAD_REQUEST.getCode(), message);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({UnauthorizedException.class, AccessDeniedException.class})
     public Result<Void> unauthorizedExceptionHandle() {
-        return Result.failure(CodeEnum.UnauthorizedException.getCode(), CodeEnum.UnauthorizedException.getMsg());
+        return Result.failure(CodeEnum.UNAUTHORIZED.getCode(), CodeEnum.UNAUTHORIZED.getMsg());
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ForbiddenException.class)
     public Result<Void> forbiddenExceptionHandle() {
-        return Result.failure(CodeEnum.ForbiddenException.getCode(), CodeEnum.ForbiddenException.getMsg());
+        return Result.failure(CodeEnum.FORBIDDEN.getCode(), CodeEnum.FORBIDDEN.getMsg());
     }
 
     @ResponseBody

@@ -14,11 +14,15 @@ public class ErrorMsgException extends BaseException {
     private static final long serialVersionUID = 1452976038790619628L;
 
     public ErrorMsgException() {
-        super(CodeEnum.ERROR_SERVER);
+        super(CodeEnum.SYSTEM_ERROR);
     }
 
     public ErrorMsgException(String msg) {
-        super(CodeEnum.ERROR_SERVER.getCode(), msg);
+        super(CodeEnum.SYSTEM_ERROR.getCode(), msg);
+    }
+
+    public ErrorMsgException(CodeEnum codeEnum) {
+        super(codeEnum.getCode(), codeEnum.getMsg());
     }
 
     public ErrorMsgException(String code, String msg) {

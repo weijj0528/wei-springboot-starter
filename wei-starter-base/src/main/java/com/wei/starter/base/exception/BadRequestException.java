@@ -12,7 +12,7 @@ public class BadRequestException extends BaseException {
     private static final long serialVersionUID = -7303374187724238548L;
 
     public BadRequestException() {
-        super(CodeEnum.BadRequestException.getCode(), CodeEnum.BadRequestException.getMsg());
+        super(CodeEnum.BAD_REQUEST.getCode(), CodeEnum.BAD_REQUEST.getMsg());
     }
 
 }

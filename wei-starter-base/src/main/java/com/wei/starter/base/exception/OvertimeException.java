@@ -11,7 +11,7 @@ public class OvertimeException extends BaseException {
     private static final long serialVersionUID = -7303374187724238548L;
 
     public OvertimeException() {
-        super(CodeEnum.OvertimeException);
+        super(CodeEnum.OVERTIME);
     }
 
 }

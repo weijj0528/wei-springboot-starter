@@ -14,7 +14,7 @@ public class UnauthorizedException extends BaseException {
     private static final long serialVersionUID = 8088934606432865810L;
 
     public UnauthorizedException() {
-        super(CodeEnum.UnauthorizedException);
+        super(CodeEnum.UNAUTHORIZED);
     }
 
 }
