@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wei.starter.base.bean.CodeEnum;
+import com.wei.starter.base.bean.Code;
 import com.wei.starter.base.bean.Page;
 import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.mybatis.xmapper.XMapper;
@@ -44,11 +44,6 @@ public abstract class AbstractService<T> extends ServiceImpl<BaseMapper<T>, T> i
      * @return the mapper
      */
     public abstract XMapper<T> getMapper();
-
-    @Override
-    public BaseMapper<T> getBaseMapper() {
-        return getMapper();
-    }
 
     @Override
     public int insertSelective(T t) {
@@ -150,12 +145,12 @@ public abstract class AbstractService<T> extends ServiceImpl<BaseMapper<T>, T> i
      */
     @Override
     public Page<T> selectPageByExample(Wrapper<T> wrapper, Page<T> page) {
-        IPage<T> iPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>();
-        getMapper().selectPage(iPage, wrapper);
-        page.setList(iPage.getRecords());
-        page.setTotal(iPage.getTotal());
-        page.setPage(iPage.getCurrent());
-        page.setSize(iPage.getSize());
+        IPage<T> innerPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>();
+        getMapper().selectPage(innerPage, wrapper);
+        page.setList(innerPage.getRecords());
+        page.setTotal(innerPage.getTotal());
+        page.setPage(innerPage.getCurrent());
+        page.setSize(innerPage.getSize());
         return page;
     }
 
@@ -163,7 +158,7 @@ public abstract class AbstractService<T> extends ServiceImpl<BaseMapper<T>, T> i
     public <R> void cursorOperator(String method, int batchSize, Object params, Consumer<List<R>> consumer) {
         Class<?> mapperClass = Arrays.stream(getMapper().getClass().getInterfaces()).filter(
                 XMapper.class::isAssignableFrom
-        ).findAny().orElseThrow(() -> new ErrorMsgException(CodeEnum.SYSTEM_ERROR.getCode(), "Mapper不存在"));
+        ).findAny().orElseThrow(() -> new ErrorMsgException(Code.SYSTEM_ERROR.getCode(), "Mapper不存在"));
         String s = mapperClass.getName() + StrPool.DOT + method;
         SqlSession sqlSession = sqlSessionFactory.openSession();
         Cursor<R> cursor = sqlSession.selectCursor(s, params);

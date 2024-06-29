@@ -1,7 +1,7 @@
 package com.wei.starter.base.util;
 
 import cn.hutool.core.thread.ThreadUtil;
-import com.wei.starter.base.bean.CodeEnum;
+import com.wei.starter.base.bean.Code;
 import com.wei.starter.base.exception.ErrorMsgException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +34,7 @@ public class WeiComUtils {
             log.error("operationRetry：{} {}", key, retry, e);
             retry++;
             if (retry >= max) {
-                throw new ErrorMsgException(CodeEnum.SYSTEM_ERROR);
+                throw new ErrorMsgException(Code.SYSTEM_ERROR);
             }
             ThreadUtil.sleep(100);
             return operationRetry(supplier, key, retry, max);

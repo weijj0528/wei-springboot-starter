@@ -4,7 +4,7 @@
 package ${package}.service;
 
 import ${package}.dto.HelloDTO;
-import ${package}.model.Hello;
+import ${package}.entity.Hello;
 import com.wei.starter.base.bean.Page;
 import com.wei.starter.mybatis.service.BaseService;
 
@@ -15,17 +15,17 @@ import java.util.List;
  * (Hello)表服务接口
  *
  * @author EasyCode
- * @since 2024-06-26 11:50:55
+ * @since 2024-06-28 21:48:24
  */
 public interface HelloService extends BaseService<Hello> {
 
     /**
-     * Save int.
+     * 新增保存，返回保存后主键
      *
      * @param dto the Hello dto
      * @return the int
      */
-    int save(HelloDTO dto);
+    Long save(HelloDTO dto);
 
     /**
      * 新增保存并返回新增记录
@@ -36,7 +36,7 @@ public interface HelloService extends BaseService<Hello> {
     HelloDTO saveAndGet(HelloDTO dto);
 
     /**
-     * Delete int.
+     * 按主键删除
      *
      * @param id the id
      * @return the int
@@ -52,7 +52,7 @@ public interface HelloService extends BaseService<Hello> {
     HelloDTO deleteAndGet(Serializable id);
 
     /**
-     * Update int.
+     * 按主键更新
      *
      * @param dto the Hello dto
      * @return the int
@@ -68,7 +68,7 @@ public interface HelloService extends BaseService<Hello> {
     HelloDTO updateAndGet(HelloDTO dto);
 
     /**
-     * Details
+     * 按主键查询单条记录详情
      *
      * @param id the id
      * @return the
@@ -76,7 +76,7 @@ public interface HelloService extends BaseService<Hello> {
     HelloDTO details(Serializable id);
 
     /**
-     * List.
+     * 分页查询
      *
      * @param queryDto query
      * @param page     page

@@ -1,7 +1,7 @@
 package com.github.weijj0528.example.base.controller;
 
 import com.github.weijj0528.example.base.dto.QueryDto;
-import com.wei.starter.base.bean.CodeEnum;
+import com.wei.starter.base.bean.Code;
 import com.wei.starter.base.bean.Result;
 import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.base.util.WeiWebUtils;
@@ -48,6 +48,6 @@ public class ExampleController {
     public Result<Void> exception(HttpServletRequest request, QueryDto query) {
         String clientIp = WeiWebUtils.getClientIp(request);
         log.info("clientIp:{}", clientIp);
-        throw new ErrorMsgException(CodeEnum.SYSTEM_ERROR.getMsg());
+        throw new ErrorMsgException(Code.SYSTEM_ERROR.getMsg());
     }
 }

@@ -1,7 +1,7 @@
 package com.wei.starter.redis.service.imp;
 
 import cn.hutool.crypto.SecureUtil;
-import com.wei.starter.base.bean.CodeEnum;
+import com.wei.starter.base.bean.Code;
 import com.wei.starter.base.bean.Result;
 import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.redis.service.IRedisIncrService;
@@ -70,13 +70,13 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
         List<Long> eval = connection.evalSha(scriptHas1, ReturnType.fromJavaType(List.class), hashKey.length, keyArgs);
         connection.close();
         if (eval == null || eval.isEmpty()) {
-            return Result.failure(CodeEnum.SYSTEM_ERROR.getCode(), "RedisIncrServiceImpl incr fail!");
+            return Result.failure(Code.SYSTEM_ERROR.getCode(), "RedisIncrServiceImpl incr fail!");
         }
         Long aLong = eval.get(0);
         if (aLong < 0) {
             // 操作失败
             int i = -1 - aLong.intValue();
-            return Result.failure(CodeEnum.SYSTEM_ERROR.getCode(), hashKey[i] + " 数量不足");
+            return Result.failure(Code.SYSTEM_ERROR.getCode(), hashKey[i] + " 数量不足");
         }
         Map<String, Long> map = new HashMap<>();
         for (int j = 0; j < hashKey.length; j++) {
@@ -141,7 +141,7 @@ public class RedisIncrServiceImpl implements IRedisIncrService {
         if (aLong < 0) {
             // 操作失败
             i = -1 - aLong.intValue();
-            return Result.failure(CodeEnum.SYSTEM_ERROR.getCode(), hashKey[i] + " 数量不足");
+            return Result.failure(Code.SYSTEM_ERROR.getCode(), hashKey[i] + " 数量不足");
         }
         Map<String, Long> map = new HashMap<>();
         for (int j = 0; j < hashKey.length; j++) {

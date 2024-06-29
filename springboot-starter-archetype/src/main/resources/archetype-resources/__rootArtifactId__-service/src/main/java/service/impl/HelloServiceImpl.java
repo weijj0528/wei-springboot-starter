@@ -4,25 +4,26 @@
 package ${package}.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import ${package}.dto.HelloDTO;
+import ${package}.mapper.HelloMapper;
+import ${package}.entity.Hello;
+import ${package}.service.HelloService;
 import com.wei.starter.base.bean.Page;
 import com.wei.starter.base.util.WeiBeanUtil;
 import com.wei.starter.mybatis.service.AbstractService;
 import com.wei.starter.mybatis.xmapper.XMapper;
-import ${package}.dto.HelloDTO;
-import ${package}.mapper.HelloMapper;
-import ${package}.model.Hello;
-import ${package}.service.HelloService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * (Hello)表服务实现类
  *
  * @author EasyCode
- * @since 2024-06-26 11:50:56
+ * @since 2024-06-28 21:48:25
  */
 @Service("helloService")
 public class HelloServiceImpl extends AbstractService<Hello> implements HelloService {
@@ -36,14 +37,15 @@ public class HelloServiceImpl extends AbstractService<Hello> implements HelloSer
     }
 
     @Override
-    public int save(HelloDTO dto) {
+    public Long save(HelloDTO dto) {
         Hello hello = WeiBeanUtil.toBean(dto, Hello.class);
-        return insertSelective(hello);
+        insertSelective(hello);
+        return hello.getId();
     }
 
     @Override
     public HelloDTO saveAndGet(HelloDTO dto) {
-        int id = save(dto);
+        Long id = save(dto);
         return details(id);
     }
 
@@ -79,15 +81,12 @@ public class HelloServiceImpl extends AbstractService<Hello> implements HelloSer
 
     @Override
     public List<HelloDTO> list(HelloDTO queryDto, Page<HelloDTO> page) {
-        QueryWrapper<Hello> example = new QueryWrapper(Hello.class);
-        // TODO 查询条件组装
-        Page<Hello> helloPage = new Page<>();
-        helloPage.setPage(page.getPage());
-        helloPage.setSize(page.getSize());
-        selectPageByExample(example, helloPage);
-        List<HelloDTO> helloDtoList = WeiBeanUtil.toList(helloPage.getList(), HelloDTO.class);
-        page.setTotal(helloPage.getTotal());
-        page.setList(helloDtoList);
-        return helloDtoList;
+        Function<HelloDTO, Hello> mapper = o -> WeiBeanUtil.toBean(o, Hello.class);
+        QueryWrapper<Hello> wrapper = new QueryWrapper<>(mapper.apply(queryDto));
+        wrapper.checkSqlInjection();
+        //  其他查询条件组装
+        Page<Hello> convert = selectPageByExample(wrapper, page.convert(mapper));
+        page = convert.convert(o -> WeiBeanUtil.toBean(o, HelloDTO.class));
+        return page.getList();
     }
 }

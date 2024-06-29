@@ -1,7 +1,7 @@
 package com.wei.starter.redis.service.imp;
 
 import cn.hutool.crypto.SecureUtil;
-import com.wei.starter.base.bean.CodeEnum;
+import com.wei.starter.base.bean.Code;
 import com.wei.starter.base.bean.Result;
 import com.wei.starter.base.exception.ErrorMsgException;
 import com.wei.starter.base.valid.*;
@@ -88,7 +88,7 @@ public class RedisCommonStockServiceImpl implements IRedisCommonStockService {
             final long index = eval.get(1) - 1;
             String key = new String(keyArgs[(int) index + 1]);
             log.warn("Stock set fail:{}", key);
-            throw new ErrorMsgException(CodeEnum.SYSTEM_ERROR.getCode(), "库存更新出错");
+            throw new ErrorMsgException(Code.SYSTEM_ERROR.getCode(), "库存更新出错");
         }
         final List<StockModifyDTO> data = new ArrayList<>(size);
         int s = (eval.size() - 2);
@@ -254,7 +254,7 @@ public class RedisCommonStockServiceImpl implements IRedisCommonStockService {
             final Long nowLock = eval.get(3);
             final Long nowUsed = eval.get(4);
             log.warn("Stock update fail:{} Usable[{}],Lock[{}],Used[{}]", key, nowUsable, nowLock, nowUsed);
-            throw new ErrorMsgException(CodeEnum.SYSTEM_ERROR.getCode(), "库存更新出错");
+            throw new ErrorMsgException(Code.SYSTEM_ERROR.getCode(), "库存更新出错");
         }
         final List<StockDTO> data = new ArrayList<>(size);
         int s = (eval.size() - 2) / 3;

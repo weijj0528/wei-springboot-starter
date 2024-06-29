@@ -4,11 +4,15 @@ import lombok.Data;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * The type Page bean.
  * 通用分页查询参数封装
  *
+ * @param <T> the type parameter
  * @author William.Wei
  */
 @Data
@@ -49,8 +53,26 @@ public class Page<T> {
      */
     private boolean count = true;
 
+    /**
+     * Offset long.
+     *
+     * @return the long
+     */
     public long offset() {
         return page > 0L ? (page - 1L) * size : 0L;
+    }
+
+    /**
+     * Convert page.
+     *
+     * @param <R>    the type parameter
+     * @param mapper the mapper
+     * @return the page
+     */
+    public <R> Page<R> convert(Function<? super T, ? extends R> mapper) {
+        List<R> collect = this.getList().stream().map(mapper).collect(toList());
+        ((Page<R>) this).setList(collect);
+        return (Page<R>) this;
     }
 
 }

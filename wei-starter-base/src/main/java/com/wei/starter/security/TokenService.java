@@ -2,6 +2,8 @@ package com.wei.starter.security;
 
 /**
  * The interface Token service.
+ *
+ * @author Weijj0528
  */
 public interface TokenService {
 
@@ -10,6 +12,7 @@ public interface TokenService {
      *
      * @param principal the principal
      * @param timeout   the timeout
+     * @return the string
      */
     String saveToken(Principal principal, Long timeout);
 

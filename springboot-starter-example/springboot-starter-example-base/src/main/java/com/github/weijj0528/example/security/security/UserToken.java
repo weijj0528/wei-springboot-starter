@@ -16,11 +16,18 @@ public class UserToken implements Principal {
 
     private String name;
 
+    private String tenant;
+
     private List<String> authorities;
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getTenant() {
+        return tenant;
     }
 
     @Override

@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author Weijj0528
  */
 @Getter
-public enum CodeEnum {
+public enum Code {
 
     /**
      * 操作处理成功
@@ -67,7 +67,7 @@ public enum CodeEnum {
      */
     private final String msg;
 
-    CodeEnum(String code, String msg) {
+    Code(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }

@@ -4,7 +4,7 @@
 package ${package}.mapper;
 
 
-import ${package}.model.Hello;
+import ${package}.entity.Hello;
 import com.wei.starter.mybatis.xmapper.XMapper;
 
 /**

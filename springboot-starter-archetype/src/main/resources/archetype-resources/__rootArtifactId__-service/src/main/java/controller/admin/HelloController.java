@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  * (Hello)表控制层
  *
  * @author EasyCode
- * @since 2024-06-26 11:54:31
+ * @since 2024-06-28 21:49:59
  */
 @RestController
 @RequestMapping("/admin/hello")
@@ -40,7 +40,8 @@ public class HelloController {
     }
 
     /**
-     * 更新修改
+     * 按主键更新
+     * PUT请求会报告安全问题，这里使用POST请求替代
      *
      * @param id        the id
      * @param updateDto the update dto
@@ -54,7 +55,8 @@ public class HelloController {
     }
 
     /**
-     * 主键删除
+     * 按主键删除
+     * DELETE请求会报告安全问题，这里使用POST请求替代
      *
      * @param id the id
      * @return the result

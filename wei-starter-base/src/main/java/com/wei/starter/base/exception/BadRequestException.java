@@ -1,7 +1,7 @@
 package com.wei.starter.base.exception;
 
 
-import com.wei.starter.base.bean.CodeEnum;
+import com.wei.starter.base.bean.Code;
 
 /**
  * 访问异常  抛出 400
@@ -12,7 +12,7 @@ public class BadRequestException extends BaseException {
     private static final long serialVersionUID = -7303374187724238548L;
 
     public BadRequestException() {
-        super(CodeEnum.BAD_REQUEST.getCode(), CodeEnum.BAD_REQUEST.getMsg());
+        super(Code.BAD_REQUEST.getCode(), Code.BAD_REQUEST.getMsg());
     }
 
 }

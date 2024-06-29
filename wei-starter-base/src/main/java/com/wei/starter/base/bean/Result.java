@@ -51,7 +51,7 @@ public class Result<T> implements Serializable, Cloneable {
     }
 
     public boolean successfully() {
-        return Objects.equals(code, CodeEnum.SUCCESS.getCode());
+        return Objects.equals(code, Code.SUCCESS.getCode());
     }
 
     public static <T> Result<T> success() {

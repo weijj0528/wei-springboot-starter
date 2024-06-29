@@ -135,7 +135,7 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                             log.info("UserPermissionCheck:[{}:{}] {} {}", method, pattern, hasPermission, token);
                             // 添加权限信息，给到后续处理
                             if (hasPermission) {
-                                SecurityContextHolder.getContext().setAuthentication(new WeiToken(request, token, principal));
+                                SecurityContextHolder.getContext().setAuthentication(new WeiToken(token, principal));
                             }
                         }
                     }
