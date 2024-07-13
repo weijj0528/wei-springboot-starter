@@ -16,8 +16,6 @@ public class Entity<T> implements Serializable {
 
     public static final String ID = "id";
 
-    public static final String TENANT = "tenant";
-
     public static final String NAME = "name";
 
     public static final String VERSION = "version";
@@ -41,10 +39,6 @@ public class Entity<T> implements Serializable {
      * 租户ID
      */
     private Long tenant;
-    /**
-     * 名称
-     */
-    private String name;
     /**
      * 版本
      */
@@ -93,14 +87,6 @@ public class Entity<T> implements Serializable {
 
     public void setTenant(Long tenant) {
         this.tenant = tenant;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Long getVersion() {
@@ -160,11 +146,11 @@ public class Entity<T> implements Serializable {
             return false;
         }
         Entity<?> entity = (Entity<?>) o;
-        return Objects.equal(getId(), entity.getId()) && Objects.equal(getTenant(), entity.getTenant()) && Objects.equal(getName(), entity.getName()) && Objects.equal(getVersion(), entity.getVersion()) && Objects.equal(getDeleted(), entity.getDeleted()) && Objects.equal(getUpdater(), entity.getUpdater()) && Objects.equal(getUtime(), entity.getUtime()) && Objects.equal(getCreator(), entity.getCreator()) && Objects.equal(getCtime(), entity.getCtime());
+        return Objects.equal(getId(), entity.getId()) && Objects.equal(getTenant(), entity.getTenant()) && Objects.equal(getVersion(), entity.getVersion()) && Objects.equal(getDeleted(), entity.getDeleted()) && Objects.equal(getUpdater(), entity.getUpdater()) && Objects.equal(getUtime(), entity.getUtime()) && Objects.equal(getCreator(), entity.getCreator()) && Objects.equal(getCtime(), entity.getCtime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId(), getTenant(), getName(), getVersion(), getDeleted(), getUpdater(), getUtime(), getCreator(), getCtime());
+        return Objects.hashCode(getId(), getTenant(), getVersion(), getDeleted(), getUpdater(), getUtime(), getCreator(), getCtime());
     }
 }
