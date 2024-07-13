@@ -28,7 +28,7 @@ public class Entity<T> implements Serializable {
 
     public static final String UTIME = "utime";
 
-    public static final String CREATER = "creater";
+    public static final String CREATOR = "creator";
 
     public static final String CTIME = "ctime";
 
@@ -71,7 +71,7 @@ public class Entity<T> implements Serializable {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    private String creater;
+    private String creator;
     /**
      * 创建时间
      */
@@ -135,12 +135,12 @@ public class Entity<T> implements Serializable {
         this.utime = utime;
     }
 
-    public String getCreater() {
-        return creater;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setCreater(String creater) {
-        this.creater = creater;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public Date getCtime() {
@@ -160,11 +160,11 @@ public class Entity<T> implements Serializable {
             return false;
         }
         Entity<?> entity = (Entity<?>) o;
-        return Objects.equal(getId(), entity.getId()) && Objects.equal(getTenant(), entity.getTenant()) && Objects.equal(getName(), entity.getName()) && Objects.equal(getVersion(), entity.getVersion()) && Objects.equal(getDeleted(), entity.getDeleted()) && Objects.equal(getUpdater(), entity.getUpdater()) && Objects.equal(getUtime(), entity.getUtime()) && Objects.equal(getCreater(), entity.getCreater()) && Objects.equal(getCtime(), entity.getCtime());
+        return Objects.equal(getId(), entity.getId()) && Objects.equal(getTenant(), entity.getTenant()) && Objects.equal(getName(), entity.getName()) && Objects.equal(getVersion(), entity.getVersion()) && Objects.equal(getDeleted(), entity.getDeleted()) && Objects.equal(getUpdater(), entity.getUpdater()) && Objects.equal(getUtime(), entity.getUtime()) && Objects.equal(getCreator(), entity.getCreator()) && Objects.equal(getCtime(), entity.getCtime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId(), getTenant(), getName(), getVersion(), getDeleted(), getUpdater(), getUtime(), getCreater(), getCtime());
+        return Objects.hashCode(getId(), getTenant(), getName(), getVersion(), getDeleted(), getUpdater(), getUtime(), getCreator(), getCtime());
     }
 }

@@ -22,7 +22,7 @@ public class WeiMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         Principal principal = WeiSecurityUtil.getPrincipal();
         Optional.ofNullable(principal).map(Principal::getName).ifPresent(name -> {
-            setFieldValByName(Entity.CREATER, name, metaObject);
+            setFieldValByName(Entity.CREATOR, name, metaObject);
         });
         setFieldValByName(Entity.VERSION, BigInteger.ONE.longValue(), metaObject);
         setFieldValByName(Entity.DELETED, Boolean.FALSE, metaObject);
