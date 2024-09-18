@@ -86,6 +86,7 @@
     </dependencies>
 
     <modules>
+        <module>springcloud-starter</module>
         <module>springboot-starter</module>
         <module>springboot-starter-archetype</module>
         <module>springboot-starter-example</module>

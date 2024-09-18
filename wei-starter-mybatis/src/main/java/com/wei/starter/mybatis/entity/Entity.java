@@ -33,7 +33,7 @@ public class Entity<T> implements Serializable {
     /**
      * 主键ID
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private T id;
     /**
      * 租户ID
@@ -54,12 +54,12 @@ public class Entity<T> implements Serializable {
     /**
      * 更新人
      */
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private String updater;
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date utime;
     /**
      * 创建人

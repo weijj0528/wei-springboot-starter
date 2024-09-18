@@ -209,6 +209,17 @@
                 <artifactId>flyway-mysql</artifactId>
                 <version>9.22.3</version>
             </dependency>
+            <!-- sky walking -->
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-agent-core</artifactId>
+                <version>8.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-logback-1.x</artifactId>
+                <version>8.5.0</version>
+            </dependency>
             <!--swagger2-->
             <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
             <dependency>

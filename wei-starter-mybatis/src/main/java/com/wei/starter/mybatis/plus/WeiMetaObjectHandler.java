@@ -23,10 +23,13 @@ public class WeiMetaObjectHandler implements MetaObjectHandler {
         Principal principal = WeiSecurityUtil.getPrincipal();
         Optional.ofNullable(principal).map(Principal::getName).ifPresent(name -> {
             setFieldValByName(Entity.CREATOR, name, metaObject);
+            setFieldValByName(Entity.UPDATER, name, metaObject);
         });
         setFieldValByName(Entity.VERSION, BigInteger.ONE.longValue(), metaObject);
         setFieldValByName(Entity.DELETED, Boolean.FALSE, metaObject);
-        setFieldValByName(Entity.CTIME, new Date(), metaObject);
+        Date now = new Date();
+        setFieldValByName(Entity.CTIME, now, metaObject);
+        setFieldValByName(Entity.UTIME, now, metaObject);
         log.info("insert fill!");
     }
 
