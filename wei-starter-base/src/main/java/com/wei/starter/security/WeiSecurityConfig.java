@@ -1,5 +1,6 @@
 package com.wei.starter.security;
 
+import cn.hutool.core.text.StrPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -126,6 +127,7 @@ public class WeiSecurityConfig {
                 .and().headers().frameOptions().disable()
                 .and().headers().cacheControl().disable()
                 .and().formLogin().disable()
+                .logout().disable()
                 .exceptionHandling().authenticationEntryPoint((req, resp, authException) -> {
                     resp.setStatus(401);
                     resp.setCharacterEncoding("UTF-8");
@@ -143,13 +145,14 @@ public class WeiSecurityConfig {
         http.authorizeRequests().antMatchers(antPatterns).permitAll();
         // 按配置开放接口
         for (String api : openApis) {
-            String[] split = api.split(":");
+            String[] split = api.split(StrPool.COLON);
             if (split.length > 1) {
                 HttpMethod httpMethod = HttpMethod.valueOf(split[0].toUpperCase());
                 http.authorizeRequests().antMatchers(httpMethod, split[1]).permitAll();
             } else {
                 http.authorizeRequests().antMatchers(split[0]).permitAll();
             }
+            log.info("open api: {}", api);
         }
         // 其他接口开启认证
         http.authorizeRequests().expressionHandler(expressionHandler()).anyRequest().authenticated();
