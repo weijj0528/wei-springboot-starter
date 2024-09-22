@@ -2,8 +2,7 @@ package com.wei.starter.security;
 
 import cn.hutool.core.text.StrPool;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,22 +33,11 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@ConditionalOnClass(WeiSecurityProperties.class)
 public class WeiSecurityConfig {
 
-    @Value("${spring.security.enable:false}")
-    private boolean enable;
-    @Value("${spring.security.open-apis:}")
-    private List<String> openApis;
-    @Value("${spring.security.cors.path-pattern:/**}")
-    private String pathPattern;
-    @Value("${spring.security.cors.origins:*}")
-    private String[] origins;
-    @Value("${spring.security.cors.headers:*}")
-    private String[] headers;
-    @Value("${spring.security.cors.methods:*}")
-    private String[] methods;
-    @Value("${spring.security.role-prefix:ROLE_}")
-    private String rolePrefix;
+    @Resource
+    private WeiSecurityProperties weiSecurityProperties;
 
     public static final String ALL = "*";
 
@@ -59,7 +48,7 @@ public class WeiSecurityConfig {
      * @return the role prefix
      */
     public String getRolePrefix() {
-        return rolePrefix;
+        return weiSecurityProperties.getRolePrefix();
     }
 
     /**
@@ -68,9 +57,9 @@ public class WeiSecurityConfig {
      * @return the wei token filter
      */
     @Bean
-    @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
+    // @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
     public WeiTokenFilter tokenAuthenticationFilter() {
-        return new WeiTokenFilter(openApis);
+        return new WeiTokenFilter();
     }
 
     /**
@@ -81,7 +70,7 @@ public class WeiSecurityConfig {
     @Bean
     public DefaultWebSecurityExpressionHandler expressionHandler() {
         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-        expressionHandler.setDefaultRolePrefix(rolePrefix);
+        expressionHandler.setDefaultRolePrefix(weiSecurityProperties.getRolePrefix());
         return expressionHandler;
     }
 
@@ -92,13 +81,18 @@ public class WeiSecurityConfig {
      */
     @Bean
     public WebMvcConfigurer corsConfig() {
+        WeiSecurityProperties.Cors cors = weiSecurityProperties.getCors();
+        String[] origins = cors.getOrigins();
+        String pathPattern = cors.getPathPattern();
+        String[] headers = cors.getHeaders();
+        String[] methods = cors.getMethods();
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 AtomicBoolean allowCredentials = new AtomicBoolean(true);
                 Optional.ofNullable(origins).map(Stream::of)
                         .map(s -> s.findFirst().orElse(ALL))
-                        .filter(s -> ALL.equals(s))
+                        .filter(ALL::equals)
                         .ifPresent(s -> allowCredentials.set(false));
                 registry.addMapping(pathPattern)
                         .allowedOrigins(origins)
@@ -119,7 +113,9 @@ public class WeiSecurityConfig {
      * @throws Exception the exception
      */
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain configure(HttpSecurity http, WeiTokenFilter weiTokenFilter) throws Exception {
+        boolean enable = weiSecurityProperties.isEnable();
+        List<String> openApis = weiSecurityProperties.getOpenApis();
         log.info("SecurityConfig {}", enable);
         // CSRF关闭
         http.csrf().disable()
@@ -145,19 +141,21 @@ public class WeiSecurityConfig {
         http.authorizeRequests().antMatchers(antPatterns).permitAll();
         // 按配置开放接口
         for (String api : openApis) {
-            String[] split = api.split(StrPool.COLON);
+            // uri /{xxx}/123 ->/**/123
+            String replaceAll = api.replaceAll("\\{\\w+\\}", "**");
+            String[] split = replaceAll.split(StrPool.COLON);
             if (split.length > 1) {
                 HttpMethod httpMethod = HttpMethod.valueOf(split[0].toUpperCase());
                 http.authorizeRequests().antMatchers(httpMethod, split[1]).permitAll();
             } else {
                 http.authorizeRequests().antMatchers(split[0]).permitAll();
             }
-            log.info("open api: {}", api);
+            log.info("open api: {} {}", api, replaceAll);
         }
         // 其他接口开启认证
         http.authorizeRequests().expressionHandler(expressionHandler()).anyRequest().authenticated();
         // 添加过滤器
-        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(weiTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
