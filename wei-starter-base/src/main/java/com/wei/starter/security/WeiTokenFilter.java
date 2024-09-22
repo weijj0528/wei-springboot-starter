@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Header;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -66,9 +66,9 @@ public class WeiTokenFilter extends OncePerRequestFilter {
             }
             String[] split = openApi.split(StrPool.COLON);
             if (openApi.contains(StrPool.DELIM_START)) {
-                this.openMutableApis.put(split[0], split[1]);
+                this.openMutableApis.put(split[1], split[0]);
             } else {
-                this.openFixedApis.put(split[0], split[1]);
+                this.openFixedApis.put(split[1], split[0]);
             }
         }
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
@@ -82,19 +82,31 @@ public class WeiTokenFilter extends OncePerRequestFilter {
             if (methods.isEmpty()) {
                 methods.add(FLAG_ALL_METHOD);
             }
+            String method = String.join(StrPool.COMMA, methods);
             PathPatternsRequestCondition pathCondition = mappingInfo.getPathPatternsCondition();
             if (pathCondition != null) {
                 Set<PathPattern> patterns = pathCondition.getPatterns();
                 for (PathPattern pattern : patterns) {
                     String patternString = pattern.getPatternString();
-                    String method = methods.stream().collect(Collectors.joining(StrPool.COMMA));
                     if (patternString.contains(StrPool.DELIM_START)) {
                         mutableApis.put(patternString, method);
                     } else {
                         fixedApis.put(patternString, method);
                     }
                 }
+            } else {
+                PatternsRequestCondition patternsCondition = mappingInfo.getPatternsCondition();
+                if (patternsCondition != null) {
+                    for (String pattern : patternsCondition.getPatterns()) {
+                        if (pattern.contains(StrPool.DELIM_START)) {
+                            mutableApis.put(pattern, method);
+                        } else {
+                            fixedApis.put(pattern, method);
+                        }
+                    }
+                }
             }
+
         }
     }
 
@@ -113,8 +125,8 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                     // 非开放接口，验证用户权限
                     Principal principal = tokenService.getToken(token);
                     if (principal != null) {
-                        uriMatchPattern(uri, method, fixedApis, mutableApis);
-                        if (pattern != null) {
+                        pattern = uriMatchPattern(uri, method, fixedApis, mutableApis);
+                        if (StrUtil.isNotBlank(pattern)) {
                             boolean hasPermission = tokenService.permissionCheck(principal, method, pattern);
                             log.info("UserPermissionCheck:[{}:{}] {} {}", method, pattern, hasPermission, token);
                             // 添加权限信息，给到后续处理
