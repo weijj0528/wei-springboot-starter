@@ -155,7 +155,7 @@ public class WeiTokenFilter extends OncePerRequestFilter {
 
     private String uriMatchPattern(String uri, String method, Map<String, String> fixedApis, Map<String, String> mutableApis) {
         // 固定方法匹配
-        Predicate<String> methodPredicate = s -> FLAG_ALL_METHOD.equals(s) || s.contains(method);
+        Predicate<String> methodPredicate = s -> FLAG_ALL_METHOD.equals(s) || s.toUpperCase().contains(method.toUpperCase());
         String exit = Optional.ofNullable(fixedApis.get(uri)).filter(methodPredicate).orElse(StrUtil.EMPTY);
         if (StrUtil.isNotBlank(exit)) {
             return uri;
