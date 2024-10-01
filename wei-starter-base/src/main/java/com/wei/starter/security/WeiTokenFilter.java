@@ -6,6 +6,7 @@ import cn.hutool.http.Header;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.annotation.Order;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
  * @author William.Wei
  */
 @Slf4j
+@Order
 @Component
 @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
 public class WeiTokenFilter extends OncePerRequestFilter {
@@ -67,8 +69,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
             String[] split = openApi.split(StrPool.COLON);
             if (openApi.contains(StrPool.DELIM_START)) {
                 this.openMutableApis.put(split[1], split[0]);
+                log.info("openMutableApis put: {} {}", split[1], split[0]);
             } else {
                 this.openFixedApis.put(split[1], split[0]);
+                log.info("openFixedApis put: {} {}", split[1], split[0]);
             }
         }
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
@@ -90,8 +94,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                     String patternString = pattern.getPatternString();
                     if (patternString.contains(StrPool.DELIM_START)) {
                         mutableApis.put(patternString, method);
+                        log.info("mutableApis put: {} {}", patternString, method);
                     } else {
                         fixedApis.put(patternString, method);
+                        log.info("fixedApis put: {} {}", patternString, method);
                     }
                 }
             } else {
@@ -100,8 +106,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                     for (String pattern : patternsCondition.getPatterns()) {
                         if (pattern.contains(StrPool.DELIM_START)) {
                             mutableApis.put(pattern, method);
+                            log.info("mutableApis put: {} {}", pattern, method);
                         } else {
                             fixedApis.put(pattern, method);
+                            log.info("fixedApis put: {} {}", pattern, method);
                         }
                     }
                 }
