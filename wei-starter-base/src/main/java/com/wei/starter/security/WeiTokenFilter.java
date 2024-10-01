@@ -127,7 +127,7 @@ public class WeiTokenFilter extends OncePerRequestFilter {
             String uri = request.getRequestURI();
             String method = request.getMethod();
             String pattern = uriMatchPattern(uri, method, openFixedApis, openMutableApis);
-            log.info("open uriMatchPattern: {} {}", uri, pattern);
+            log.info("open uriMatchPattern: {} {} {}", uri, method, pattern);
             if (StrUtil.isBlank(pattern)) {
                 String token = request.getHeader(Header.AUTHORIZATION.toString());
                 if (StringUtils.isNotEmpty(token)) {
@@ -135,7 +135,7 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                     Principal principal = tokenService.getToken(token);
                     if (principal != null) {
                         pattern = uriMatchPattern(uri, method, fixedApis, mutableApis);
-                        log.info("uriMatchPattern: {} {}", uri, pattern);
+                        log.info("uriMatchPattern: {} {} {}", uri, method, pattern);
                         if (StrUtil.isNotBlank(pattern)) {
                             boolean hasPermission = tokenService.permissionCheck(principal, method, pattern);
                             log.info("UserPermissionCheck:[{}:{}] {} {}", method, pattern, hasPermission, token);
