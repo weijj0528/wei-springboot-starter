@@ -67,13 +67,7 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                 openApi = String.format("%s:%s", FLAG_ALL_METHOD, openApi);
             }
             String[] split = openApi.split(StrPool.COLON);
-            if (openApi.contains(StrPool.DELIM_START)) {
-                this.openMutableApis.put(split[1], split[0]);
-                log.info("openMutableApis put: {} {}", split[1], split[0]);
-            } else {
-                this.openFixedApis.put(split[1], split[0]);
-                log.info("openFixedApis put: {} {}", split[1], split[0]);
-            }
+            apiDataInit(split[1], split[0], openFixedApis, openMutableApis);
         }
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         Set<RequestMappingInfo> requestMappingInfos = handlerMethods.keySet();
@@ -92,29 +86,32 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                 Set<PathPattern> patterns = pathCondition.getPatterns();
                 for (PathPattern pattern : patterns) {
                     String patternString = pattern.getPatternString();
-                    if (patternString.contains(StrPool.DELIM_START)) {
-                        mutableApis.put(patternString, method);
-                        log.info("mutableApis put: {} {}", patternString, method);
-                    } else {
-                        fixedApis.put(patternString, method);
-                        log.info("fixedApis put: {} {}", patternString, method);
-                    }
+                    apiDataInit(patternString, method, fixedApis, mutableApis);
                 }
             } else {
                 PatternsRequestCondition patternsCondition = mappingInfo.getPatternsCondition();
                 if (patternsCondition != null) {
                     for (String pattern : patternsCondition.getPatterns()) {
-                        if (pattern.contains(StrPool.DELIM_START)) {
-                            mutableApis.put(pattern, method);
-                            log.info("mutableApis put: {} {}", pattern, method);
-                        } else {
-                            fixedApis.put(pattern, method);
-                            log.info("fixedApis put: {} {}", pattern, method);
-                        }
+                        apiDataInit(pattern, method, fixedApis, mutableApis);
                     }
                 }
             }
 
+        }
+    }
+
+    private void apiDataInit(String uri, String method, Map<String, String> fixedApis, Map<String, String> mutableApis) {
+        boolean open = fixedApis == openFixedApis;
+        if (fixedApis.containsKey(uri) || mutableApis.containsKey(uri)) {
+            String nm = fixedApis.containsKey(uri) ? fixedApis.get(uri) : mutableApis.get(uri);
+            method = method + StrPool.COMMA + nm;
+        }
+        if (uri.contains(StrPool.DELIM_START)) {
+            mutableApis.put(uri, method);
+            log.debug("mutableApis put: {} {} {}", open, uri, method);
+        } else {
+            fixedApis.put(uri, method);
+            log.debug("fixedApis put: {} {} {}", open, uri, method);
         }
     }
 
@@ -155,7 +152,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
 
     private String uriMatchPattern(String uri, String method, Map<String, String> fixedApis, Map<String, String> mutableApis) {
         // 固定方法匹配
-        Predicate<String> methodPredicate = s -> FLAG_ALL_METHOD.equals(s) || s.toUpperCase().contains(method.toUpperCase());
+        Predicate<String> methodPredicate = s -> {
+            log.debug("methodPredicate: {} {}", s, method);
+            return FLAG_ALL_METHOD.equals(s) || s.toUpperCase().contains(method.toUpperCase());
+        };
         String exit = Optional.ofNullable(fixedApis.get(uri)).filter(methodPredicate).orElse(StrUtil.EMPTY);
         if (StrUtil.isNotBlank(exit)) {
             return uri;
