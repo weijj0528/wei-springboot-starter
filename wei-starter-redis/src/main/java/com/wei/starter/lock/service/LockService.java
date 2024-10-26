@@ -75,9 +75,8 @@ public class LockService {
     public WeiLock getRedisLock(String lockKey) {
         if (redisson != null) {
             return new RedissonLock(lockKey, redisson);
-        }
-        if (redisConnectionFactory != null) {
-            new RedisLock(lockKey, redisConnectionFactory);
+        } else if (redisConnectionFactory != null) {
+            return new RedisLock(lockKey, redisConnectionFactory);
         }
         throw new ErrorMsgException("redisson and redisConnectionFactory is null!");
     }
@@ -90,8 +89,13 @@ public class LockService {
      * @param expiredTime the expired time
      * @return the redis lock
      */
-    public RedisLock getRedisLock(String lockKey, long waitTime, long expiredTime) {
-        return new RedisLock(lockKey, waitTime, expiredTime, redisConnectionFactory);
+    public WeiLock getRedisLock(String lockKey, long waitTime, long expiredTime) {
+        if (redisson != null) {
+            return new RedissonLock(lockKey, waitTime, expiredTime, redisson);
+        } else if (redisConnectionFactory != null) {
+            return new RedisLock(lockKey, waitTime, expiredTime, redisConnectionFactory);
+        }
+        throw new ErrorMsgException("redisson and redisConnectionFactory is null!");
     }
 
     /**
