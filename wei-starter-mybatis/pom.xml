@@ -13,10 +13,10 @@
     <url>https://github.com/weijj0528/wei-springboot-starter</url>
 
     <properties>
-        <revision>3.1.0-SNAPSHOT</revision>
+        <revision>4.1.0-SNAPSHOT</revision>
         <skip_maven_deploy>false</skip_maven_deploy>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

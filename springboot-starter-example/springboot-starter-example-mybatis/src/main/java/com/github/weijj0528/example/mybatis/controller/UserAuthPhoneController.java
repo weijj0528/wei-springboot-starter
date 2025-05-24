@@ -105,10 +105,8 @@ public class UserAuthPhoneController {
      */
     @ResponseBody
     @GetMapping("/cursor")
-    public Result<Page<UserAuthPhoneDto>> cursor(UserAuthPhoneDto queryDto) {
-        QueryWrapper<UserAuthPhone> example = new QueryWrapper<>(UserAuthPhone.class);
-        // criteria.andEqualTo(UserAuthPhone.ID, 1);
-        userAuthPhoneService.cursorOperator("selectByExample", 10, example, list -> {
+    public Result<Page<UserAuthPhoneDto>> cursor(UserAuthPhone query) {
+        userAuthPhoneService.cursorOperator("select", 10, query, list -> {
             list.forEach(o -> log.info("cursor record: {}", o));
         });
         return Result.success();

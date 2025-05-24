@@ -27,11 +27,6 @@ public class MybatisExampleApplication {
 
 
     @Bean
-    public SqlCostInterceptor sqlCostInterceptor() {
-        return new SqlCostInterceptor();
-    }
-
-    @Bean
     public ArgsInterceptor argsInterceptor() {
         return new ArgsInterceptor(new ArgsProvider() {
 

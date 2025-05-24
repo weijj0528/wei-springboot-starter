@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.weijj0528.example.mybatis.mapper.UserAuthPhoneMapper">
-  <resultMap id="BaseResultMap" type="com.github.weijj0528.example.mybatis.model.UserAuthPhone">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="id" jdbcType="BIGINT" property="id" />
-    <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="is_del" jdbcType="BIT" property="del" />
-    <result column="updater" jdbcType="VARCHAR" property="updater" />
-    <result column="utime" jdbcType="TIMESTAMP" property="utime" />
-    <result column="creater" jdbcType="VARCHAR" property="creater" />
-    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.github.weijj0528.example.mybatis.model.UserAuthPhone">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant" jdbcType="BIGINT" property="tenant"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="pwd" jdbcType="VARCHAR" property="pwd"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+        <result column="updater" jdbcType="VARCHAR" property="updater"/>
+        <result column="utime" jdbcType="TIMESTAMP" property="utime"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="ctime" jdbcType="TIMESTAMP" property="ctime"/>
+    </resultMap>
+
+    <select id="select" resultMap="BaseResultMap">
+        select * from user_auth_phone where true
+    </select>
 </mapper>

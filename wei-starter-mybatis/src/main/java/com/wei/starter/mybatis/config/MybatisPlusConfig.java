@@ -36,7 +36,7 @@ public class MybatisPlusConfig {
         // 分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         // 添加非法SQL拦截器
-        interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
+        // interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
         // 防全表更新与删除插件
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         return interceptor;

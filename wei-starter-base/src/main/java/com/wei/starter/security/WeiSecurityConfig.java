@@ -3,6 +3,7 @@ package com.wei.starter.security;
 import cn.hutool.core.text.StrPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -60,6 +61,12 @@ public class WeiSecurityConfig {
     // @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
     public WeiTokenFilter tokenAuthenticationFilter() {
         return new WeiTokenFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(TokenService.class)
+    public TokenService tokenService() {
+        return new SimpleTokenService();
     }
 
     /**

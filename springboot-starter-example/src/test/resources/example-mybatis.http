@@ -5,9 +5,10 @@ POST {{host}}/userAuthPhone
 Content-Type: application/json
 
 {
-  "tenantId": 0,
+  "tenant": 0,
   "phone": "13800000000",
   "pwd": "123456",
+  "creator": "Test",
   "userId": 0
 }
 
@@ -16,11 +17,12 @@ POST {{host}}/userAuthPhone/1
 Content-Type: application/json
 
 {
-  "tenantId": 1,
+  "tenant": 1,
   "phone": "13800000000",
   "pwd": "123456",
   "userId": 0,
-  "del": 0
+  "updater": "Test",
+  "deleted": 0
 }
 
 ### 详情

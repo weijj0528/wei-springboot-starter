@@ -44,7 +44,7 @@ class UserAuthPhoneServiceTest extends MybatisExampleApplicationTest {
     @Test
     void selectByExample() {
         final QueryWrapper<UserAuthPhone> example = new QueryWrapper<>(UserAuthPhone.class);
-        example.eq(UserAuthPhone.IS_DEL, false);
+        example.eq(UserAuthPhone.DELETED, false);
         example.in(UserAuthPhone.ID, Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
         final List<UserAuthPhone> userAuthPhones = userAuthPhoneMapper.selectList(example);
         assertFalse(userAuthPhones.isEmpty());

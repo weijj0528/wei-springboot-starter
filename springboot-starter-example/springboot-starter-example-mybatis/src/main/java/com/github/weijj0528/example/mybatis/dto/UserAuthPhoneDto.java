@@ -2,11 +2,11 @@ package com.github.weijj0528.example.mybatis.dto;
 
 import com.wei.starter.base.valid.Add;
 import com.wei.starter.base.valid.Update;
+import com.wei.starter.mybatis.entity.Entity;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Date;
+import java.io.Serial;
 
 /**
  * @author
@@ -14,8 +14,8 @@ import java.util.Date;
  * @description
  */
 @Data
-public class UserAuthPhoneDto implements Serializable {
-
+public class UserAuthPhoneDto extends Entity<Long> {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -27,7 +27,7 @@ public class UserAuthPhoneDto implements Serializable {
      * 租户ID
      */
     @NotNull(groups = Add.class, message = "租户ID不能为空")
-    private Long tenantId;
+    private Long tenant;
 
     /**
      * 电话
@@ -51,26 +51,6 @@ public class UserAuthPhoneDto implements Serializable {
      * 是否删除
      */
     @NotNull(groups = Update.class, message = "是否删除不能为空")
-    private Boolean del;
-
-    /**
-     * 更新人
-     */
-    private String updater;
-
-    /**
-     * 最后更新时间
-     */
-    private Date utime;
-
-    /**
-     * 创建人
-     */
-    private String creater;
-
-    /**
-     * 记录时间
-     */
-    private Date ctime;
+    private Boolean deleted;
 
 }
