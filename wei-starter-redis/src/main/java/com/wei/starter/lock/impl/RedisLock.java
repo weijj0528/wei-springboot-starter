@@ -129,23 +129,26 @@ public class RedisLock implements WeiLock {
         // 过期时间
         Expiration expiration = Expiration.from(expirationTime, unit);
         byte[] expirationBytes = String.valueOf(expiration.getExpirationTimeInSeconds()).getBytes();
-        Boolean set;
+        Boolean set = Boolean.FALSE;
         // 自旋时间
         long targetTime = System.currentTimeMillis() + (time * 1000);
-        do {
-            String script = "if redis.call('set', KEYS[1], ARGV[1], ARGV[2], ARGV[3], ARGV[4]) then return 1 else return 0 end";
-            set = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN,
-                    1, lockKey.getBytes(), lockValue.getBytes(),
-                    "nx".getBytes(), "ex".getBytes(), expirationBytes);
-            if (set) {
-                break;
-            }
-            if (System.currentTimeMillis() < targetTime) {
-                // 未获取到则稍等一会再次获取
-                Thread.sleep(100);
-            }
-        } while (System.currentTimeMillis() < targetTime);
-        redisConnection.close();
+        try {
+            do {
+                String script = "if redis.call('set', KEYS[1], ARGV[1], ARGV[2], ARGV[3], ARGV[4]) then return 1 else return 0 end";
+                set = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN,
+                        1, lockKey.getBytes(), lockValue.getBytes(),
+                        "nx".getBytes(), "ex".getBytes(), expirationBytes);
+                if (set) {
+                    break;
+                }
+                if (System.currentTimeMillis() < targetTime) {
+                    // 未获取到则稍等一会再次获取
+                    Thread.sleep(100);
+                }
+            } while (System.currentTimeMillis() < targetTime);
+        } finally {
+            redisConnection.close();
+        }
         if (set) {
             lockStartTime = System.currentTimeMillis();
         }
