@@ -101,7 +101,12 @@ public class GlobalExceptionHandler {
         BaseException e = (BaseException) ex;
         Result<Void> result = new Result<>(e.getCode(), e.getMessage(), null);
         if (!(e instanceof ErrorMsgException)) {
-            response.setStatus(Integer.parseInt(e.getCode()));
+            try {
+                response.setStatus(Integer.parseInt(e.getCode()));
+            } catch (NumberFormatException nfe) {
+                log.warn("Invalid HTTP status code in exception: {}", e.getCode());
+                response.setStatus(500);
+            }
         }
         return result;
     }
