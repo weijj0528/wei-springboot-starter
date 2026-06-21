@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
 
+import com.wei.starter.base.exception.UnauthorizedException;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.FilterChain;
@@ -145,6 +147,13 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request, response);
+        } catch (UnauthorizedException e) {
+            log.warn("Token authentication failed: {}", e.getMessage());
+            response.setStatus(401);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+            response.getWriter().write("{\"code\": \"401\", \"msg\": \"Authentication failed, please login again!\"}");
+            response.getWriter().flush();
         } catch (Exception e) {
             log.error("Filter Error:", e);
         }
