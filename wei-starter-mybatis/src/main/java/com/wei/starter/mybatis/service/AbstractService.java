@@ -145,7 +145,7 @@ public abstract class AbstractService<T> extends ServiceImpl<BaseMapper<T>, T> i
      */
     @Override
     public Page<T> selectPageByExample(Wrapper<T> wrapper, Page<T> page) {
-        IPage<T> innerPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>();
+        IPage<T> innerPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(page.getPage(), page.getSize());
         getMapper().selectPage(innerPage, wrapper);
         page.setList(innerPage.getRecords());
         page.setTotal(innerPage.getTotal());
