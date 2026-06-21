@@ -3,7 +3,6 @@ package com.wei.starter.swagger;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -26,6 +25,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
+
 /**
  * Swagger 自动配置
  *
@@ -42,7 +43,7 @@ public class SwaggerAutoConfiguration {
     /**
      * The Properties.
      */
-    @Autowired
+    @Resource
     SwaggerProperties properties;
 
     /**
