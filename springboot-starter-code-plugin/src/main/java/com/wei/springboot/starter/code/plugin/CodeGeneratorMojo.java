@@ -125,7 +125,7 @@ public class CodeGeneratorMojo extends AbstractMojo {
                 getLog().warn(warning);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new MojoExecutionException("代码生成失败，请检查配置", e);
         }
     }
 
