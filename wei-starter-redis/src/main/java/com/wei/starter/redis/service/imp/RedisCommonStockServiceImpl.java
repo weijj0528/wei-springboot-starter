@@ -82,7 +82,9 @@ public class RedisCommonStockServiceImpl implements IRedisCommonStockService {
         }
         List<Long> eval = connection.evalSha(initScriptHas1, ReturnType.fromJavaType(List.class), 0, keyArgs);
         connection.close();
-        assert eval != null;
+        if (eval == null || eval.isEmpty()) {
+            throw new ErrorMsgException(Code.SYSTEM_ERROR.getCode(), "Lua init script 返回值为空");
+        }
         Long result = eval.get(0);
         if (result <= 0) {
             final long index = eval.get(1) - 1;
@@ -245,7 +247,9 @@ public class RedisCommonStockServiceImpl implements IRedisCommonStockService {
         }
         List<Long> eval = connection.evalSha(updateScriptHas1, ReturnType.fromJavaType(List.class), 0, keyArgs);
         connection.close();
-        assert eval != null;
+        if (eval == null || eval.isEmpty()) {
+            throw new ErrorMsgException(Code.SYSTEM_ERROR.getCode(), "Lua update script 返回值为空");
+        }
         Long result = eval.get(0);
         if (result <= 0) {
             final long index = eval.get(1) - 1;
