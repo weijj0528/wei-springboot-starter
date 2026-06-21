@@ -25,8 +25,8 @@ import java.util.*;
 @Mojo(name = "generator", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.TEST)
 public class CodeGeneratorMojo extends AbstractMojo {
 
-    private static final String targetProject = "src\\main\\java";
-    private static final String targetResources = "src\\main\\resources";
+    private static final String targetProject = "src/main/java";
+    private static final String targetResources = "src/main/resources";
 
     @Parameter(property = "project", required = true, readonly = true)
     private MavenProject project;
