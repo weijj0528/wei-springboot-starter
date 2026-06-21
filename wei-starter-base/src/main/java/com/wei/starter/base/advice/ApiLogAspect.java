@@ -70,10 +70,10 @@ public class ApiLogAspect {
             }
             params = mapper.writeValueAsString(paramsMap);
         }
-        log.info("[RQ] {}", params);
+        log.debug("[RQ] {}", params);
         Result<Object> result = (Result<Object>) joinPoint.proceed();
         // 响应
-        log.info("[RP] {}", mapper.writeValueAsString(result));
+        log.debug("[RP] {}", mapper.writeValueAsString(result));
         return result;
     }
 
