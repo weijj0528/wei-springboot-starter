@@ -72,7 +72,8 @@ public class RedissonLock implements WeiLock {
 
     @Override
     public void lockInterruptibly() {
-        unlock();
+        // 当前实现不支持可中断式加锁，请使用 tryLock(long, long, TimeUnit) 代替
+        throw new UnsupportedOperationException("RedissonLock does not support lockInterruptibly()");
     }
 
     @Override
