@@ -146,11 +146,12 @@ public class Entity<T> implements Serializable {
             return false;
         }
         Entity<?> entity = (Entity<?>) o;
-        return Objects.equal(getId(), entity.getId()) && Objects.equal(getTenant(), entity.getTenant()) && Objects.equal(getVersion(), entity.getVersion()) && Objects.equal(getDeleted(), entity.getDeleted()) && Objects.equal(getUpdater(), entity.getUpdater()) && Objects.equal(getUtime(), entity.getUtime()) && Objects.equal(getCreator(), entity.getCreator()) && Objects.equal(getCtime(), entity.getCtime());
+        // 实体相等性仅基于主键 id，可变业务字段不参与比较
+        return Objects.equal(getId(), entity.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId(), getTenant(), getVersion(), getDeleted(), getUpdater(), getUtime(), getCreator(), getCtime());
+        return Objects.hashCode(getId());
     }
 }
