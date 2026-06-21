@@ -7,9 +7,9 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class DbSequenceSpace implements SequenceSpace {
 
-    private long start = 0;
+    private volatile long start = 0;
 
-    private long end = 0;
+    private volatile long end = 0;
 
     private AtomicLong current = new AtomicLong(0);
 
