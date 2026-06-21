@@ -23,7 +23,7 @@ public class WeiJsonUtils {
     private WeiJsonUtils() {
     }
 
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static volatile ObjectMapper mapper = new ObjectMapper();
 
     static {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
