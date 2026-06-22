@@ -26,8 +26,10 @@ import com.wei.starter.base.exception.UnauthorizedException;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -120,13 +122,13 @@ public class WeiTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) {
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             // 是否为开放接口
             String uri = request.getRequestURI();
             String method = request.getMethod();
             String pattern = uriMatchPattern(uri, method, openFixedApis, openMutableApis);
-            log.info("open uriMatchPattern: {} {} {}", uri, method, pattern);
+            log.debug("open uriMatchPattern: {} {} {}", uri, method, pattern);
             if (StrUtil.isBlank(pattern)) {
                 String token = request.getHeader(Header.AUTHORIZATION.toString());
                 if (StringUtils.isNotEmpty(token)) {
@@ -134,10 +136,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                     Principal principal = tokenService.getToken(token);
                     if (principal != null) {
                         pattern = uriMatchPattern(uri, method, fixedApis, mutableApis);
-                        log.info("uriMatchPattern: {} {} {}", uri, method, pattern);
+                        log.debug("uriMatchPattern: {} {} {}", uri, method, pattern);
                         if (StrUtil.isNotBlank(pattern)) {
                             boolean hasPermission = tokenService.permissionCheck(principal, method, pattern);
-                            log.info("UserPermissionCheck:[{}:{}] {} {}", method, pattern, hasPermission, token);
+                            log.info("UserPermissionCheck:[{}:{}] {}", method, pattern, hasPermission);
                             // 添加权限信息，给到后续处理
                             if (hasPermission) {
                                 SecurityContextHolder.getContext().setAuthentication(new WeiToken(token, principal));
@@ -156,6 +158,7 @@ public class WeiTokenFilter extends OncePerRequestFilter {
             response.getWriter().flush();
         } catch (Exception e) {
             log.error("Filter Error:", e);
+            throw new ServletException("Filter error", e);
         }
     }
 

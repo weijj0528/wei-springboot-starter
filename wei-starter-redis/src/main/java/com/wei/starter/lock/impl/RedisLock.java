@@ -132,7 +132,7 @@ public class RedisLock implements WeiLock {
         byte[] expirationBytes = String.valueOf(expiration.getExpirationTimeInSeconds()).getBytes();
         Boolean set = Boolean.FALSE;
         // 自旋时间
-        long targetTime = System.currentTimeMillis() + (time * 1000);
+        long targetTime = System.currentTimeMillis() + unit.toMillis(time);
         try {
             do {
                 String script = "if redis.call('set', KEYS[1], ARGV[1], ARGV[2], ARGV[3], ARGV[4]) then return 1 else return 0 end";
@@ -160,14 +160,17 @@ public class RedisLock implements WeiLock {
     public void unlock() {
         if (lockStartTime > 0) {
             RedisConnection redisConnection = getRedisConnection();
-            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-            Boolean result = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN, 1, lockKey.getBytes(), lockValue.getBytes());
-            if (!result) {
-                log.warn("Lock expired:" + lockKey);
+            try {
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                Boolean result = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN, 1, lockKey.getBytes(), lockValue.getBytes());
+                if (!result) {
+                    log.warn("Lock expired:" + lockKey);
+                }
+                long time = System.currentTimeMillis() - lockStartTime;
+                log.debug(lockKey + " locking " + time + "ms");
+            } finally {
+                redisConnection.close();
             }
-            long time = System.currentTimeMillis() - lockStartTime;
-            log.debug(lockKey + " locking " + time + "ms");
-            redisConnection.close();
         }
     }
 }
