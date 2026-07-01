@@ -2,22 +2,20 @@ package com.wei.starter.cache.advice;
 
 import com.wei.starter.cache.CacheTtlContext;
 import com.wei.starter.cache.annotation.CacheTtl;
-import com.wei.starter.lock.service.LockService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.core.Ordered;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
 /**
- * The type Lock aspect.
- * 声明式锁
+ * The type Cache TTL aspect.
+ * 声明式缓存有效期
  *
  * @author William.Wei
  */
@@ -30,7 +28,7 @@ public class CacheTtlAspect implements Ordered {
         return Integer.MIN_VALUE;
     }
 
-    @Around("@annotation(com.wei.starter.cache.annotation.CacheTtl)")
+    @Around("@annotation(com.wei.starter.cache.annotation.CacheTtl) || @within(com.wei.starter.cache.annotation.CacheTtl)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             Signature signature = joinPoint.getSignature();
@@ -46,7 +44,7 @@ public class CacheTtlAspect implements Ordered {
                 CacheTtlContext.setTtl(ttl);
                 log.debug("set ttl:{}", ttl);
             }
-            return ((MethodInvocationProceedingJoinPoint) joinPoint).proceed(joinPoint.getArgs());
+            return joinPoint.proceed(joinPoint.getArgs());
         } finally {
             CacheTtlContext.remove();
         }

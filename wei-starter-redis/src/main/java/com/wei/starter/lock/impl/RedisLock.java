@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.ReturnType;
-import org.springframework.data.redis.core.types.Expiration;
-
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -87,8 +86,13 @@ public class RedisLock implements WeiLock {
 
     @Override
     public void lock() {
-        boolean b = tryLock();
-        if (!b) {
+        try {
+            // Lock.lock() 必须阻塞直到获取锁, 无超时上限
+            while (!tryLock(expiredTime, expiredTime, TimeUnit.SECONDS)) {
+                Thread.sleep(100);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException("Did not get a lock:" + lockKey);
         }
     }
@@ -104,13 +108,14 @@ public class RedisLock implements WeiLock {
         try {
             return tryLock(expiredTime, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException("Did not get a lock:" + lockKey);
         }
     }
 
     @Override
     public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-        return tryLock(waitTime, time, unit);
+        return tryLock(time, expiredTime, unit);
     }
 
     /**
@@ -127,19 +132,21 @@ public class RedisLock implements WeiLock {
     public boolean tryLock(long time, long expirationTime, TimeUnit unit) throws InterruptedException {
         // 获取连接
         RedisConnection redisConnection = getRedisConnection();
-        // 过期时间
-        Expiration expiration = Expiration.from(expirationTime, unit);
-        byte[] expirationBytes = String.valueOf(expiration.getExpirationTimeInSeconds()).getBytes();
+        // 过期时间: 亚秒级单位使用 PX (毫秒), 否则使用 EX (秒)
+        boolean subSecond = unit == TimeUnit.MILLISECONDS || unit == TimeUnit.MICROSECONDS || unit == TimeUnit.NANOSECONDS;
+        String expireUnit = subSecond ? "px" : "ex";
+        long expireValue = subSecond ? unit.toMillis(expirationTime) : unit.toSeconds(expirationTime);
+        byte[] expirationBytes = String.valueOf(expireValue).getBytes(StandardCharsets.UTF_8);
         Boolean set = Boolean.FALSE;
         // 自旋时间
         long targetTime = System.currentTimeMillis() + unit.toMillis(time);
         try {
             do {
                 String script = "if redis.call('set', KEYS[1], ARGV[1], ARGV[2], ARGV[3], ARGV[4]) then return 1 else return 0 end";
-                set = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN,
-                        1, lockKey.getBytes(), lockValue.getBytes(),
-                        "nx".getBytes(), "ex".getBytes(), expirationBytes);
-                if (set) {
+                set = redisConnection.eval(script.getBytes(StandardCharsets.UTF_8), ReturnType.BOOLEAN,
+                        1, lockKey.getBytes(StandardCharsets.UTF_8), lockValue.getBytes(StandardCharsets.UTF_8),
+                        "nx".getBytes(StandardCharsets.UTF_8), expireUnit.getBytes(StandardCharsets.UTF_8), expirationBytes);
+                if (Boolean.TRUE.equals(set)) {
                     break;
                 }
                 if (System.currentTimeMillis() < targetTime) {
@@ -150,7 +157,7 @@ public class RedisLock implements WeiLock {
         } finally {
             redisConnection.close();
         }
-        if (set) {
+        if (Boolean.TRUE.equals(set)) {
             lockStartTime = System.currentTimeMillis();
         }
         return set;
@@ -162,12 +169,12 @@ public class RedisLock implements WeiLock {
             RedisConnection redisConnection = getRedisConnection();
             try {
                 String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-                Boolean result = redisConnection.eval(script.getBytes(), ReturnType.BOOLEAN, 1, lockKey.getBytes(), lockValue.getBytes());
-                if (!result) {
+                Boolean result = redisConnection.eval(script.getBytes(StandardCharsets.UTF_8), ReturnType.BOOLEAN, 1, lockKey.getBytes(StandardCharsets.UTF_8), lockValue.getBytes(StandardCharsets.UTF_8));
+                if (!Boolean.TRUE.equals(result)) {
                     log.warn("Lock expired:" + lockKey);
                 }
                 long time = System.currentTimeMillis() - lockStartTime;
-                log.debug(lockKey + " locking " + time + "ms");
+                log.debug("{} locking {}ms", lockKey, time);
             } finally {
                 redisConnection.close();
             }

@@ -60,7 +60,7 @@ public class WeiKeyGenerator implements KeyGenerator {
             } else {
                 log.warn("Using an object as a cache key may lead to unexpected results. " +
                         "Either use @Cacheable(key=..) or implement CacheKey. Method is " + target.getClass() + "#" + method.getName());
-                args.append(param.hashCode());
+                args.append(param.toString());
             }
             args.append(StrUtil.DASHED);
         }

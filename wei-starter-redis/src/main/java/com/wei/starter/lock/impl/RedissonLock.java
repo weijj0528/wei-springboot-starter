@@ -2,8 +2,8 @@ package com.wei.starter.lock.impl;
 
 import com.wei.starter.lock.WeiLock;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +43,7 @@ public class RedissonLock implements WeiLock {
      * @param lockKey  the lock key
      * @param redisson the redisson
      */
-    public RedissonLock(String lockKey, Redisson redisson) {
+    public RedissonLock(String lockKey, RedissonClient redisson) {
         this(lockKey, 0, DEFAULT_EXPIRED_TIME, redisson);
     }
 
@@ -55,7 +55,7 @@ public class RedissonLock implements WeiLock {
      * @param expiredTime the expired time
      * @param redisson    the redisson
      */
-    public RedissonLock(String lockKey, long waitTime, long expiredTime, Redisson redisson) {
+    public RedissonLock(String lockKey, long waitTime, long expiredTime, RedissonClient redisson) {
         this.expiredTime = expiredTime;
         this.waitTime = waitTime;
         lock = redisson.getLock(lockKey);
@@ -72,8 +72,13 @@ public class RedissonLock implements WeiLock {
 
     @Override
     public void lockInterruptibly() {
-        // 当前实现不支持可中断式加锁，请使用 tryLock(long, long, TimeUnit) 代替
-        throw new UnsupportedOperationException("RedissonLock does not support lockInterruptibly()");
+        try {
+            lock.lockInterruptibly();
+            lockStartTime = System.currentTimeMillis();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Did not get a lock:" + lock.getName());
+        }
     }
 
     @Override
@@ -81,13 +86,14 @@ public class RedissonLock implements WeiLock {
         try {
             return tryLock(expiredTime, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException("Did not get a lock:" + lock.getName());
         }
     }
 
     @Override
     public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-        return tryLock(waitTime, time, unit);
+        return tryLock(time, expiredTime, unit);
     }
 
     /**
@@ -114,9 +120,11 @@ public class RedissonLock implements WeiLock {
         if (lockStartTime > 0) {
             if (lock.isHeldByCurrentThread()) {
                 lock.unlock();
+            } else {
+                log.warn("Lock expired or not held: {}", lock.getName());
             }
             long time = System.currentTimeMillis() - lockStartTime;
-            log.debug(lock.getName() + " locking " + time + "ms");
+            log.debug("{} locking {}ms", lock.getName(), time);
         }
     }
 }

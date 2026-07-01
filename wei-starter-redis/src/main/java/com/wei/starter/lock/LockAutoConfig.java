@@ -4,7 +4,6 @@ import com.wei.starter.lock.advice.LockAspect;
 import com.wei.starter.lock.service.LockService;
 import com.wei.starter.redis.RedisAutoConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -38,7 +37,7 @@ public class LockAutoConfig {
     @ConditionalOnBean(RedissonClient.class)
     public LockService redissonLockService(RedissonClient redisson) {
         log.info("Redisson lock service init");
-        return new LockService((Redisson) redisson);
+        return new LockService(redisson);
     }
 
     /**

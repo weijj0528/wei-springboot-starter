@@ -9,7 +9,7 @@ import com.wei.starter.lock.impl.RedisLock;
 import com.wei.starter.lock.impl.RedissonLock;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -27,7 +27,13 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The type Lock service.
+ * Lock service.
+ *
+ * <p>可重入性差异: {@link RedisLock} 基于 SET NX + UUID, <b>不可重入</b>,
+ * 同一线程对同一锁键的嵌套 {@code @Lock} 调用会死锁;
+ * {@link RedissonLock} 基于 Redisson RLock, <b>可重入</b>。</p>
+ *
+ * @author William.Wei
  */
 public class LockService {
 
@@ -40,12 +46,12 @@ public class LockService {
     /**
      * redisson
      */
-    private Redisson redisson;
+    private final RedissonClient redisson;
 
     /**
      * 连接工厂
      */
-    private RedisConnectionFactory redisConnectionFactory;
+    private final RedisConnectionFactory redisConnectionFactory;
 
 
     /**
@@ -53,8 +59,9 @@ public class LockService {
      *
      * @param redisson the redisson
      */
-    public LockService(Redisson redisson) {
+    public LockService(RedissonClient redisson) {
         this.redisson = redisson;
+        this.redisConnectionFactory = null;
     }
 
     /**
@@ -64,6 +71,7 @@ public class LockService {
      */
     public LockService(RedisConnectionFactory redisConnectionFactory) {
         this.redisConnectionFactory = redisConnectionFactory;
+        this.redisson = null;
     }
 
     /**
@@ -136,12 +144,7 @@ public class LockService {
     }
 
     private Expression getExpression(String key) {
-        Expression expression = cache.get(key);
-        if (expression == null) {
-            expression = parser.parseExpression(key);
-            cache.put(key, expression);
-        }
-        return expression;
+        return cache.computeIfAbsent(key, parser::parseExpression);
     }
 
 
