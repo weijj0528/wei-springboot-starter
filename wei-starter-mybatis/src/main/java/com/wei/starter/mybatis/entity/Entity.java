@@ -1,10 +1,10 @@
 package com.wei.starter.mybatis.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.google.common.base.Objects;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 基础实体定义
@@ -142,16 +142,24 @@ public class Entity<T> implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Entity)) {
+        // 不同子类即使 id 相同也不相等，避免跨类型误判
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Entity<?> entity = (Entity<?>) o;
+        // id 为 null 时退化为引用相等，避免两个未持久化实体被判为相等
+        T id = getId();
+        if (id == null || entity.getId() == null) {
+            return this == o;
+        }
         // 实体相等性仅基于主键 id，可变业务字段不参与比较
-        return Objects.equal(getId(), entity.getId());
+        return Objects.equals(id, entity.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        T id = getId();
+        // id 为 null 时使用身份哈希，避免所有未持久化实体落入同一桶
+        return id == null ? System.identityHashCode(this) : Objects.hashCode(id);
     }
 }

@@ -7,7 +7,6 @@ import com.wei.starter.security.WeiSecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.Optional;
 
@@ -22,24 +21,24 @@ public class WeiMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         Principal principal = WeiSecurityUtil.getPrincipal();
         Optional.ofNullable(principal).map(Principal::getName).ifPresent(name -> {
-            setFieldValByName(Entity.CREATOR, name, metaObject);
-            setFieldValByName(Entity.UPDATER, name, metaObject);
+            strictInsertFill(metaObject, Entity.CREATOR, String.class, name);
+            strictInsertFill(metaObject, Entity.UPDATER, String.class, name);
         });
-        setFieldValByName(Entity.VERSION, BigInteger.ONE.longValue(), metaObject);
-        setFieldValByName(Entity.DELETED, Boolean.FALSE, metaObject);
+        strictInsertFill(metaObject, Entity.VERSION, Long.class, 1L);
+        strictInsertFill(metaObject, Entity.DELETED, Boolean.class, Boolean.FALSE);
         Date now = new Date();
-        setFieldValByName(Entity.CTIME, now, metaObject);
-        setFieldValByName(Entity.UTIME, now, metaObject);
-        log.info("insert fill!");
+        strictInsertFill(metaObject, Entity.CTIME, Date.class, now);
+        strictInsertFill(metaObject, Entity.UTIME, Date.class, now);
+        log.debug("insert fill");
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         Principal principal = WeiSecurityUtil.getPrincipal();
         Optional.ofNullable(principal).map(Principal::getName).ifPresent(name -> {
-            setFieldValByName(Entity.UPDATER, name, metaObject);
+            strictUpdateFill(metaObject, Entity.UPDATER, String.class, name);
         });
-        setFieldValByName(Entity.UTIME, new Date(), metaObject);
-        log.info("update fill!");
+        strictUpdateFill(metaObject, Entity.UTIME, Date.class, new Date());
+        log.debug("update fill");
     }
 }

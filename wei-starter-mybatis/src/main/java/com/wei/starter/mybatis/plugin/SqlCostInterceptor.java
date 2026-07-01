@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
 
 /**
  * The type Sql cost interceptor.
@@ -132,7 +133,7 @@ public class SqlCostInterceptor implements Interceptor {
                 } else {
                     value = "'" + obj.toString() + "'";
                 }
-                sql = sql.replaceFirst("\\?", value);
+                sql = sql.replaceFirst("\\?", Matcher.quoteReplacement(value));
             }
         }
 
@@ -150,7 +151,7 @@ public class SqlCostInterceptor implements Interceptor {
                 if (!isPrimitiveOrPrimitiveWrapper(propertyValue.getClass())) {
                     propertyValue = "'" + propertyValue + "'";
                 }
-                sql = sql.replaceFirst("\\?", propertyValue.toString());
+                sql = sql.replaceFirst("\\?", Matcher.quoteReplacement(propertyValue.toString()));
             }
         }
         return sql;
@@ -180,7 +181,7 @@ public class SqlCostInterceptor implements Interceptor {
                 }
             }
 
-            sql = sql.replaceFirst("\\?", propertyValue);
+            sql = sql.replaceFirst("\\?", Matcher.quoteReplacement(propertyValue));
         }
 
         return sql;
