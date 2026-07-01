@@ -35,6 +35,14 @@ public class WeiSecurityProperties {
     private String rolePrefix = "ROLE_";
 
     /**
+     * Token 签名密钥
+     * <p>
+     * 用于 {@link SimpleTokenService} 的 HMAC-SHA256 签名，对应配置项 {@code spring.security.custom.token-secret}。
+     * 留空时 {@link SimpleTokenService#getToken(String)} 将返回 null（fail-closed），需配置后方可使用。
+     */
+    private String tokenSecret;
+
+    /**
      * 跨越配置
      */
     @Data
@@ -42,7 +50,7 @@ public class WeiSecurityProperties {
 
         private String pathPattern = "/**";
 
-        private String[] origins = new String[]{"*"};
+        private String[] origins = new String[]{};
 
         private String[] headers = new String[]{"*"};
 

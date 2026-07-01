@@ -1,7 +1,13 @@
 package com.wei.starter.security;
 
 /**
- * 常用角色定义
+ * 常用角色定义。
+ * <p>
+ * 注意：{@code getRole()} 返回的是<b>权限名（authority name）</b>，不包含 {@code ROLE_} 前缀。
+ * 在 Spring Security 表达式中应使用 {@code hasAuthority(...)} 而非 {@code hasRole(...)}，
+ * 因为 {@code hasRole} 会自动追加 {@code ROLE_} 前缀，导致匹配失败。
+ * <br>
+ * 示例：{@code @PreAuthorize("hasAuthority('Admin')")}
  *
  * @author William.Wei
  */

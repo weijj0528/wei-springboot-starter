@@ -4,6 +4,7 @@ import cn.hutool.core.text.StrPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -58,7 +61,7 @@ public class WeiSecurityConfig {
      * @return the wei token filter
      */
     @Bean
-    // @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
+    @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
     public WeiTokenFilter tokenAuthenticationFilter() {
         return new WeiTokenFilter();
     }
@@ -66,7 +69,7 @@ public class WeiSecurityConfig {
     @Bean
     @ConditionalOnMissingBean(TokenService.class)
     public TokenService tokenService() {
-        return new SimpleTokenService();
+        return new SimpleTokenService(weiSecurityProperties);
     }
 
     /**
@@ -127,30 +130,26 @@ public class WeiSecurityConfig {
         // CSRF关闭
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().headers().frameOptions().disable()
-                .and().headers().cacheControl().disable()
                 .and().formLogin().disable()
                 .logout().disable()
-                .exceptionHandling().authenticationEntryPoint((req, resp, authException) -> {
-                    resp.setStatus(401);
-                    resp.setCharacterEncoding("UTF-8");
-                    resp.setContentType("application/json; charset=utf-8");
-                    resp.getWriter().write("{\"code\": 401, \"msg\": \"Authentication failed, please login again!\"}");
-                    resp.getWriter().flush();
-                });
+                .exceptionHandling().authenticationEntryPoint((req, resp, authException) ->
+                        writeUnauthorizedResponse(resp));
         // 未开启权限检查
         if (!enable) {
             http.authorizeRequests().anyRequest().permitAll();
             return http.build();
         }
+        // 仅在安全开启时禁用 frameOptions 与 cacheControl
+        http.headers().frameOptions().disable()
+                .and().headers().cacheControl().disable();
         // 默认开放的接口
         String[] antPatterns = {"/webjars/**", "/", "/index", "/docs", "/v2/**", "/swagger", "/swagger2", "/swagger-resources"};
         http.authorizeRequests().antMatchers(antPatterns).permitAll();
         // 按配置开放接口
         for (String api : openApis) {
-            // uri /{xxx}/123 ->/**/123
-            String replaceAll = api.replaceAll("\\{\\w+\\}", "**");
-            String[] split = replaceAll.split(StrPool.COLON);
+            // uri /{xxx}/123 -> /*/123 (single-segment wildcard)
+            String replaceAll = api.replaceAll("\\{\\w+\\}", "*");
+            String[] split = replaceAll.split(StrPool.COLON, 2);
             if (split.length > 1) {
                 HttpMethod httpMethod = HttpMethod.valueOf(split[0].toUpperCase());
                 http.authorizeRequests().antMatchers(httpMethod, split[1]).permitAll();
@@ -164,6 +163,24 @@ public class WeiSecurityConfig {
         // 添加过滤器
         http.addFilterBefore(weiTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    /**
+     * 写入统一的 401 未认证响应（与 WeiTokenFilter 共用）。
+     *
+     * @param response the http response
+     * @throws IOException if write fails
+     */
+    static void writeUnauthorizedResponse(HttpServletResponse response) throws IOException {
+        response.setStatus(401);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        com.wei.starter.base.bean.Result<Void> result =
+                com.wei.starter.base.bean.Result.failure(
+                        com.wei.starter.base.bean.Code.UNAUTHORIZED.getCode(),
+                        "Authentication failed, please login again!");
+        response.getWriter().write(com.wei.starter.base.util.WeiJsonUtils.toJsonString(result));
+        response.getWriter().flush();
     }
 
 }

@@ -70,7 +70,7 @@ public class WeiTokenFilter extends OncePerRequestFilter {
             if (!openApi.contains(StrPool.COLON)) {
                 openApi = String.format("%s:%s", FLAG_ALL_METHOD, openApi);
             }
-            String[] split = openApi.split(StrPool.COLON);
+            String[] split = openApi.split(StrPool.COLON, 2);
             apiDataInit(split[1], split[0], openFixedApis, openMutableApis);
         }
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
@@ -119,6 +119,8 @@ public class WeiTokenFilter extends OncePerRequestFilter {
         }
     }
 
+    private static final String BEARER_PREFIX = "Bearer ";
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -132,6 +134,10 @@ public class WeiTokenFilter extends OncePerRequestFilter {
             if (StrUtil.isBlank(pattern)) {
                 String token = request.getHeader(Header.AUTHORIZATION.toString());
                 if (StringUtils.isNotEmpty(token)) {
+                    // 去除 Bearer 前缀
+                    if (token.startsWith(BEARER_PREFIX)) {
+                        token = token.substring(BEARER_PREFIX.length());
+                    }
                     // 非开放接口，验证用户权限
                     Principal principal = tokenService.getToken(token);
                     if (principal != null) {
@@ -148,18 +154,13 @@ public class WeiTokenFilter extends OncePerRequestFilter {
                     }
                 }
             }
-            filterChain.doFilter(request, response);
         } catch (UnauthorizedException e) {
             log.warn("Token authentication failed: {}", e.getMessage());
-            response.setStatus(401);
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json; charset=utf-8");
-            response.getWriter().write("{\"code\": \"401\", \"msg\": \"Authentication failed, please login again!\"}");
-            response.getWriter().flush();
-        } catch (Exception e) {
-            log.error("Filter Error:", e);
-            throw new ServletException("Filter error", e);
+            WeiSecurityConfig.writeUnauthorizedResponse(response);
+            return;
         }
+        // doFilter 移至 try/catch 之外，避免包装下游异常
+        filterChain.doFilter(request, response);
     }
 
     private String uriMatchPattern(String uri, String method, Map<String, String> fixedApis, Map<String, String> mutableApis) {

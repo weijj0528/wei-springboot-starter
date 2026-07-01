@@ -16,8 +16,11 @@ import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Administrator
@@ -28,6 +31,11 @@ import java.util.Map;
 @Aspect
 @Component
 public class ApiLogAspect {
+
+    private static final String MASK = "***";
+
+    private static final Set<String> SENSITIVE_FIELDS = new HashSet<>(Arrays.asList(
+            "password", "token", "authorization", "secret", "pwd", "accessToken", "refreshToken"));
 
     @Resource
     private ObjectMapper mapper;
@@ -53,28 +61,55 @@ public class ApiLogAspect {
                 return (Result<Object>) joinPoint.proceed();
             }
         }
-        if (args.length == 0) {
-            params = "no params!";
-        } else if (args.length == 1) {
-            params = mapper.writeValueAsString(args[0]);
-        } else {
-            Map<String, Object> paramsMap = new HashMap<>();
-            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-            Parameter[] parameters = methodSignature.getMethod().getParameters();
-            for (int i = 0; i < parameters.length; i++) {
-                if (!(args[i] instanceof ServletRequest) &&
-                        !(args[i] instanceof ServletResponse) &&
-                        !(args[i] instanceof BindingResult)) {
-                    paramsMap.put(parameters[i].getName(), args[i]);
+        if (log.isDebugEnabled()) {
+            if (args.length == 0) {
+                params = "no params!";
+            } else if (args.length == 1) {
+                params = mapper.writeValueAsString(maskSensitive(args[0]));
+            } else {
+                Map<String, Object> paramsMap = new HashMap<>();
+                MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+                Parameter[] parameters = methodSignature.getMethod().getParameters();
+                for (int i = 0; i < parameters.length; i++) {
+                    if (!(args[i] instanceof ServletRequest) &&
+                            !(args[i] instanceof ServletResponse) &&
+                            !(args[i] instanceof BindingResult)) {
+                        paramsMap.put(parameters[i].getName(), maskSensitive(args[i]));
+                    }
                 }
+                params = mapper.writeValueAsString(paramsMap);
             }
-            params = mapper.writeValueAsString(paramsMap);
+            log.debug("[RQ] {}", params);
         }
-        log.debug("[RQ] {}", params);
         Result<Object> result = (Result<Object>) joinPoint.proceed();
         // 响应
-        log.debug("[RP] {}", mapper.writeValueAsString(result));
+        if (log.isDebugEnabled()) {
+            log.debug("[RP] {}", mapper.writeValueAsString(maskSensitive(result)));
+        }
         return result;
+    }
+
+    /**
+     * 对敏感字段进行脱敏处理（仅支持 Map 顶层 key 匹配）。
+     *
+     * @param obj 原始对象
+     * @return 脱敏后的对象
+     */
+    private Object maskSensitive(Object obj) {
+        if (obj instanceof Map) {
+            Map<?, ?> source = (Map<?, ?>) obj;
+            Map<String, Object> masked = new HashMap<>();
+            for (Map.Entry<?, ?> entry : source.entrySet()) {
+                String key = String.valueOf(entry.getKey());
+                if (SENSITIVE_FIELDS.contains(key.toLowerCase())) {
+                    masked.put(key, MASK);
+                } else {
+                    masked.put(key, entry.getValue());
+                }
+            }
+            return masked;
+        }
+        return obj;
     }
 
 }

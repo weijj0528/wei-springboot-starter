@@ -34,7 +34,10 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Result<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        log.error("参数解析失败 {}:{}", e.getStackTrace()[0].getClassName(), e.getStackTrace()[0].getMethodName(), e);
+        StackTraceElement[] st = e.getStackTrace();
+        String className = st.length > 0 ? st[0].getClassName() : "?";
+        String methodName = st.length > 0 ? st[0].getMethodName() : "?";
+        log.error("参数解析失败 {}:{}", className, methodName, e);
         return Result.failure(Code.BAD_REQUEST.getCode(), "参数解析失败");
     }
 
@@ -42,9 +45,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Result<Void> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+        StackTraceElement[] st = e.getStackTrace();
+        String className = st.length > 0 ? st[0].getClassName() : "?";
+        String methodName = st.length > 1 ? st[1].getMethodName() : "?";
         log.error("{} {}.{} 不支持当前请求方法 {}, 支持方法 {}",
-                request.getRequestURI(), e.getStackTrace()[0].getClassName(),
-                e.getStackTrace()[1].getMethodName(), e.getMethod(),
+                request.getRequestURI(), className,
+                methodName, e.getMethod(),
                 e.getSupportedMethods());
         return Result.failure(HttpStatus.METHOD_NOT_ALLOWED.toString(), "不支持的请求方法");
     }
@@ -75,14 +81,14 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler({UnauthorizedException.class, AccessDeniedException.class})
+    @ExceptionHandler(UnauthorizedException.class)
     public Result<Void> unauthorizedExceptionHandle() {
         return Result.failure(Code.UNAUTHORIZED.getCode(), Code.UNAUTHORIZED.getMsg());
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(ForbiddenException.class)
+    @ExceptionHandler({ForbiddenException.class, AccessDeniedException.class})
     public Result<Void> forbiddenExceptionHandle() {
         return Result.failure(Code.FORBIDDEN.getCode(), Code.FORBIDDEN.getMsg());
     }
@@ -100,13 +106,16 @@ public class GlobalExceptionHandler {
         }
         BaseException e = (BaseException) ex;
         Result<Void> result = new Result<>(e.getCode(), e.getMessage(), null);
-        if (!(e instanceof ErrorMsgException)) {
-            try {
-                response.setStatus(Integer.parseInt(e.getCode()));
-            } catch (NumberFormatException nfe) {
-                log.warn("Invalid HTTP status code in exception: {}", e.getCode());
+        try {
+            int status = Integer.parseInt(e.getCode());
+            if (status < 100 || status > 599) {
                 response.setStatus(500);
+            } else {
+                response.setStatus(status);
             }
+        } catch (NumberFormatException nfe) {
+            log.warn("Invalid HTTP status code in exception: {}", e.getCode());
+            response.setStatus(500);
         }
         return result;
     }

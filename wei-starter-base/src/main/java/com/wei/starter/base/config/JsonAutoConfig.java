@@ -1,14 +1,15 @@
 package com.wei.starter.base.config;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.wei.starter.base.util.WeiJsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -42,8 +43,6 @@ public class JsonAutoConfig {
     @PostConstruct
     public void init() {
         //  FastJson配置
-        // 自动进行类型转换
-        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         // 禁用循环引用
         JSON.DEFAULT_GENERATE_FEATURE |= SerializerFeature.DisableCircularReferenceDetect.getMask();
         log.info("FastJson global parser config init!");
@@ -62,6 +61,17 @@ public class JsonAutoConfig {
                                 .addSerializer(Date.class, new DateSerializer(org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
                                         .withZone(DateTimeZone.forID("Asia/Shanghai")))))
                 .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
+
+    /**
+     * 将 Spring 容器中配置好的 ObjectMapper 同步到 WeiJsonUtils 静态工具类，
+     * 使其共享 JavaTimeModule 与时区配置。
+     */
+    @Bean("weiJsonUtilsInitializer")
+    public Runnable weiJsonUtilsInitializer(ObjectMapper objectMapper) {
+        WeiJsonUtils.setObjectMapper(objectMapper);
+        return () -> {
+        };
     }
 
 
