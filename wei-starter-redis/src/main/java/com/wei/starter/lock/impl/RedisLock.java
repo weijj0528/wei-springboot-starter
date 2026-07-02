@@ -160,7 +160,7 @@ public class RedisLock implements WeiLock {
         if (Boolean.TRUE.equals(set)) {
             lockStartTime = System.currentTimeMillis();
         }
-        return set;
+        return Boolean.TRUE.equals(set);
     }
 
     @Override

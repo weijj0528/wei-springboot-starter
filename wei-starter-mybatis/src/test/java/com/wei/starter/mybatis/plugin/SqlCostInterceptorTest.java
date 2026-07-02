@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -25,9 +27,9 @@ import static org.mockito.Mockito.when;
  * 修复后 (Matcher.quoteReplacement(value)): $ 与 \ 被转义, 按字面量替换。
  * <p>
  * 注: 走通用对象路径 (handleCommonParameter) 触发, 该路径同样使用 Matcher.quoteReplacement。
- * 不使用 HashMap 作为 parameterObject —— isStrictMap 实现存在缺陷
- * (parameterObjectClass.isAssignableFrom(StrictMap.class) 方向写反, StrictMap extends HashMap,
- * 导致任意 HashMap 被误判为 StrictMap 后 ClassCastException), 会绕过 handleMapParameter。
+ * 另覆盖 handleMapParameter 路径: 修复前 isStrictMap/isMap 的 isAssignableFrom 方向写反,
+ * HashMap 被误判为 StrictMap 后 ClassCastException 被 catch 吞掉, 占位符不替换;
+ * 修复后 (StrictMap.class.isAssignableFrom(param)) HashMap 正确走 handleMapParameter。
  */
 @DisplayName("SqlCostInterceptor#formatSql")
 class SqlCostInterceptorTest {
@@ -142,5 +144,20 @@ class SqlCostInterceptorTest {
         String result = formatSql("", new Param("x"), Collections.emptyList());
 
         assertEquals("", result);
+    }
+
+    @Test
+    @DisplayName("HashMap 参数走 handleMapParameter 路径, 占位符正确替换(isStrictMap/isMap 修复)")
+    void formatSql_hashMapParam_replacesPlaceholder() {
+        // 修复前: isStrictMap 用 parameterObjectClass.isAssignableFrom(StrictMap.class) 方向写反,
+        // HashMap 被误判为 StrictMap -> (StrictMap) cast 抛 ClassCastException -> 被 catch 吞掉,
+        // 占位符不替换。修复后正确识别为 Map 并替换。
+        String sql = "SELECT * FROM t WHERE name = ?";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("name", "alice");
+
+        String result = formatSql(sql, paramMap, List.of(mapping("name")));
+
+        assertEquals("SELECT * FROM t WHERE name = 'alice'", result);
     }
 }

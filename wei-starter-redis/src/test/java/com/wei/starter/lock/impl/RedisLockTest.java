@@ -108,16 +108,13 @@ class RedisLockTest {
 
     @Test
     @DisplayName("eval 返回 null 时 tryLock 应优雅返回 false(空安全)")
-    void tryLock_evalReturnsNull_returnsFalseGracefully() {
-        // 意图: 空返回不应 NPE, 应返回 false
-        // 实际: 当前实现 `return set;` 其中 set 为 null Boolean, 拆箱为 boolean 时 NPE
-        // → 测试揭示源码缺陷, 此处断言当前实际行为并记录
+    void tryLock_evalReturnsNull_returnsFalseGracefully() throws InterruptedException {
+        // eval 返回 null 时不应 NPE, 应返回 false (Boolean.TRUE.equals(null) = false)
         RedisLock lock = new RedisLock("k", 0, 1, factory);
         when(connection.eval(any(), any(), anyInt(), any())).thenReturn(null);
 
-        // 期望 assertFalse, 但当前实现 NPE; 记录为发现的 bug
-        assertThrows(NullPointerException.class, () -> lock.tryLock(0, TimeUnit.SECONDS),
-                "已知缺陷: eval 返回 null 时 return set; 拆箱 NPE, 应改为 return Boolean.TRUE.equals(set)");
+        assertFalse(lock.tryLock(0, TimeUnit.SECONDS),
+                "eval 返回 null 应返回 false 而非 NPE");
     }
 
     @Test

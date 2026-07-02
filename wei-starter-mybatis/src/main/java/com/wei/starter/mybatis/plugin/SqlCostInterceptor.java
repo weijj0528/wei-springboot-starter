@@ -202,34 +202,21 @@ public class SqlCostInterceptor implements Interceptor {
      * 是否DefaultSqlSession的内部类StrictMap
      */
     private boolean isStrictMap(Class<?> parameterObjectClass) {
-        return parameterObjectClass.isAssignableFrom(StrictMap.class);
+        return StrictMap.class.isAssignableFrom(parameterObjectClass);
     }
 
     /**
      * 是否List的实现类
      */
     private boolean isList(Class<?> clazz) {
-        Class<?>[] interfaceClasses = clazz.getInterfaces();
-        for (Class<?> interfaceClass : interfaceClasses) {
-            if (interfaceClass.isAssignableFrom(List.class)) {
-                return true;
-            }
-        }
-
-        return false;
+        return List.class.isAssignableFrom(clazz);
     }
 
     /**
      * 是否Map的实现类
      */
     private boolean isMap(Class<?> parameterObjectClass) {
-        Class<?>[] interfaceClasses = parameterObjectClass.getInterfaces();
-        for (Class<?> interfaceClass : interfaceClasses) {
-            if (interfaceClass.isAssignableFrom(Map.class)) {
-                return true;
-            }
-        }
-        return false;
+        return Map.class.isAssignableFrom(parameterObjectClass);
     }
 
 }
