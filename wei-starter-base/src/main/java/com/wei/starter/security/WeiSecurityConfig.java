@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -61,7 +62,7 @@ public class WeiSecurityConfig {
      * @return the wei token filter
      */
     @Bean
-    @ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
+    @ConditionalOnProperty(value = "spring.security.custom.enable", havingValue = "true")
     public WeiTokenFilter tokenAuthenticationFilter() {
         return new WeiTokenFilter();
     }
@@ -123,7 +124,7 @@ public class WeiSecurityConfig {
      * @throws Exception the exception
      */
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity http, WeiTokenFilter weiTokenFilter) throws Exception {
+    protected SecurityFilterChain configure(HttpSecurity http, ObjectProvider<WeiTokenFilter> weiTokenFilterProvider) throws Exception {
         boolean enable = weiSecurityProperties.isEnable();
         List<String> openApis = weiSecurityProperties.getOpenApis();
         log.info("SecurityConfig {}", enable);
@@ -160,8 +161,11 @@ public class WeiSecurityConfig {
         }
         // 其他接口开启认证
         http.authorizeRequests().expressionHandler(expressionHandler()).anyRequest().authenticated();
-        // 添加过滤器
-        http.addFilterBefore(weiTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        // 添加过滤器（仅当 tokenAuthenticationFilter Bean 存在时）
+        WeiTokenFilter weiTokenFilter = weiTokenFilterProvider.getIfAvailable();
+        if (weiTokenFilter != null) {
+            http.addFilterBefore(weiTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        }
         return http.build();
     }
 

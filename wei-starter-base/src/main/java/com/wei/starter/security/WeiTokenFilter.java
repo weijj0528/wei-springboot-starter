@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Order
 @Component
-@ConditionalOnProperty(value = "spring.security.enable", havingValue = "true")
+@ConditionalOnProperty(value = "spring.security.custom.enable", havingValue = "true")
 public class WeiTokenFilter extends OncePerRequestFilter {
 
     @Resource
