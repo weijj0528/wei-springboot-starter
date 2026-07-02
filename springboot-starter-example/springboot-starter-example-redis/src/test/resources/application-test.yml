@@ -1,0 +1,8 @@
+# 集成测试专用配置：覆盖 application-dev.yml 中的外部 Redis 配置。
+# 实际 host/port 由 RedisExampleApplicationTest 的 @DynamicPropertySource 注入容器地址，
+# RedissonClient 由 RedisTestConfig 显式声明指向容器（@Primary 覆盖自动配置）。
+spring:
+  application:
+    name: example-redis-it
+  redis:
+    password:

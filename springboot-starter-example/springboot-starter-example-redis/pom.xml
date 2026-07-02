@@ -29,5 +29,34 @@
             <artifactId>wei-starter-redis</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <!--Testcontainers 集成测试：真实 Redis 容器，替代外部 Redis 依赖-->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <argLine>-Xmx1024m</argLine>
+                    <!-- docker-java 默认 API 版本较低，部分 Docker 环境(如 OrbStack)要求 >=1.40，
+                         显式协商 1.41 兼容；DOCKER_HOST 等连接信息交由 Testcontainers 自动探测 -->
+                    <systemPropertyVariables>
+                        <api.version>1.41</api.version>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
