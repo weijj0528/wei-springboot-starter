@@ -32,33 +32,4 @@
             <version>0.9.6</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <!--<plugin>
-                <groupId>com.github.weijj0528</groupId>
-                <artifactId>springboot-starter-code-plugin</artifactId>
-                <version>${parent.version}</version>
-                <configuration>
-                    <jdbcDriver>com.mysql.cj.jdbc.Driver</jdbcDriver>
-                    <jdbcURL>jdbc:mysql://localhost:3306/wei_mall</jdbcURL>
-                    <jdbcUserId>root</jdbcUserId>
-                    <jdbcPassword>12345678</jdbcPassword>
-                    &lt;!&ndash;项目基础包名&ndash;&gt;
-                    <basePackage>com.wei.springbootstarterexample</basePackage>
-                    &lt;!&ndash;通用Mapper继承类&ndash;&gt;
-                    <xMapper>com.wei.starter.mybatis.xmapper.XMapper</xMapper>
-                    <overwrite>true</overwrite>
-                    <swagger>true</swagger>
-                    <generatorClass>
-                        <param>Model</param>
-                        <param>Xml</param>
-                        <param>Dto</param>
-                        <param>Service</param>
-                        <param>Controller</param>
-                    </generatorClass>
-                    <tableNames>user_auth_phone</tableNames>
-                </configuration>
-            </plugin>-->
-        </plugins>
-    </build>
 </project>

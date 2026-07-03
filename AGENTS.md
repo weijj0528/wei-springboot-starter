@@ -62,7 +62,6 @@ mvn clean deploy -P deploy-center
 | `wei-starter-redis` | 功能 starter | Redis 多 Key 原子操作 + 声明式缓存(`@RedisCacheable`) + 声明式分布式锁(`@Lock`) |
 | `wei-starter-sequence` | 功能 starter | 基于数据库双缓冲的序号生成 |
 | `wei-starter-swagger` | 功能 starter | Knife4j/Springfox 文档与 UI |
-| `springboot-starter-code-plugin` | Maven 插件 | MyBatis Generator + Freemarker 代码生成 |
 | `springboot-starter-archetype` | Maven 原型 | 生成 api/service/web 三层多模块业务骨架 |
 | `springboot-starter-example` | 示例 | 各 starter 的可运行示例 |
 

@@ -76,7 +76,6 @@
         <module>springboot-starter</module>
         <module>springboot-starter-archetype</module>
         <module>springboot-starter-example</module>
-        <!--<module>springboot-starter-code-plugin</module>-->
         <module>wei-dependencies</module>
         <module>wei-starter-base</module>
         <module>wei-starter-mybatis</module>
