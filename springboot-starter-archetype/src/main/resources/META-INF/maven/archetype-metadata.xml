@@ -24,9 +24,9 @@
             </includes>
         </fileSet>
         <fileSet encoding="UTF-8">
-            <directory></directory>
+            <directory>docs</directory>
             <includes>
-                <include>EasyCodeConfig.json</include>
+                <include>**/*</include>
             </includes>
         </fileSet>
     </fileSets>
