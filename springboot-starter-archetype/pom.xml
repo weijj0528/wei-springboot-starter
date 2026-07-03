@@ -12,6 +12,10 @@
 
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <skip_maven_deploy>true</skip_maven_deploy>
+    </properties>
+
     <build>
         <extensions>
             <extension>
