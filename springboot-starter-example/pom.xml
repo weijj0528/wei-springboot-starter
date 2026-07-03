@@ -8,7 +8,7 @@
     <name>springboot-starter-example</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <revision>4.1.0</revision>
+        <revision>4.1.1-SNAPSHOT</revision>
         <spring-boot.version>2.7.18</spring-boot.version>
         <skip_maven_deploy>true</skip_maven_deploy>
         <maven.compiler.source>17</maven.compiler.source>
