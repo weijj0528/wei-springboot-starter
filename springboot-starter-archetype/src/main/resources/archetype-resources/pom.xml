@@ -15,7 +15,7 @@
     <properties>
         <revision>1.0-SNAPSHOT</revision>
         <spring-boot.version>2.7.18</spring-boot.version>
-        <wei-spring-boot-starter>4.1.0-SNAPSHOT</wei-spring-boot-starter>
+        <wei-spring-boot-starter>4.1.0</wei-spring-boot-starter>
         <skip_maven_deploy>true</skip_maven_deploy>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

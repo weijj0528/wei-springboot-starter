@@ -28,7 +28,7 @@
         </developer>
     </developers>
     <properties>
-        <revision>4.1.0-SNAPSHOT</revision>
+        <revision>4.1.0</revision>
         <skip_maven_deploy>false</skip_maven_deploy>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
