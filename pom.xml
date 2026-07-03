@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.github.weijj0528</groupId>
     <artifactId>wei-springboot-starter</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-
     <name>wei-springboot-starter</name>
-
     <url>https://github.com/weijj0528/wei-springboot-starter</url>
-
     <description>SpringBoot component practice starter</description>
-
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -22,14 +15,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
     <scm>
         <tag>master</tag>
         <url>https://github.com/weijj0528/wei-springboot-starter</url>
         <connection>https://github.com/weijj0528/wei-springboot-starter.git</connection>
         <developerConnection>https://github.com/weijj0528/wei-springboot-starter.git</developerConnection>
     </scm>
-
     <developers>
         <developer>
             <name>weijj0528</name>
@@ -37,7 +28,6 @@
             <organization>Wei</organization>
         </developer>
     </developers>
-
     <properties>
         <revision>4.1.0-SNAPSHOT</revision>
         <skip_maven_deploy>false</skip_maven_deploy>
@@ -46,7 +36,6 @@
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -58,7 +47,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -72,7 +60,6 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -84,7 +71,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <modules>
         <module>springcloud-starter</module>
         <module>springboot-starter</module>
@@ -98,7 +84,6 @@
         <module>wei-starter-sequence</module>
         <module>wei-starter-swagger</module>
     </modules>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -157,7 +142,6 @@
             </plugin>
         </plugins>
     </build>
-
     <profiles>
         <profile>
             <id>deploy-center</id>

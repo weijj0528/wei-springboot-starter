@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.github.weijj0528</groupId>
     <artifactId>springboot-starter-example</artifactId>
     <version>${revision}</version>
-
     <packaging>pom</packaging>
-
     <name>springboot-starter-example</name>
     <description>Demo project for Spring Boot</description>
-
     <properties>
         <revision>4.1.0-SNAPSHOT</revision>
         <spring-boot.version>2.7.18</spring-boot.version>
@@ -21,7 +16,6 @@
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -33,7 +27,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -41,7 +34,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <modules>
         <module>springboot-starter-example-base</module>
         <module>springboot-starter-example-mybatis</module>
@@ -49,7 +41,6 @@
         <module>springboot-starter-example-sequence</module>
         <module>springboot-starter-example-swagger</module>
     </modules>
-
     <profiles>
         <profile>
             <id>dev</id>
@@ -61,7 +52,6 @@
             </activation>
         </profile>
     </profiles>
-
     <build>
         <resources>
             <resource>

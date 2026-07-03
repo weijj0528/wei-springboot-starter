@@ -1,17 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0_xsd">
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0_xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.github.weijj0528</groupId>
     <artifactId>springboot-starter-archetype</artifactId>
     <version>4.1.0-SNAPSHOT</version>
-
     <packaging>maven-archetype</packaging>
-
     <name>Archetype - springboot-starter-archetype</name>
     <url>https://github.com/weijj0528/wei-springboot-starter</url>
-    <description>SpringBoot 业务项目三层多模块 Maven 原型（api/service/web）</description>
-
+    <description>SpringBoot &#x4E1A;&#x52A1;&#x9879;&#x76EE;&#x4E09;&#x5C42;&#x591A;&#x6A21;&#x5757; Maven &#x539F;&#x578B;&#xFF08;api/service/web&#xFF09;</description>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -19,14 +15,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
     <scm>
         <tag>master</tag>
         <url>https://github.com/weijj0528/wei-springboot-starter</url>
         <connection>https://github.com/weijj0528/wei-springboot-starter.git</connection>
         <developerConnection>https://github.com/weijj0528/wei-springboot-starter.git</developerConnection>
     </scm>
-
     <developers>
         <developer>
             <name>weijj0528</name>
@@ -34,7 +28,6 @@
             <organization>Wei</organization>
         </developer>
     </developers>
-
     <build>
         <extensions>
             <extension>
@@ -43,7 +36,6 @@
                 <version>3.1.0</version>
             </extension>
         </extensions>
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -59,56 +51,61 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
-        <plugins>
-            <!-- Sonatype Central Portal 发布 -->
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>central</publishingServerId>
-                    <tokenAuth>true</tokenAuth>
-                    <autoPublish>true</autoPublish>
-                </configuration>
-            </plugin>
-            <!-- GPG 签名 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                        <configuration>
-                            <gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--源码包-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>deploy-center</id>
+            <build>
+                <plugins>
+                    <!-- Sonatype Central Portal 发布 -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <tokenAuth>true</tokenAuth>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
+                    </plugin>
+                    <!-- GPG 签名 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--源码包-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
